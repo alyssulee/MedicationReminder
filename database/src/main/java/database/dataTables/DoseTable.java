@@ -74,6 +74,7 @@ public class DoseTable extends SQLDatabase
 
             PatientTables patientTable = new PatientTables();
             patientTable.increasePatientStreak(patient);
+            patientTable.increaseSuccessfulDoses(patient);
             return true;
         } catch (SQLException e)
         {

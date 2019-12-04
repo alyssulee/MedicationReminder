@@ -160,4 +160,20 @@ public class PrescriptionTable extends SQLDatabase
         }
     }
 
+    public boolean refillPrescription(Prescription prescription)
+    {
+        try
+        {
+            String query = "UPDATE Prescription SET MedRemaining = BaseAmount WHERE PrescriptionID = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, prescription.getPrescriptionID().toString());
+            pState.execute();
+            return true;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

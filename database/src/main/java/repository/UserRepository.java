@@ -128,10 +128,30 @@ public class UserRepository
         return prescriptionDatabase.getPatientPrescriptionsByMedication(patient, med);
     }
 
-    //Note: addDose automatically increases currentStreak and updates longest streak in db
+    //Note: addDose automatically increases currentStreak, successfulDoses and updates longest streak in db
     public boolean addDose(Client confirmer, Patient patient, Prescription prescription)
     {
         return doseDatabase.addDose(confirmer, patient, prescription);
+    }
+
+    public int getCurrentStreak(Patient patient)
+    {
+        return patientDatabase.getCurrentStreak(patient);
+    }
+
+    public int getLongestStreak(Patient patient)
+    {
+        return patientDatabase.getLongestStreak(patient);
+    }
+
+    public int getMissedDoses(Patient patient)
+    {
+        return patientDatabase.getMissedDoses(patient);
+    }
+
+    public int getSuccessfulDoses(Patient patient)
+    {
+        return patientDatabase.getSuccessfulDoses(patient);
     }
 
     //Note: Automatically resets currentStreak back to zero
@@ -157,6 +177,7 @@ public class UserRepository
 
     public boolean addPharmacistFillsPrescription(Pharmacist pharmacist, Prescription prescription)
     {
+        prescriptionDatabase.refillPrescription(prescription);
         return fillsDatabase.addPharmacistFillsPrescription(pharmacist, prescription);
     }
 
@@ -194,6 +215,14 @@ public class UserRepository
         System.out.println(database.getPatientPrescriptionsByMedication((Patient) user, new Medication("DB00005")));
         database.addDose(user, user, database.getAllPrescriptionsByPatient(user).get(0));
         database.increaseMissedDosesCount(user);
+        System.out.println("MissedDoses: " + database.getMissedDoses(user) );
+        System.out.println("SuccessfulDoses: " + database.getSuccessfulDoses(user) );
+        System.out.println("Longest Streak: " + database.getLongestStreak(user) );
+        System.out.println("Current Streak: " + database.getCurrentStreak(user) );
+
+        ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
+        database.addPharmacistFillsPrescription(pharmacistList.get(0), database.getAllPrescriptionsByPatient(user).get(0));
+
 
         ArrayList<Doctor> doctorList = database.getAllDoctors();
         //database.addAppointment(doctorList.get(0), user, new Date(2020, 2, 3), new Time(10, 30, 0));
