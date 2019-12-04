@@ -84,4 +84,22 @@ public class AppointmentTable extends SQLDatabase
             return false;
         }
     }
+
+    public boolean removeAppointment(Doctor doctor, Patient patient)
+    {
+        try
+        {
+            String query = "DELETE FROM Appointment WHERE DoctorID = ? AND PatientID = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, doctor.getId().toString());
+            pState.setString(2, patient.getId().toString());
+
+            pState.execute();
+            return true;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

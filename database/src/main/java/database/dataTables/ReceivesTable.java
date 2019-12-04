@@ -1,8 +1,11 @@
 package database.dataTables;
 
 import database.SQLDatabase;
+import model.Pharmacist;
+import model.RefillOrder;
 
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -40,6 +43,24 @@ public class ReceivesTable extends SQLDatabase
     }
 
     //TODO: Add, remove, getAll, getReceivesBy...
+    public boolean addPharmacistReceivesOrder(Pharmacist pharmacist, RefillOrder order)
+    {
+        try
+        {
+            String query = "INSERT INTO Fills (PharmacistID, OrderNum)" +
+                    "VALUES ((SELECT IDNum FROM Pharmacist WHERE IDNUm = ?), (SELECT OrderNum FROM RefillOrder WHERE OrderNum = ?));";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, pharmacist.getId().toString());
+            pState.setString(2, order.getOrderID().toString());
+            pState.execute();
 
+
+            return true;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

@@ -26,6 +26,7 @@ public class UserRepository
     private AppointmentTable appointmentDatabase;
     private FillsTable fillsDatabase;
     private MonitorsTable monitorsDatabase;
+    private RefillOrderTable refillOrderDatabase;
 
 
     public UserRepository()
@@ -40,7 +41,7 @@ public class UserRepository
         prescriptionDatabase = new PrescriptionTable();
         doseDatabase = new DoseTable();
 
-        RefillOrderTable refillOrderTable = new RefillOrderTable();
+        refillOrderDatabase = new RefillOrderTable();
         monitorsDatabase = new MonitorsTable();
         appointmentDatabase = new AppointmentTable();
         viewsDatabase = new ViewsDataTable();
@@ -170,9 +171,24 @@ public class UserRepository
         return appointmentDatabase.addAppointment(doctor, patient, date, time);
     }
 
+    public boolean removeAppointment(Doctor doctor, Patient patient)
+    {
+        return appointmentDatabase.removeAppointment(doctor, patient);
+    }
+
     public boolean updateAppointment(Doctor doctor, Patient patient, Date newDate, Time newTime)
     {
         return appointmentDatabase.updateAppointment(doctor, patient, newDate, newTime);
+    }
+
+    public boolean addRefillOrder(Patient patient, RefillOrder order)
+    {
+        return refillOrderDatabase.addRefillOrder(patient, order);
+    }
+
+    public ArrayList<Prescription> getOrderedPrescriptions(RefillOrder order)
+    {
+        return refillOrderDatabase.getOrderPrescriptions(order);
     }
 
     public boolean addPharmacistFillsPrescription(Pharmacist pharmacist, Prescription prescription)
@@ -207,10 +223,10 @@ public class UserRepository
         pmeasure.add(new PatientMeasurement(new BloodPressure(500, 250), 30, new Date()));
 
         Patient user = new Patient (UUID.fromString("f23c4b5b-d964-475b-9622-c7d497ae7e72"), "a", "b", "c", "d", symptoms, pmeasure);
-        //System.out.println(database.addUser(user, UserType.Patient));
+        System.out.println(database.addUser(user, UserType.Patient));
 
-        //Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 0.5, 0.9 ,PrescriptionFrequency.BID, 15);
-        //database.addPatientPrescription((Patient)user, p);
+        Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 0.5, 0.9 ,PrescriptionFrequency.BID, 15);
+        database.addPatientPrescription((Patient)user, p);
         System.out.println(database.getAllPrescriptionsByPatient((Patient) user));
         System.out.println(database.getPatientPrescriptionsByMedication((Patient) user, new Medication("DB00005")));
         database.addDose(user, user, database.getAllPrescriptionsByPatient(user).get(0));
@@ -223,11 +239,15 @@ public class UserRepository
         ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
         database.addPharmacistFillsPrescription(pharmacistList.get(0), database.getAllPrescriptionsByPatient(user).get(0));
 
+        RefillOrder order = new RefillOrder(new Date(), UUID.randomUUID(), database.getAllPrescriptionsByPatient(user));
+        database.addRefillOrder(user, order);
+        System.out.println(database.getOrderedPrescriptions(order));
 
         ArrayList<Doctor> doctorList = database.getAllDoctors();
-        //database.addAppointment(doctorList.get(0), user, new Date(2020, 2, 3), new Time(10, 30, 0));
+        database.addAppointment(doctorList.get(0), user, new Date(2020, 2, 3), new Time(10, 30, 0));
         database.updateAppointment(doctorList.get(0), user, new Date(2021, 3, 4), new Time(11, 30, 0));
-        //database.addDoctorMonitorsPatient(doctorList.get(0), user, new Date(2019, 1, 2), new Date(2019, 6, 7));
+        database.removeAppointment(doctorList.get(0), user);
+        database.addDoctorMonitorsPatient(doctorList.get(0), user, new Date(2019, 1, 2), new Date(2019, 6, 7));
         System.out.println(database.getMonitoredPatientsByDoctor(doctorList.get(0)));
 
 /*        ArrayList<Patient> patientList = database.getAllPatients();
@@ -237,8 +257,8 @@ public class UserRepository
 //        System.out.println(database.removeUser(user));
 //        System.out.println(database.login("c", "d"));
         FamilyMember family = new FamilyMember(UUID.randomUUID(), "a", "b", "x", "x", "Fam");
-        //System.out.println(database.addUser(family, UserType.FamilyMember));
-        //database.addViewer(user, family);
+        System.out.println(database.addUser(family, UserType.FamilyMember));
+        database.addViewer(user, family);
 
 
 /*        ArrayList<Medication> meds = medRepo.getAllMedications();
