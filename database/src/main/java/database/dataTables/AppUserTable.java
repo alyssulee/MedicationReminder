@@ -46,21 +46,48 @@ public class AppUserTable extends SQLDatabase
         }
     }
 
-    public boolean login(String username, String password)
+    public User login(String username, String password)
     {
+        User user = null;
         try
         {
             String query = "SELECT * FROM AppUser WHERE username = ? AND password = ?";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, username);
             pState.setString(2, password);
-            pState.execute();
-            return true;
+            resultSet = pState.executeQuery();
+            while(resultSet.next())
+            {
+                UserType userType = UserType.valueOf(resultSet.getString("UserType"));
+                UUID idNum = UUID.fromString(resultSet.getString("IDNum"));
+                String firstname = resultSet.getString("Fname");
+                String lastname = resultSet.getString("LName");
+
+                switch(userType)
+                {
+                    case Patient:
+                        PatientTables patientTables = new PatientTables();
+                        user = patientTables.getPatientByID(idNum).get();
+                        break;
+                    case FamilyMember:
+                        FamilyMemberTable fTable = new FamilyMemberTable();
+                        user = fTable.getFamilyMemberByID(idNum).get();
+                        break;
+                    case Doctor:
+                        DoctorTable dTable = new DoctorTable();
+                        user = dTable.getDoctorByID(idNum).get();
+                        break;
+                    case Pharmacist:
+                        PharmacistTable pTable = new PharmacistTable();
+                        user = pTable.getPharmacistByID(idNum).get();
+                        break;
+                }
+            }
         } catch (SQLException e)
         {
             e.printStackTrace();
-            return false;
         }
+        return user;
     }
 
     public boolean addUser(User user, UserType userType)

@@ -8,6 +8,7 @@ import model.PatientMeasurement;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PatientTables extends SQLDatabase
@@ -192,49 +193,61 @@ public class PatientTables extends SQLDatabase
     {
         for (Patient p : patientList)
         {
-            try
-            {
-                String query = "SELECT PatientSymptom.* FROM Patient, PatientSymptom WHERE Patient.IDNum = PatientSymptom.IDNum AND Patient.IDNum = ?";
-                PreparedStatement pState = connection.prepareStatement(query);
-                pState.setString(1, p.getId().toString());
-                resultSet = pState.executeQuery();
-                ArrayList<String> symptom = new ArrayList<>();
-                while (resultSet.next())
-                {
-                    String s = resultSet.getString("Symptom");
-                    symptom.add(s);
-                }
-                p.setSymptoms(symptom);
-            } catch (SQLException e)
-            {
-                e.printStackTrace();
-            }
+            getPatientSymptoms(p);
         }
     }
+
+    public void getPatientSymptoms(Patient p)
+    {
+        try
+        {
+            String query = "SELECT PatientSymptom.* FROM Patient, PatientSymptom WHERE Patient.IDNum = PatientSymptom.IDNum AND Patient.IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, p.getId().toString());
+            resultSet = pState.executeQuery();
+            ArrayList<String> symptom = new ArrayList<>();
+            while (resultSet.next())
+            {
+                String s = resultSet.getString("Symptom");
+                symptom.add(s);
+            }
+            p.setSymptoms(symptom);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     public void getAllPatientMeasurement(ArrayList<Patient> patientList)
     {
         for (Patient p : patientList)
         {
-            try
+            getPatientMeasurement(p);
+        }
+    }
+
+    public void getPatientMeasurement(Patient p)
+    {
+
+        try
+        {
+            String query = "SELECT PatientMeasurement.* FROM Patient, PatientMeasurement WHERE Patient.IDNum = PatientMeasurement.IDNum AND Patient.IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, p.getId().toString());
+            resultSet = pState.executeQuery();
+            ArrayList<PatientMeasurement> pMeasure = new ArrayList<>();
+            while (resultSet.next())
             {
-                String query = "SELECT PatientMeasurement.* FROM Patient, PatientMeasurement WHERE Patient.IDNum = PatientMeasurement.IDNum AND Patient.IDNum = ?";
-                PreparedStatement pState = connection.prepareStatement(query);
-                pState.setString(1, p.getId().toString());
-                resultSet = pState.executeQuery();
-                ArrayList<PatientMeasurement> pMeasure = new ArrayList<>();
-                while (resultSet.next())
-                {
-                    java.util.Date date = resultSet.getDate("MeasurementTime");
-                    BloodPressure bp = new BloodPressure(resultSet.getString("BloodPressure"));
-                    Double bloodSugar = resultSet.getDouble("BloodSugar");
-                    pMeasure.add(new PatientMeasurement(bp, bloodSugar, date));
-                }
-                p.setMeasurements(pMeasure);
-            } catch (SQLException e)
-            {
-                e.printStackTrace();
+                java.util.Date date = resultSet.getDate("MeasurementTime");
+                BloodPressure bp = new BloodPressure(resultSet.getString("BloodPressure"));
+                Double bloodSugar = resultSet.getDouble("BloodSugar");
+                pMeasure.add(new PatientMeasurement(bp, bloodSugar, date));
             }
+            p.setMeasurements(pMeasure);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -398,6 +411,33 @@ public class PatientTables extends SQLDatabase
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public Optional<Patient> getPatientByID(UUID idNum)
+    {
+        Patient patient = null;
+        try
+        {
+            String query = "SELECT * FROM Patient, AppUser WHERE Patient.IDNum = ? AND AppUser.IDNum = Patient.IDNum";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, idNum.toString());
+            resultSet = pState.executeQuery();
+            while (resultSet.next())
+            {
+                UUID id = UUID.fromString(resultSet.getString("IDNum"));
+                String firstname = resultSet.getString("Fname");
+                String lastname = resultSet.getString("Lname");
+                String username = resultSet.getString("Username");
+                String password = resultSet.getString("Password");
+                patient = new Patient(id, firstname, lastname, username, password);
+                getPatientMeasurement(patient);
+                getPatientSymptoms(patient);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(patient);
     }
 
 

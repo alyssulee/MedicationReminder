@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 public class DoctorTable extends SQLDatabase
@@ -127,5 +128,30 @@ public class DoctorTable extends SQLDatabase
                 e.printStackTrace();
             }
         }
+    }
+
+    public Optional<Doctor> getDoctorByID(UUID idNum)
+    {
+        Doctor doctor = null;
+        try
+        {
+            String query = "SELECT * FROM Doctor, AppUser WHERE Doctor.IDNum = ? AND AppUser.IDNum = Doctor.IDNum";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, idNum.toString());
+            resultSet = pState.executeQuery();
+            while (resultSet.next())
+            {
+                UUID id = UUID.fromString(resultSet.getString("IDNum"));
+                String firstname = resultSet.getString("Fname");
+                String lastname = resultSet.getString("Lname");
+                String username = resultSet.getString("Username");
+                String password = resultSet.getString("Password");
+                doctor = new Doctor(id, firstname, lastname, username, password);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(doctor);
     }
 }

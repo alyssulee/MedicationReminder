@@ -18,4 +18,9 @@ public class FamilyMember extends Client {
     public void setRelation(String relation) {
         this.relation = relation;
     }
+
+    public String toString()
+    {
+        return "FamilyMember: " + super.toString() + " Relation: " + relation;
+    }
 }

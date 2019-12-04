@@ -41,7 +41,6 @@ public class UserRepository
 
         prescriptionDatabase = new PrescriptionTable();
         doseDatabase = new DoseTable();
-
         refillOrderDatabase = new RefillOrderTable();
         monitorsDatabase = new MonitorsTable();
         appointmentDatabase = new AppointmentTable();
@@ -50,7 +49,7 @@ public class UserRepository
         receivesDatabase = new ReceivesTable();
     }
 
-    public boolean login(String username, String password)
+    public User login(String username, String password)
     {
         return userDatabase.login(username, password);
     }
@@ -131,10 +130,16 @@ public class UserRepository
     }
 
     //Note: addDose automatically increases currentStreak, successfulDoses and updates longest streak in db
-    public boolean addDose(Client confirmer, Patient patient, Prescription prescription)
+    public boolean addDose(Patient patient, Prescription prescription, Time time)
     {
-        return doseDatabase.addDose(confirmer, patient, prescription);
+        return doseDatabase.addDose(patient, prescription, time);
     }
+
+    public boolean confirmDose(Patient patient, Client confirmer, Time dosageTime, Prescription prescription)
+    {
+        return doseDatabase.confirmDose(patient, confirmer, dosageTime, prescription);
+    }
+
 
     public int getCurrentStreak(Patient patient)
     {
@@ -207,6 +212,7 @@ public class UserRepository
         return receivesDatabase.getAllPharmacistOrders(pharmacist);
     }
 
+    //automatically increases remaining amount to base amount in prescription
     public boolean addPharmacistFillsPrescription(Pharmacist pharmacist, Prescription prescription)
     {
         prescriptionDatabase.refillPrescription(prescription);
@@ -224,8 +230,6 @@ public class UserRepository
     }
 
 
-
-
     //Tests
     public static void main(String[] args)
     {
@@ -239,15 +243,29 @@ public class UserRepository
         ArrayList<PatientMeasurement> pmeasure = new ArrayList<>();
         pmeasure.add(new PatientMeasurement(new BloodPressure(100, 150), 40, new Date()));
         pmeasure.add(new PatientMeasurement(new BloodPressure(500, 250), 30, new Date()));
-
         Patient user = new Patient (UUID.fromString("f23c4b5b-d964-475b-9622-c7d497ae7e72"), "a", "b", "c", "d", symptoms, pmeasure);
-        System.out.println(database.addUser(user, UserType.Patient));
+        database.addUser(user, UserType.Patient);
+
+        FamilyMember family = new FamilyMember(UUID.randomUUID(), "a", "b", "x", "x", "Fam");
+        database.addUser(family, UserType.FamilyMember);
+        database.addViewer(user, family);
+
+        ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
+        ArrayList<Doctor> doctorList = database.getAllDoctors();
+
+        System.out.println(database.login(user.getUsername(), user.getPassword()));
+        System.out.println(database.login(family.getUsername(), family.getPassword()));
+        System.out.println(database.login(pharmacistList.get(0).getUsername(), pharmacistList.get(0).getPassword()));
+        System.out.println(database.login(doctorList.get(0).getUsername(), doctorList.get(0).getPassword()));
 
         Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 0.5, 0.9 ,PrescriptionFrequency.BID, 15);
         database.addPatientPrescription((Patient)user, p);
         System.out.println(database.getAllPrescriptionsByPatient((Patient) user));
         System.out.println(database.getPatientPrescriptionsByMedication((Patient) user, new Medication("DB00005")));
-        database.addDose(user, user, database.getAllPrescriptionsByPatient(user).get(0));
+
+        database.addDose(user, database.getAllPrescriptionsByPatient(user).get(0),  new Time(5, 10, 15));
+        database.confirmDose(user, user, new Time(5, 10, 15), p);
+
         database.increaseMissedDosesCount(user);
         System.out.println("MissedDoses: " + database.getMissedDoses(user) );
         System.out.println("SuccessfulDoses: " + database.getSuccessfulDoses(user) );
@@ -258,12 +276,11 @@ public class UserRepository
         database.addRefillOrder(user, order);
         System.out.println(database.getOrderedPrescriptions(order));
 
-        ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
+
         database.addPharmacistReceivesOrder(pharmacistList.get(0), user, order);
         database.addPharmacistFillsPrescription(pharmacistList.get(0), database.getAllPrescriptionsByPatient(user).get(0));
         System.out.println(database.getAllPharmacistOrders(pharmacistList.get(0)));
 
-        ArrayList<Doctor> doctorList = database.getAllDoctors();
         database.addAppointment(doctorList.get(0), user, new Date(2020, 2, 3), new Time(10, 30, 0));
         database.updateAppointment(doctorList.get(0), user, new Date(2021, 3, 4), new Time(11, 30, 0));
         database.removeAppointment(doctorList.get(0), user);
@@ -276,20 +293,7 @@ public class UserRepository
 
 //        System.out.println(database.removeUser(user));
 //        System.out.println(database.login("c", "d"));
-        FamilyMember family = new FamilyMember(UUID.randomUUID(), "a", "b", "x", "x", "Fam");
-        System.out.println(database.addUser(family, UserType.FamilyMember));
-        database.addViewer(user, family);
-        System.out.println(database.getPatientsByFamilyMember(family));
 
-
-/*        ArrayList<Medication> meds = medRepo.getAllMedications();
-        for(Medication m : meds)
-        {
-            System.out.println(m);
-        }*/
-
-        //System.out.println(medRepo.getMedicationByName("Tylenol"));
-        //System.out.println(medRepo.getMedicationByID("DB00005"));
 
     }
 }
