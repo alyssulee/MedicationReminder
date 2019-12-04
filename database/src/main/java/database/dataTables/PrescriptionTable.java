@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PrescriptionTable extends SQLDatabase
@@ -108,6 +109,42 @@ public class PrescriptionTable extends SQLDatabase
         }
         return prescriptions;
     }
+
+    public Prescription getPrescriptionByID(UUID pID)
+    {
+        Prescription prescription = null;
+        try
+        {
+            String query = "SELECT Prescription.* FROM Prescription WHERE PrescriptionID = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, pID.toString());
+
+            resultSet = pState.executeQuery();
+            while (resultSet.next())
+            {
+                UUID prescriptionID = UUID.fromString(resultSet.getString("PrescriptionID"));
+                String medID = resultSet.getString("medID");
+                Date prescribedDate = resultSet.getDate("PrescribedDate");
+                int baseAmount = resultSet.getInt("BaseAmount");
+                PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
+                double strength = resultSet.getDouble("Strength");
+                int remainingAmount = resultSet.getInt("MedRemaining");
+                double amountPerDose = resultSet.getDouble("AmountPerDose");
+
+                Medication m = new Medication(medID);
+                MedicationTable medTable = new MedicationTable();
+                medTable.getAllMedicationNames(m);
+
+                prescription = new Prescription(prescriptionID, m, prescribedDate, baseAmount, amountPerDose, strength, frequency, remainingAmount);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return (prescription);
+
+    }
+
 
     public ArrayList<Prescription> getPatientPrescriptionsByMedication(Patient patient, Medication med)
     {

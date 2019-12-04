@@ -31,4 +31,14 @@ public class RefillOrder
     {
         return prescriptionsToFill;
     }
+
+    public void setPrescriptionsToFill(ArrayList<Prescription> prescriptionsToFill)
+    {
+        this.prescriptionsToFill = prescriptionsToFill;
+    }
+
+    public String toString()
+    {
+        return "Order: " + OrderID + " " + date + "\t " + prescriptionsToFill.toString();
+    }
 }

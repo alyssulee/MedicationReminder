@@ -14,6 +14,11 @@ public class Prescription
     PrescriptionFrequency frequency;
     int remainingAmount;
 
+    public Prescription(UUID prescriptionID)
+    {
+        this.prescriptionID = prescriptionID;
+    }
+
     public Prescription(UUID pID, Medication medication, Date prescribedDate, int baseAmount, double amountPerDose, double strength,
                         PrescriptionFrequency frequency, int remainingAmount)
     {

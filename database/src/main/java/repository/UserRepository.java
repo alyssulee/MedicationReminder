@@ -27,6 +27,7 @@ public class UserRepository
     private FillsTable fillsDatabase;
     private MonitorsTable monitorsDatabase;
     private RefillOrderTable refillOrderDatabase;
+    private ReceivesTable receivesDatabase;
 
 
     public UserRepository()
@@ -46,7 +47,7 @@ public class UserRepository
         appointmentDatabase = new AppointmentTable();
         viewsDatabase = new ViewsDataTable();
         fillsDatabase = new FillsTable();
-        ReceivesTable receivesTable = new ReceivesTable();
+        receivesDatabase = new ReceivesTable();
     }
 
     public boolean login(String username, String password)
@@ -166,6 +167,11 @@ public class UserRepository
         return viewsDatabase.addViewer(patient, familyMember);
     }
 
+    public ArrayList<Patient> getPatientsByFamilyMember(FamilyMember familyMember)
+    {
+        return viewsDatabase.getPatientsByFamilyMember(familyMember);
+    }
+
     public boolean addAppointment(Doctor doctor, Patient patient, Date date, Time time)
     {
         return appointmentDatabase.addAppointment(doctor, patient, date, time);
@@ -191,6 +197,16 @@ public class UserRepository
         return refillOrderDatabase.getOrderPrescriptions(order);
     }
 
+    public boolean addPharmacistReceivesOrder(Pharmacist pharmacist, Patient patient, RefillOrder order)
+    {
+        return receivesDatabase.addPharmacistReceivesOrder(pharmacist, patient, order);
+    }
+
+    public ArrayList<RefillOrder> getAllPharmacistOrders(Pharmacist pharmacist)
+    {
+        return receivesDatabase.getAllPharmacistOrders(pharmacist);
+    }
+
     public boolean addPharmacistFillsPrescription(Pharmacist pharmacist, Prescription prescription)
     {
         prescriptionDatabase.refillPrescription(prescription);
@@ -206,6 +222,8 @@ public class UserRepository
     {
         return monitorsDatabase.getMonitoredPatientsByDoctor(doctor);
     }
+
+
 
 
     //Tests
@@ -236,12 +254,14 @@ public class UserRepository
         System.out.println("Longest Streak: " + database.getLongestStreak(user) );
         System.out.println("Current Streak: " + database.getCurrentStreak(user) );
 
-        ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
-        database.addPharmacistFillsPrescription(pharmacistList.get(0), database.getAllPrescriptionsByPatient(user).get(0));
-
         RefillOrder order = new RefillOrder(new Date(), UUID.randomUUID(), database.getAllPrescriptionsByPatient(user));
         database.addRefillOrder(user, order);
         System.out.println(database.getOrderedPrescriptions(order));
+
+        ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
+        database.addPharmacistReceivesOrder(pharmacistList.get(0), user, order);
+        database.addPharmacistFillsPrescription(pharmacistList.get(0), database.getAllPrescriptionsByPatient(user).get(0));
+        System.out.println(database.getAllPharmacistOrders(pharmacistList.get(0)));
 
         ArrayList<Doctor> doctorList = database.getAllDoctors();
         database.addAppointment(doctorList.get(0), user, new Date(2020, 2, 3), new Time(10, 30, 0));
@@ -259,6 +279,7 @@ public class UserRepository
         FamilyMember family = new FamilyMember(UUID.randomUUID(), "a", "b", "x", "x", "Fam");
         System.out.println(database.addUser(family, UserType.FamilyMember));
         database.addViewer(user, family);
+        System.out.println(database.getPatientsByFamilyMember(family));
 
 
 /*        ArrayList<Medication> meds = medRepo.getAllMedications();

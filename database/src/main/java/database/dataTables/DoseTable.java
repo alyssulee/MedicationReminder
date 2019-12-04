@@ -28,12 +28,12 @@ public class DoseTable extends SQLDatabase
                         "(PrescriptionID VARCHAR(255) NOT NULL," +
                         "DosageTime TIMESTAMP NOT NULL," +
                         "AmountPerDose DOUBLE," +
-                        "MedID VARCHAR(255),"+
+                        //"MedID VARCHAR(255),"+
                         "ConfirmerID VARCHAR(255),"+
                         "PatientID VARCHAR(255),"+
                         "PRIMARY KEY (PrescriptionID, DosageTime)," +
-                        "FOREIGN KEY (MedID) REFERENCES Medication(MedID)" +
-                        "ON DELETE CASCADE ON UPDATE CASCADE," +
+                        //"FOREIGN KEY (MedID) REFERENCES Medication(MedID)" +
+                        //"ON DELETE CASCADE ON UPDATE CASCADE," +
                         "FOREIGN KEY (ConfirmerID) REFERENCES Client (IDNum)" +
                         "ON DELETE SET NULL ON UPDATE CASCADE," +
                         "FOREIGN KEY (PatientID) REFERENCES Patient (IDNum)" +
@@ -58,15 +58,15 @@ public class DoseTable extends SQLDatabase
     {
         try
         {
-            String query = "INSERT INTO Dose (PrescriptionID, DosageTime, AmountPerDose, MedID, ConfirmerID, PatientID)"+
-                    "VALUES ((SELECT PrescriptionID FROM Prescription WHERE PrescriptionID = ?), ?, ?, (SELECT MedID FROM Prescription WHERE MedID = ?),(SELECT Idnum FROM Client WHERE IdNum = ?), (SELECT IdNum FROM Patient WHERE IDNum = ?))";
+            String query = "INSERT INTO Dose (PrescriptionID, DosageTime, AmountPerDose, ConfirmerID, PatientID)"+
+                    "VALUES ((SELECT PrescriptionID FROM Prescription WHERE PrescriptionID = ?), ?, ?, (SELECT Idnum FROM Client WHERE IdNum = ?), (SELECT IdNum FROM Patient WHERE IDNum = ?))";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, prescription.getPrescriptionID().toString());
             pState.setTimestamp(2, Timestamp.from(Instant.now()));
             pState.setDouble(3, prescription.getAmountPerDose());
-            pState.setString(4, prescription.getMedication().getMedID());
-            pState.setString(5, confirmer.getId().toString());
-            pState.setString(6, patient.getId().toString());
+           // pState.setString(4, prescription.getMedication().getMedID());
+            pState.setString(4, confirmer.getId().toString());
+            pState.setString(5, patient.getId().toString());
             pState.execute();
 
             PrescriptionTable pTable = new PrescriptionTable();
