@@ -25,6 +25,7 @@ public class UserRepository
     private ViewsDataTable viewsDatabase;
     private AppointmentTable appointmentDatabase;
     private FillsTable fillsDatabase;
+    private MonitorsTable monitorsDatabase;
 
 
     public UserRepository()
@@ -40,7 +41,7 @@ public class UserRepository
         doseDatabase = new DoseTable();
 
         RefillOrderTable refillOrderTable = new RefillOrderTable();
-        MonitorsTable monitorsTable = new MonitorsTable();
+        monitorsDatabase = new MonitorsTable();
         appointmentDatabase = new AppointmentTable();
         viewsDatabase = new ViewsDataTable();
         fillsDatabase = new FillsTable();
@@ -159,6 +160,15 @@ public class UserRepository
         return fillsDatabase.addPharmacistFillsPrescription(pharmacist, prescription);
     }
 
+    public boolean addDoctorMonitorsPatient(Doctor doctor, Patient patient, Date startDate, Date endDate)
+    {
+        return monitorsDatabase.addDoctorMonitorsPatient(doctor, patient, startDate, endDate);
+    }
+
+    public ArrayList<Patient> getMonitoredPatientsByDoctor(Doctor doctor)
+    {
+        return monitorsDatabase.getMonitoredPatientsByDoctor(doctor);
+    }
 
 
     //Tests
@@ -188,6 +198,8 @@ public class UserRepository
         ArrayList<Doctor> doctorList = database.getAllDoctors();
         //database.addAppointment(doctorList.get(0), user, new Date(2020, 2, 3), new Time(10, 30, 0));
         database.updateAppointment(doctorList.get(0), user, new Date(2021, 3, 4), new Time(11, 30, 0));
+        //database.addDoctorMonitorsPatient(doctorList.get(0), user, new Date(2019, 1, 2), new Date(2019, 6, 7));
+        System.out.println(database.getMonitoredPatientsByDoctor(doctorList.get(0)));
 
 /*        ArrayList<Patient> patientList = database.getAllPatients();
         for(Patient p : patientList)

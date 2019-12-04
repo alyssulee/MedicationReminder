@@ -71,7 +71,7 @@ public class MonitorsTable extends SQLDatabase
         ArrayList<Patient> patients = new ArrayList<>();
         try
         {
-            String query = "SELECT Patient.* FROM Monitors, Patient WHERE Monitors.PatientID = Patient.IDNum AND Monitors.DoctorID = ?";
+            String query = "SELECT AppUser.* FROM Monitors, Patient, AppUser WHERE Monitors.PatientID = Patient.IDNum AND Monitors.DoctorID = ? AND AppUser.IDNum = Patient.IDNum";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, doctor.getId().toString());
 
