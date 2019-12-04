@@ -20,7 +20,7 @@ public class Application {
         get("/", (req, res) -> "Hello World");
 
         get("/jimmy", (req, res) -> {
-            var patient = new Patient(UUID.randomUUID(), "Jimmy", "J.", "username", "password");
+            Patient patient = new Patient(UUID.randomUUID(), "Jimmy", "J.", "username", "password");
             patient.getSymptoms().add("Stubbed toe");
             patient.getSymptoms().add("Upset belly");
             patient.getMeasurements().add(new PatientMeasurement(new BloodPressure(100, 200), 3.0, new Date()));

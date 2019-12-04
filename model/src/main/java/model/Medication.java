@@ -1,12 +1,11 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Medication
 {
-    String medID;
-    ArrayList<String> medNames;
+    private String medID;
+    private ArrayList<String> medNames;
 
     public Medication(String id, ArrayList<String> names)
     {

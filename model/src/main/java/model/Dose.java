@@ -1,0 +1,74 @@
+package model;
+
+import java.sql.Timestamp;
+import java.util.UUID;
+
+public class Dose {
+    private UUID prescriptionId;
+    private Timestamp dosageTime;
+    private double amountPerDose;
+    private String medId;
+    private UUID confirmerId;
+    private UUID patientId;
+
+    public Dose(Prescription prescription, Timestamp dosageTime, double amountPerDose, Medication medication, Client confirmer, Patient patient) {
+        this(prescription.getPrescriptionID(), dosageTime, amountPerDose, medication.getMedID(), confirmer.getId(), patient.getId());
+    }
+
+    public Dose(UUID prescriptionId, Timestamp dosageTime, double amountPerDose, String medId, UUID confirmerId, UUID patientId) {
+        this.prescriptionId = prescriptionId;
+        this.dosageTime = dosageTime;
+        this.amountPerDose = amountPerDose;
+        this.medId = medId;
+        this.confirmerId = confirmerId;
+        this.patientId = patientId;
+    }
+
+    public UUID getPrescriptionId() {
+        return prescriptionId;
+    }
+
+    public void setPrescriptionId(UUID prescriptionId) {
+        this.prescriptionId = prescriptionId;
+    }
+
+    public Timestamp getDosageTime() {
+        return dosageTime;
+    }
+
+    public void setDosageTime(Timestamp dosageTime) {
+        this.dosageTime = dosageTime;
+    }
+
+    public double getAmountPerDose() {
+        return amountPerDose;
+    }
+
+    public void setAmountPerDose(double amountPerDose) {
+        this.amountPerDose = amountPerDose;
+    }
+
+    public String getMedId() {
+        return medId;
+    }
+
+    public void setMedId(String medId) {
+        this.medId = medId;
+    }
+
+    public UUID getConfirmerId() {
+        return confirmerId;
+    }
+
+    public void setConfirmerId(UUID confirmerId) {
+        this.confirmerId = confirmerId;
+    }
+
+    public UUID getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(UUID patientId) {
+        this.patientId = patientId;
+    }
+}

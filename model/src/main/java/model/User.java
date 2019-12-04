@@ -10,13 +10,6 @@ public abstract class User {
     private String password;
 
 
-    public User(UUID id, String firstName, String lastName)
-    {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
     public User(UUID id, String firstName, String lastName, String username, String password) {
         this.id = id;
         this.firstName = firstName;

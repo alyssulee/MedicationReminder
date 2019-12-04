@@ -2,9 +2,9 @@ package model;
 
 public class BloodPressure
 {
-    final String unit = "mmHg";
-    int systolic;
-    int diastolic;
+    private final String unit = "mmHg";
+    private int systolic;
+    private int diastolic;
 
     public BloodPressure(int systolic, int diastolic)
     {
