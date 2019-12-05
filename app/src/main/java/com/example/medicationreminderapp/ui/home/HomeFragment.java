@@ -64,6 +64,8 @@ public class HomeFragment extends Fragment{
                 doses.add(new DoseModel(convertDose.get(i).getAmountPerDose(), convertDose.get(i).getMedId(), true));
             }
 
+            getActivity().getSupportFragmentManager().popBackStack();
+
             // Create adapter passing in the sample user data
             DosesAdapter adapter = new DosesAdapter(doses);
             // Attach the adapter to the recyclerview to populate items

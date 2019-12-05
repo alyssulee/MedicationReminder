@@ -61,7 +61,7 @@ public class GalleryFragment extends Fragment
                 //getActivity().getSupportFragmentManager().popBackStack();
                 AddAppointmentFragment addAppointmentFragment = new AddAppointmentFragment();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, addAppointmentFragment,
-                        "findthisFragment").addToBackStack(null).commit();
+                        "findthisFragment").addToBackStack("findthisFragment").commit();
                 getActivity().getSupportFragmentManager().popBackStack();
 
             }
