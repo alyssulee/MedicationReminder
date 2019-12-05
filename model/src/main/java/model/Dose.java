@@ -6,16 +6,16 @@ import java.util.UUID;
 public class Dose {
     private UUID prescriptionId;
     private Timestamp dosageTime;
-    private double amountPerDose;
+    private int amountPerDose;
     private String medId;
     private UUID confirmerId;
     private UUID patientId;
 
-    public Dose(Prescription prescription, Timestamp dosageTime, double amountPerDose, Medication medication, Client confirmer, Patient patient) {
+    public Dose(Prescription prescription, Timestamp dosageTime, int amountPerDose, Medication medication, Client confirmer, Patient patient) {
         this(prescription.getPrescriptionID(), dosageTime, amountPerDose, medication.getMedID(), confirmer.getId(), patient.getId());
     }
 
-    public Dose(UUID prescriptionId, Timestamp dosageTime, double amountPerDose, String medId, UUID confirmerId, UUID patientId) {
+    public Dose(UUID prescriptionId, Timestamp dosageTime, int amountPerDose, String medId, UUID confirmerId, UUID patientId) {
         this.prescriptionId = prescriptionId;
         this.dosageTime = dosageTime;
         this.amountPerDose = amountPerDose;
@@ -40,11 +40,11 @@ public class Dose {
         this.dosageTime = dosageTime;
     }
 
-    public double getAmountPerDose() {
+    public int getAmountPerDose() {
         return amountPerDose;
     }
 
-    public void setAmountPerDose(double amountPerDose) {
+    public void setAmountPerDose(int amountPerDose) {
         this.amountPerDose = amountPerDose;
     }
 

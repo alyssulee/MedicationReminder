@@ -32,7 +32,7 @@ public class PrescriptionTable extends SQLDatabase
                         "(PrescriptionID VARCHAR(255) NOT NULL," +
                         "PrescribedDate DATE," +
                         "BaseAmount INT," +
-                        "AmountPerDose DOUBLE," +
+                        "AmountPerDose INT," +
                         "MedRemaining INT," +
                         "Frequency VARCHAR(255)," +
                         "Strength DOUBLE,"+
@@ -61,7 +61,7 @@ public class PrescriptionTable extends SQLDatabase
             pState.setString(1, prescription.getPrescriptionID().toString());
             pState.setDate(2, new java.sql.Date(prescription.getPrescribedDate().getTime()));
             pState.setInt(3, prescription.getBaseAmount());
-            pState.setDouble(4, prescription.getAmountPerDose());
+            pState.setInt(4, prescription.getAmountPerDose());
             pState.setInt(5, prescription.getRemainingAmount());
             pState.setString(6, prescription.getFrequency().toString());
             pState.setDouble(7, prescription.getStrength());
@@ -94,7 +94,7 @@ public class PrescriptionTable extends SQLDatabase
                 PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
                 double strength = resultSet.getDouble("Strength");
                 int remainingAmount = resultSet.getInt("MedRemaining");
-                double amountPerDose = resultSet.getDouble("AmountPerDose");
+                int amountPerDose = resultSet.getInt("AmountPerDose");
 
                 Medication m = new Medication(medID);
                 MedicationTable medTable = new MedicationTable();
@@ -128,7 +128,7 @@ public class PrescriptionTable extends SQLDatabase
                 PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
                 double strength = resultSet.getDouble("Strength");
                 int remainingAmount = resultSet.getInt("MedRemaining");
-                double amountPerDose = resultSet.getDouble("AmountPerDose");
+                int amountPerDose = resultSet.getInt("AmountPerDose");
 
                 Medication m = new Medication(medID);
                 MedicationTable medTable = new MedicationTable();
@@ -165,7 +165,7 @@ public class PrescriptionTable extends SQLDatabase
                 PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
                 double strength = resultSet.getDouble("Strength");
                 int remainingAmount = resultSet.getInt("MedRemaining");
-                double amountPerDose = resultSet.getDouble("AmountPerDose");
+                int amountPerDose = resultSet.getInt("AmountPerDose");
 
                 Medication m = new Medication(medID);
                 MedicationTable medTable = new MedicationTable();

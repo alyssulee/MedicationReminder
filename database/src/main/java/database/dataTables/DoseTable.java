@@ -27,7 +27,7 @@ public class DoseTable extends SQLDatabase
                 String query = "CREATE TABLE Dose " +
                         "(PrescriptionID VARCHAR(255) NOT NULL," +
                         "DosageTime TIME NOT NULL," +
-                        "AmountPerDose DOUBLE," +
+                        "AmountPerDose INT," +
                         //"MedID VARCHAR(255),"+
                         "ConfirmerID VARCHAR(255),"+
                         "PatientID VARCHAR(255),"+
@@ -57,7 +57,7 @@ public class DoseTable extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, prescription.getPrescriptionID().toString());
             pState.setTime(2, time);
-            pState.setDouble(3, prescription.getAmountPerDose());
+            pState.setInt(3, prescription.getAmountPerDose());
             pState.setString(4, patient.getId().toString());
             pState.execute();
             return true;

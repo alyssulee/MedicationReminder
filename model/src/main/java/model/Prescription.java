@@ -9,7 +9,7 @@ public class Prescription
     private String medicationId;
     private Date prescribedDate;
     private int baseAmount;
-    private double amountPerDose;
+    private int amountPerDose;
     private double strength;
     private PrescriptionFrequency frequency;
     private int remainingAmount;
@@ -19,13 +19,13 @@ public class Prescription
         this.prescriptionID = prescriptionID;
     }
 
-    public Prescription(UUID pID, Medication medication, Date prescribedDate, int baseAmount, double amountPerDose, double strength,
+    public Prescription(UUID pID, Medication medication, Date prescribedDate, int baseAmount, int amountPerDose, double strength,
                         PrescriptionFrequency frequency, int remainingAmount)
     {
         this(pID, medication.getMedID(), prescribedDate, baseAmount, amountPerDose, strength, frequency, remainingAmount);
     }
 
-    public Prescription(UUID pID, String medicationId, Date prescribedDate, int baseAmount, double amountPerDose, double strength,
+    public Prescription(UUID pID, String medicationId, Date prescribedDate, int baseAmount, int amountPerDose, double strength,
                         PrescriptionFrequency frequency, int remainingAmount)
     {
         prescriptionID = pID;
@@ -68,7 +68,7 @@ public class Prescription
         return remainingAmount;
     }
 
-    public double getAmountPerDose()
+    public int getAmountPerDose()
     {
         return amountPerDose;
     }
@@ -88,7 +88,7 @@ public class Prescription
         this.baseAmount = baseAmount;
     }
 
-    public void setAmountPerDose(double amountPerDose)
+    public void setAmountPerDose(int amountPerDose)
     {
         this.amountPerDose = amountPerDose;
     }
