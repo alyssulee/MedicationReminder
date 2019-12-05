@@ -11,11 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicationreminderapp.DoseModel;
 import com.example.medicationreminderapp.DosesAdapter;
+import com.example.medicationreminderapp.OnItemClickListener;
 import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.TestPatientApi;
 
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 
 import model.Dose;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
 
 
 
@@ -47,11 +49,10 @@ public class HomeFragment extends Fragment {
         if(rvContacts != null) {
             TestPatientApi test = new TestPatientApi();
             ArrayList<Dose> convertDose = test.getTodaysDoses();
-            //TODO: change name to the actual med name
             for(int i = 0; i < convertDose.size(); i++) {
                 System.out.println(i);
                 //if(convertDose.get(i).getConfirmerId() == null)
-                doses.add(new DoseModel((int) convertDose.get(i).getAmountPerDose(), convertDose.get(i).getMedId(), true));
+                doses.add(new DoseModel(convertDose.get(i).getAmountPerDose(), convertDose.get(i).getMedId(), true));
             }
 
             // Create adapter passing in the sample user data
@@ -69,6 +70,13 @@ public class HomeFragment extends Fragment {
             rvContacts.setLayoutManager(layoutManager);
         }
 
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(root.getContext(), DividerItemDecoration.VERTICAL);
+        rvContacts.addItemDecoration(itemDecoration);
+
+
         return root;
     }
+
+
 }

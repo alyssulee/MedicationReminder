@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 import model.Appointment;
+import model.Doctor;
 import model.Dose;
+import model.Medication;
 import model.PatientMeasurement;
 
 public class TestPatientApi implements PatientApi {
@@ -54,5 +56,15 @@ public class TestPatientApi implements PatientApi {
     @Override
     public void addMeasurement(PatientMeasurement measurement) {
 
+    }
+
+    @Override
+    public Doctor getDoctor(UUID doctorId) {
+        return null;
+    }
+
+    @Override
+    public Medication getMedication(String medId) {
+        return null;
     }
 }
