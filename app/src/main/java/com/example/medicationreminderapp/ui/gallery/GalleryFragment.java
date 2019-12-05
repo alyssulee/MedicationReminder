@@ -58,10 +58,12 @@ public class GalleryFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                getActivity().getSupportFragmentManager().popBackStack();
+                //getActivity().getSupportFragmentManager().popBackStack();
                 AddAppointmentFragment addAppointmentFragment = new AddAppointmentFragment();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, addAppointmentFragment,
                         "findthisFragment").addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().popBackStack();
+
             }
         });
 

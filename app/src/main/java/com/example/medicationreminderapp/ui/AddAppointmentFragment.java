@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.example.medicationreminderapp.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import model.Doctor;
@@ -56,6 +57,11 @@ public class AddAppointmentFragment extends Fragment
         listView.setAdapter(arrayAdapter);
 
         return root;
+    }
+
+    public void updateDate(String textDate)
+    {
+
     }
 
 
