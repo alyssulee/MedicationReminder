@@ -138,6 +138,13 @@ public class AddAppointmentFragment extends Fragment
             public void onClick(View view)
             {
                 //Todo add appointment through server
+                String [] split = dateStringReceived.split("/");
+                int year = Integer.parseInt(split[0]);
+                int month = Integer.parseInt(split[1]);
+                int day = Integer.parseInt(split[2]);
+
+                Date sentDate = new Date(year, month, day);
+
                 Toast.makeText(view.getContext(), "Date: " + dateStringReceived+  " at " + hour + " : " + minute + " Appointment set with:" + selectedDoctor.toString(), Toast.LENGTH_LONG).show();
                 getFragmentManager().beginTransaction().remove(AddAppointmentFragment.this).commit();
             }
