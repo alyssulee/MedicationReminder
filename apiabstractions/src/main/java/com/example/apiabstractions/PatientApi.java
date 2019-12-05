@@ -14,7 +14,7 @@ public interface PatientApi {
     int getCurrentStreak();
     int getLongestStreak();
     List<Dose> getTodaysDoses();
-    void confirmDoseTaken(Dose does);
+    void confirmDoseTaken(Dose dose);
     void markDoseUntaken(Dose dose);
     List<PatientMeasurement> getAllMeasurements();
     void addMeasurement(PatientMeasurement measurement);
