@@ -229,8 +229,13 @@ public class UserRepository
         return monitorsDatabase.getMonitoredPatientsByDoctor(doctor);
     }
 
+    public ArrayList<Appointment> getPatientsAppointments(UUID patientId)
+    {
+        return appointmentDatabase.getPatientsAppointments(patientId);
+    }
 
-    //Tests
+
+        //Tests
     public static void main(String[] args)
     {
         MedRepository medRepo = new MedRepository();
@@ -283,7 +288,9 @@ public class UserRepository
 
         database.addAppointment(doctorList.get(0), user, new Date(2020, 2, 3), new Time(10, 30, 0));
         database.updateAppointment(doctorList.get(0), user, new Date(2021, 3, 4), new Time(11, 30, 0));
-        database.removeAppointment(doctorList.get(0), user);
+        System.out.println("Doctor Appointments: " + database.getPatientsAppointments(user.getId()));
+
+        //database.removeAppointment(doctorList.get(0), user);
         database.addDoctorMonitorsPatient(doctorList.get(0), user, new Date(2019, 1, 2), new Date(2019, 6, 7));
         System.out.println(database.getMonitoredPatientsByDoctor(doctorList.get(0)));
 
