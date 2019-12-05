@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
+import com.example.medicationreminderapp.UserListActivity;
 import com.example.medicationreminderapp.ui.login.LoginViewModel;
 import com.example.medicationreminderapp.ui.login.LoginViewModelFactory;
 
@@ -126,6 +127,8 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        //Intent intent2 = new Intent(this, UserListActivity.class);
+        //startActivity(intent2);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 

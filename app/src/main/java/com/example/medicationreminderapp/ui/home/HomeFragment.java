@@ -1,5 +1,6 @@
 package com.example.medicationreminderapp.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
+import com.example.medicationreminderapp.UserListActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -30,6 +33,9 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+
+
         return root;
     }
 }
