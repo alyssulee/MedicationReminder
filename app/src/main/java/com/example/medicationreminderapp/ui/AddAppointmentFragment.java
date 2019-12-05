@@ -38,7 +38,7 @@ import model.Doctor;
  */
 public class AddAppointmentFragment extends Fragment
 {
-    private static final String DATE = "date";
+    public static final String DATA_RECEIVE  = "data_receive";
     ListView listView;
     TextView date;
     static String selectedDate;
@@ -51,12 +51,16 @@ public class AddAppointmentFragment extends Fragment
     int hour, minute;
     String format;
 
+    String dateStringReceived;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         View root = inflater.inflate(R.layout.fragment_add_appointment, container, false);
+
+        date = (TextView) root.findViewById(R.id.selectedDate2);
 
         listView = (ListView)root.findViewById(R.id.listView);
         date = (TextView)root.findViewById(R.id.selectedDate2);
@@ -107,13 +111,13 @@ public class AddAppointmentFragment extends Fragment
             doctorStrings.add(d.toString());
         }
 
-        Bundle bundle = this.getArguments();
+   /*     Bundle bundle = this.getArguments();
         if(bundle != null)
         {
             selectedDate = bundle.getString(DATE);
             date.setText(selectedDate);
             Toast.makeText(root.getContext(), selectedDate, Toast.LENGTH_LONG).show();
-        }
+        }*/
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(root.getContext(), android.R.layout.simple_list_item_1, doctorStrings);
         listView.setAdapter(arrayAdapter);
@@ -134,7 +138,7 @@ public class AddAppointmentFragment extends Fragment
             public void onClick(View view)
             {
                 //Todo add appointment through server
-                Toast.makeText(view.getContext(), "Appointment set with:" + selectedDoctor.toString() + "at Time: " + hour + " : " + minute, Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(), "Date: " + dateStringReceived+  " at " + hour + " : " + minute + " Appointment set with:" + selectedDoctor.toString(), Toast.LENGTH_LONG).show();
                 getFragmentManager().beginTransaction().remove(AddAppointmentFragment.this).commit();
             }
         });
@@ -187,7 +191,6 @@ public class AddAppointmentFragment extends Fragment
     {
         AddAppointmentFragment fragment = new AddAppointmentFragment();
         Bundle args = new Bundle();
-        args.putString(DATE, selectedDate);
         fragment.setArguments(args);
         return fragment;
     }
@@ -206,6 +209,19 @@ public class AddAppointmentFragment extends Fragment
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Bundle args = getArguments();
+        if (args != null)
+        {
+            date.setText(args.getString(DATA_RECEIVE));
+            dateStringReceived = args.getString(DATA_RECEIVE);
+        }
+    }
+
 
     @Override
     public void onDetach()

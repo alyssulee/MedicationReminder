@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.medicationreminderapp.ui.AddAppointmentFragment;
+import com.example.medicationreminderapp.ui.gallery.GalleryFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -31,7 +32,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AddAppointmentFragment.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements AddAppointmentFragment.OnFragmentInteractionListener, GalleryFragment.DataPassListener
 {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -93,5 +94,15 @@ public class MainActivity extends AppCompatActivity implements AddAppointmentFra
         fragmentTransaction.addToBackStack("addAppointmentFrag");
         fragmentTransaction.commit();*/
 
+    }
+
+    public void passData(String data) {
+        AddAppointmentFragment addAptFrag = new AddAppointmentFragment ();
+        Bundle args = new Bundle();
+        args.putString(AddAppointmentFragment.DATA_RECEIVE, data);
+        addAptFrag.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, addAptFrag )
+                .commit();
     }
 }

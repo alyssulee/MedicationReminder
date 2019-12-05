@@ -1,6 +1,7 @@
 
 package com.example.medicationreminderapp.ui.gallery;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.ui.AddAppointmentFragment;
 
@@ -31,6 +33,15 @@ public class GalleryFragment extends Fragment
     TextView dateDisplay;
     Long date;
     Date selectedDate;
+    Button addAppointmentButton;
+    String saveDate;
+
+    DataPassListener mCallBack;
+
+    public interface DataPassListener
+    {
+        public void passData(String str);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -50,7 +61,7 @@ public class GalleryFragment extends Fragment
 
         calendarView = (CalendarView) root.findViewById(R.id.AppointmentCalendar);
         dateDisplay = (TextView) root.findViewById(R.id.SelectedDate);
-        Button addAppointmentButton = (Button) root.findViewById(R.id.addAppointmentButton);
+        addAppointmentButton = (Button) root.findViewById(R.id.addAppointmentButton);
         dateDisplay.setText("Date: ");
 
         //Toast.makeText(calendarView.getContext(), "HEEEELP :" + date, Toast.LENGTH_LONG).show();
@@ -66,6 +77,12 @@ public class GalleryFragment extends Fragment
                         "findthisFragment").addToBackStack("findthisFragment").commit();
                 getActivity().getSupportFragmentManager().popBackStack();
 
+
+                if (view.getId() == R.id.addAppointmentButton)
+                {
+                    mCallBack.passData(saveDate);
+                }
+
             }
         });
 
@@ -75,20 +92,40 @@ public class GalleryFragment extends Fragment
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
             {
                 selectedDate = new Date(year, month, dayOfMonth);
-                String str = "Date: " +year + "/" + (month + 1) + "/" + dayOfMonth;
+                saveDate = "Date: " + year + "/" + (month + 1) + "/" + dayOfMonth;
                 //Todo: if date = appointment -> str += appointment information
-                dateDisplay.setText(str);
+                dateDisplay.setText(saveDate);
+/*
 
                 AddAppointmentFragment fragment = new AddAppointmentFragment();
                 Bundle args = new Bundle();
                 args.putString(DATE, "Date: " + selectedDate.toString());
                 fragment.setArguments(args);
+*/
+
+
                 //Toast.makeText(view.getContext(), "Year=" + year + " Month=" + month + " Day=" + dayOfMonth, Toast.LENGTH_LONG).show();
                 //System.out.println("Year=" + year + " Month=" + (month+1) + " Day=" + dayOfMonth);
             }
         });
 
         return root;
+    }
+
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try
+        {
+            mCallBack = (MainActivity) context;
+        } catch (ClassCastException e)
+        {
+            throw new ClassCastException(context.toString() + " must implement OnImageClickListener");
+        }
     }
 
     public void replaceFragment(Fragment fragment)
