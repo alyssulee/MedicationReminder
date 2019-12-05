@@ -26,7 +26,6 @@ import android.view.Menu;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<Contact> contacts;
 
     private AppBarConfiguration mAppBarConfiguration;
     @Override
@@ -57,25 +56,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-        setContentView(R.layout.fragment_home);
-        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvList);
-        // Initialize contacts
-        if(rvContacts != null) {
-            contacts = Contact.createContactsList(20);
-            // Create adapter passing in the sample user data
-            ContactsAdapter adapter = new ContactsAdapter(contacts);
-            // Attach the adapter to the recyclerview to populate items
-            rvContacts.setAdapter(adapter);
-            // Set layout manager to position the items
 
-            // Setup layout manager for items with orientation
-            // Also supports `LinearLayoutManager.HORIZONTAL`
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            // Optionally customize the position you want to default scroll to
-            layoutManager.scrollToPosition(0);
-            // Attach layout manager to the RecyclerView
-            rvContacts.setLayoutManager(layoutManager);
-        }
     }
 
 

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
+public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> {
 
         // Provide a direct reference to each of the views within a data item
         // Used to cache the views within the item layout for fast access
@@ -33,16 +33,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             }
         }
 
-    // Store a member variable for the contacts
-    private List<Contact> mContacts;
+    // Store a member variable for the doseModels
+    private List<DoseModel> mDoseModels;
 
     // Pass in the contact array into the constructor
-    public ContactsAdapter(List<Contact> contacts) {
-        mContacts = contacts;
+    public DosesAdapter(List<DoseModel> doseModels) {
+        mDoseModels = doseModels;
     }
 
     @Override
-    public ContactsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DosesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -56,22 +56,22 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(ContactsAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(DosesAdapter.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        Contact contact = mContacts.get(position);
+        DoseModel doseModel = mDoseModels.get(position);
 
         // Set item views based on your views and data model
         TextView textView = viewHolder.nameTextView;
-        textView.setText(contact.getName());
+        textView.setText(doseModel.getName());
         Button button = viewHolder.messageButton;
-        button.setText(contact.isOnline() ? "Message" : "Offline");
-        button.setEnabled(contact.isOnline());
+        button.setText(doseModel.isOnline() ? "Confirm" : "Taken");
+        button.setEnabled(doseModel.isOnline());
     }
 
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
-        return mContacts.size();
+        return mDoseModels.size();
     }
 
 }

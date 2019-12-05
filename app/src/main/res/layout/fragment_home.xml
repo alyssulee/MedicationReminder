@@ -21,8 +21,8 @@ android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
-        android:layout_width="379dp"
-        android:layout_height="664dp"
+        android:layout_width="403dp"
+        android:layout_height="573dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
