@@ -11,6 +11,7 @@ import model.Appointment;
 import model.Doctor;
 import model.Dose;
 import model.Medication;
+import model.Patient;
 import model.PatientMeasurement;
 
 public class TestPatientApi implements PatientApi {
@@ -21,20 +22,20 @@ public class TestPatientApi implements PatientApi {
 
     @Override
     public int getCurrentStreak() {
-        return 0;
+        return DoseFinder.patientApi.getCurrentStreak();
     }
 
     @Override
     public int getLongestStreak() {
-        return 0;
+        return DoseFinder.patientApi.getLongestStreak();
     }
 
     @Override
     public ArrayList<Dose> getTodaysDoses() {
         ArrayList<Dose> doses = new ArrayList<>();
-        doses.add(new Dose(UUID.randomUUID(), new Timestamp(0), 1, "medidhere1", UUID.randomUUID(), UUID.randomUUID()));
-        doses.add(new Dose(UUID.randomUUID(), new Timestamp(0), 2, "medidhere2", UUID.randomUUID(), UUID.randomUUID()));
-        doses.add(new Dose(UUID.randomUUID(), new Timestamp(0), 1, "medidhere1", UUID.randomUUID(), UUID.randomUUID()));
+        doses.add(new Dose(UUID.randomUUID(), new Timestamp(0), 1, "Tylenol", UUID.randomUUID(), UUID.randomUUID()));
+        doses.add(new Dose(UUID.randomUUID(), new Timestamp(0), 2, "Penicillin", UUID.randomUUID(), UUID.randomUUID()));
+        doses.add(new Dose(UUID.randomUUID(), new Timestamp(0), 5, "Vitamin D", UUID.randomUUID(), UUID.randomUUID()));
         return doses;
     }
 

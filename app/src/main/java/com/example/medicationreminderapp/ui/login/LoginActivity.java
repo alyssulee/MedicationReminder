@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.FamilyMemberActivity;
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
@@ -125,7 +126,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
+        //if(DoseFinder.patientApi.)
         Intent intent = new Intent(this, MainActivity.class);
+
         startActivity(intent);
         //Intent intent2 = new Intent(this, UserListActivity.class);
         //startActivity(intent2);

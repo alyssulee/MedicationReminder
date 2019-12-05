@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -18,11 +19,15 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.ui.AddAppointmentFragment;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import model.Appointment;
 
 public class GalleryFragment extends Fragment
 {
@@ -94,7 +99,20 @@ public class GalleryFragment extends Fragment
                 saveDate = year + "/" + (month + 1) + "/" + dayOfMonth;
                 String str = "Date: " + saveDate;
                 //Todo: if date = appointment -> str += appointment information
+
+                dateDisplay.setText(saveDate);
+
+                List<Appointment> appointmentList = DoseFinder.patientApi.getUpcomingAppointments();
+                for(Appointment a : appointmentList)
+                {
+                    if(selectedDate.compareTo(a.getDate()) == 0);
+                    {
+                        Toast.makeText(view.getContext(), "Appointment: " + a.toString(), Toast.LENGTH_LONG).show();
+                        break;
+                    }
+                }
                 dateDisplay.setText(str);
+
 /*
 
                 AddAppointmentFragment fragment = new AddAppointmentFragment();
