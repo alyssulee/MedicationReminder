@@ -62,7 +62,7 @@ public class ClientFamilyMemberApi implements FamilyMemberApi {
     }
 
     @Override
-    public LoginCredentials getPatientCredentias(UUID patientId) {
+    public LoginCredentials getPatientCredentials(UUID patientId) {
         try {
             HttpURLConnection connection = openGetConnection("api/familyMember/getPatientCredentials/" + patientId);
             try (AutoCloseable ignored = connection::disconnect) {

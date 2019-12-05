@@ -1,20 +1,13 @@
 package app.controllers;
 
 import com.example.apiabstractions.FamilyMemberApi;
-import com.example.apiabstractions.PatientApi;
 import com.google.gson.Gson;
 
 import java.util.UUID;
 
 import app.FamilyMemberApiImpl;
 import app.JsonTransformer;
-import app.PatientApiImpl;
-import model.Doctor;
-import model.Dose;
 import model.FamilyMember;
-import model.LoginCredentials;
-import model.Patient;
-import model.PatientMeasurement;
 import spark.Request;
 
 import static spark.Spark.get;
@@ -41,7 +34,7 @@ public class FamilyMemberApiController implements Controller {
         get(basePath + "/getPatientCredentials/:patientId", (req, res) -> {
             UUID patientId = UUID.fromString(req.params("patientId"));
             FamilyMemberApi api = createApiOrThrow(req);
-            return api.getPatientCredentias(patientId);
+            return api.getPatientCredentials(patientId);
         }, new JsonTransformer());
     }
 

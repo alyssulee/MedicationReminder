@@ -8,5 +8,5 @@ import model.Patient;
 
 public interface FamilyMemberApi {
     List<Patient> getDependantPatients();
-    LoginCredentials getPatientCredentias(UUID patientId);
+    LoginCredentials getPatientCredentials(UUID patientId);
 }

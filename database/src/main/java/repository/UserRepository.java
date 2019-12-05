@@ -2,18 +2,14 @@ package repository;
 
 import database.dataTables.*;
 import model.*;
-import repository.MedRepository;
 
-import java.lang.reflect.Array;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Timer;
 import java.util.UUID;
 
-public class UserRepository
-{
+public class UserRepository {
     private AppUserTable userDatabase;
     private PatientTables patientDatabase;
     private ClientTable clientDatabase;
@@ -28,17 +24,16 @@ public class UserRepository
     private MonitorsTable monitorsDatabase;
     private RefillOrderTable refillOrderDatabase;
     private ReceivesTable receivesDatabase;
+    private MedicationTable medicationDatabase;
 
 
-    public UserRepository()
-    {
+    public UserRepository() {
         userDatabase = new AppUserTable();
         clientDatabase = new ClientTable();
         patientDatabase = new PatientTables();
         familyDatabase = new FamilyMemberTable();
         doctorDatabase = new DoctorTable();
         pharmacistDatabase = new PharmacistTable();
-
         prescriptionDatabase = new PrescriptionTable();
         doseDatabase = new DoseTable();
         refillOrderDatabase = new RefillOrderTable();
@@ -47,192 +42,179 @@ public class UserRepository
         viewsDatabase = new ViewsDataTable();
         fillsDatabase = new FillsTable();
         receivesDatabase = new ReceivesTable();
+        medicationDatabase = new MedicationTable();
     }
 
-    public User login(String username, String password)
-    {
+    public User login(String username, String password) {
         return userDatabase.login(username, password);
     }
 
-    public boolean addUser(User user, UserType userType)
-    {
+    public boolean addUser(User user, UserType userType) {
         boolean returnVal = userDatabase.addUser(user, userType);
 
-        switch (userType)
-        {
+        switch (userType) {
             case Patient:
                 returnVal = clientDatabase.addClient(user.getId());
-                returnVal &= patientDatabase.addPatient(((Patient)user));
+                returnVal &= patientDatabase.addPatient(((Patient) user));
                 break;
             case FamilyMember:
                 returnVal = clientDatabase.addClient(user.getId());
-                returnVal &= familyDatabase.addFamily((FamilyMember)user);
+                returnVal &= familyDatabase.addFamily((FamilyMember) user);
                 break;
             //TODO finish addUser function
             case Doctor:
-                returnVal = doctorDatabase.addDoctor((Doctor)user);
+                returnVal = doctorDatabase.addDoctor((Doctor) user);
                 break;
             case Pharmacist:
-                returnVal = pharmacistDatabase.addPharmacist((Pharmacist)user);
+                returnVal = pharmacistDatabase.addPharmacist((Pharmacist) user);
                 break;
         }
 
-        if(returnVal == false)
-        {
+        if (returnVal == false) {
             removeUser(user);
         }
         return returnVal;
     }
 
-    public boolean removeUser(User user)
-    {
+    public boolean removeUser(User user) {
         return userDatabase.removeUser(user);
     }
 
-    public ArrayList<Pharmacist> getAllPharmacists()
-    {
+    public ArrayList<Pharmacist> getAllPharmacists() {
         return pharmacistDatabase.getAllPharmacists();
     }
 
-    public ArrayList<Doctor> getAllDoctors()
-    {
+    public ArrayList<Doctor> getAllDoctors() {
         return doctorDatabase.getAllDoctors();
     }
 
-    public ArrayList<Patient> getAllPatients()
-    {
+    public ArrayList<Patient> getAllPatients() {
         return patientDatabase.getAllPatients();
     }
 
-    public boolean addSymptom(UUID idNum, String symptom)
-    {
+    public ArrayList<Patient> getPatientsDependantOn(UUID familyMemberId) {
+        return patientDatabase.getPatientsDependantOn(familyMemberId);
+    }
+
+    public boolean addSymptom(UUID idNum, String symptom) {
         return patientDatabase.addSymptom(idNum, symptom);
     }
 
-    public boolean addMeasurement(UUID idNum, PatientMeasurement measure)
-    {
+    public boolean addMeasurement(UUID idNum, PatientMeasurement measure) {
         return patientDatabase.addMeasurement(idNum, measure);
     }
 
-    public boolean addPatientPrescription(Patient patient, Prescription prescription)
-    {
+    public boolean addPatientPrescription(Patient patient, Prescription prescription) {
         return prescriptionDatabase.addPatientPrescription(patient, prescription);
     }
 
-    public ArrayList<Prescription> getAllPrescriptionsByPatient(Patient patient)
-    {
+    public ArrayList<Prescription> getAllPrescriptionsByPatient(Patient patient) {
         return prescriptionDatabase.getAllPrescriptionsByPatient(patient);
     }
 
-    public ArrayList<Prescription> getPatientPrescriptionsByMedication(Patient patient, Medication med)
-    {
+    public ArrayList<Prescription> getPatientPrescriptionsByMedication(Patient patient, Medication med) {
         return prescriptionDatabase.getPatientPrescriptionsByMedication(patient, med);
     }
 
     //Note: addDose automatically increases currentStreak, successfulDoses and updates longest streak in db
-    public boolean addDose(Patient patient, Prescription prescription, Time time)
-    {
-        return doseDatabase.addDose(patient, prescription, time);
+    public boolean addDose(Patient patient, Prescription prescription, Timestamp dosageTime) {
+        return doseDatabase.addDose(patient, prescription, dosageTime);
     }
 
-    public boolean confirmDose(Patient patient, Client confirmer, Time dosageTime, Prescription prescription)
-    {
+    public boolean confirmDose(Patient patient, Client confirmer, Time dosageTime, Prescription prescription) {
         return doseDatabase.confirmDose(patient, confirmer, dosageTime, prescription);
     }
 
 
-    public int getCurrentStreak(Patient patient)
-    {
+    public int getCurrentStreak(Patient patient) {
         return patientDatabase.getCurrentStreak(patient);
     }
 
-    public int getLongestStreak(Patient patient)
-    {
+    public int getLongestStreak(Patient patient) {
         return patientDatabase.getLongestStreak(patient);
     }
 
-    public int getMissedDoses(Patient patient)
-    {
+    public int getMissedDoses(Patient patient) {
         return patientDatabase.getMissedDoses(patient);
     }
 
-    public int getSuccessfulDoses(Patient patient)
-    {
+    public int getSuccessfulDoses(Patient patient) {
         return patientDatabase.getSuccessfulDoses(patient);
     }
 
     //Note: Automatically resets currentStreak back to zero
-    public void increaseMissedDosesCount(Patient patient)
-    {
+    public void increaseMissedDosesCount(Patient patient) {
         patientDatabase.increaseMissedDosesCount(patient);
     }
 
-    public boolean addViewer(Patient patient, FamilyMember familyMember)
-    {
+    public boolean addViewer(Patient patient, FamilyMember familyMember) {
         return viewsDatabase.addViewer(patient, familyMember);
     }
 
-    public ArrayList<Patient> getPatientsByFamilyMember(FamilyMember familyMember)
-    {
+    public ArrayList<Patient> getPatientsByFamilyMember(FamilyMember familyMember) {
         return viewsDatabase.getPatientsByFamilyMember(familyMember);
     }
 
-    public boolean addAppointment(Doctor doctor, Patient patient, Date date, Time time)
-    {
+    public boolean addAppointment(Doctor doctor, Patient patient, Date date, Time time) {
         return appointmentDatabase.addAppointment(doctor, patient, date, time);
     }
 
-    public boolean removeAppointment(Doctor doctor, Patient patient)
-    {
+    public boolean removeAppointment(Doctor doctor, Patient patient) {
         return appointmentDatabase.removeAppointment(doctor, patient);
     }
 
-    public boolean updateAppointment(Doctor doctor, Patient patient, Date newDate, Time newTime)
-    {
+    public boolean updateAppointment(Doctor doctor, Patient patient, Date newDate, Time newTime) {
         return appointmentDatabase.updateAppointment(doctor, patient, newDate, newTime);
     }
 
-    public boolean addRefillOrder(Patient patient, RefillOrder order)
-    {
+    public boolean addRefillOrder(Patient patient, RefillOrder order) {
         return refillOrderDatabase.addRefillOrder(patient, order);
     }
 
-    public ArrayList<Prescription> getOrderedPrescriptions(RefillOrder order)
-    {
+    public ArrayList<Prescription> getOrderedPrescriptions(RefillOrder order) {
         return refillOrderDatabase.getOrderPrescriptions(order);
     }
 
-    public boolean addPharmacistReceivesOrder(Pharmacist pharmacist, Patient patient, RefillOrder order)
-    {
+    public boolean addPharmacistReceivesOrder(Pharmacist pharmacist, Patient patient, RefillOrder order) {
         return receivesDatabase.addPharmacistReceivesOrder(pharmacist, patient, order);
     }
 
-    public ArrayList<RefillOrder> getAllPharmacistOrders(Pharmacist pharmacist)
-    {
+    public ArrayList<RefillOrder> getAllPharmacistOrders(Pharmacist pharmacist) {
         return receivesDatabase.getAllPharmacistOrders(pharmacist);
     }
 
     //automatically increases remaining amount to base amount in prescription
-    public boolean addPharmacistFillsPrescription(Pharmacist pharmacist, Prescription prescription)
-    {
+    public boolean addPharmacistFillsPrescription(Pharmacist pharmacist, Prescription prescription) {
         prescriptionDatabase.refillPrescription(prescription);
         return fillsDatabase.addPharmacistFillsPrescription(pharmacist, prescription);
     }
 
-    public boolean addDoctorMonitorsPatient(Doctor doctor, Patient patient, Date startDate, Date endDate)
-    {
+    public boolean addDoctorMonitorsPatient(Doctor doctor, Patient patient, Date startDate, Date endDate) {
         return monitorsDatabase.addDoctorMonitorsPatient(doctor, patient, startDate, endDate);
     }
 
-    public ArrayList<Patient> getMonitoredPatientsByDoctor(Doctor doctor)
-    {
+    public ArrayList<Patient> getMonitoredPatientsByDoctor(Doctor doctor) {
         return monitorsDatabase.getMonitoredPatientsByDoctor(doctor);
     }
 
+    public ArrayList<Appointment> getPatientsAppointments(UUID patientId) {
+        return appointmentDatabase.getPatientsAppointments(patientId);
+    }
+
+    public ArrayList<Dose> getPatientsDosesOn(UUID patientId, Date date) {
+        return doseDatabase.getPatientsDosesOn(patientId, date);
+    }
+
+    public Patient getPatientByID(UUID idNum) {
+        return patientDatabase.getPatientByID(idNum).get();
+    }
+
+    public Doctor getDoctorByID(UUID idNum) {
+        return doctorDatabase.getDoctorByID(idNum).get();
+    }
 
     //Tests
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         MedRepository medRepo = new MedRepository();
         UserRepository database = new UserRepository();
 
@@ -243,7 +225,7 @@ public class UserRepository
         ArrayList<PatientMeasurement> pmeasure = new ArrayList<>();
         pmeasure.add(new PatientMeasurement(new BloodPressure(100, 150), 40, new Date()));
         pmeasure.add(new PatientMeasurement(new BloodPressure(500, 250), 30, new Date()));
-        Patient user = new Patient (UUID.fromString("f23c4b5b-d964-475b-9622-c7d497ae7e72"), "a", "b", "c", "d", symptoms, pmeasure);
+        Patient user = new Patient(UUID.fromString("f23c4b5b-d964-475b-9622-c7d497ae7e72"), "a", "b", "c", "d", symptoms, pmeasure);
         database.addUser(user, UserType.Patient);
 
         FamilyMember family = new FamilyMember(UUID.randomUUID(), "a", "b", "x", "x", "Fam");
@@ -258,19 +240,19 @@ public class UserRepository
         System.out.println(database.login(pharmacistList.get(0).getUsername(), pharmacistList.get(0).getPassword()));
         System.out.println(database.login(doctorList.get(0).getUsername(), doctorList.get(0).getPassword()));
 
-        Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 2, 0.9 ,PrescriptionFrequency.BID, 15);
-        database.addPatientPrescription((Patient)user, p);
+        Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 2, 0.9, PrescriptionFrequency.BID, 15);
+        database.addPatientPrescription((Patient) user, p);
         System.out.println(database.getAllPrescriptionsByPatient((Patient) user));
         System.out.println(database.getPatientPrescriptionsByMedication((Patient) user, new Medication("DB00005")));
 
-        database.addDose(user, database.getAllPrescriptionsByPatient(user).get(0),  new Time(5, 10, 15));
+        database.addDose(user, database.getAllPrescriptionsByPatient(user).get(0), new Timestamp(0));
         database.confirmDose(user, user, new Time(5, 10, 15), p);
 
         database.increaseMissedDosesCount(user);
-        System.out.println("MissedDoses: " + database.getMissedDoses(user) );
-        System.out.println("SuccessfulDoses: " + database.getSuccessfulDoses(user) );
-        System.out.println("Longest Streak: " + database.getLongestStreak(user) );
-        System.out.println("Current Streak: " + database.getCurrentStreak(user) );
+        System.out.println("MissedDoses: " + database.getMissedDoses(user));
+        System.out.println("SuccessfulDoses: " + database.getSuccessfulDoses(user));
+        System.out.println("Longest Streak: " + database.getLongestStreak(user));
+        System.out.println("Current Streak: " + database.getCurrentStreak(user));
 
         RefillOrder order = new RefillOrder(new Date(), UUID.randomUUID(), database.getAllPrescriptionsByPatient(user));
         database.addRefillOrder(user, order);
@@ -286,6 +268,7 @@ public class UserRepository
         database.removeAppointment(doctorList.get(0), user);
         database.addDoctorMonitorsPatient(doctorList.get(0), user, new Date(2019, 1, 2), new Date(2019, 6, 7));
         System.out.println(database.getMonitoredPatientsByDoctor(doctorList.get(0)));
+
 
 /*        ArrayList<Patient> patientList = database.getAllPatients();
         for(Patient p : patientList)

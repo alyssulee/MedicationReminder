@@ -11,6 +11,8 @@ import model.Doctor;
 import model.Dose;
 import model.Patient;
 import model.PatientMeasurement;
+import model.User;
+import repository.UserRepository;
 import spark.Request;
 
 import static spark.Spark.get;
@@ -18,6 +20,7 @@ import static spark.Spark.post;
 
 public class PatientApiController implements Controller {
 
+    UserRepository userRepository = new UserRepository();
     private static final String basePath = "/api/patient/";
     private Gson gson = new Gson();
 
@@ -101,13 +104,13 @@ public class PatientApiController implements Controller {
     }
 
     private Patient getPatientOrThrow(Request request) {
-        // Todo: Give real implementation
         String username = request.headers("username");
         String password = request.headers("Password");
 
         if (username.isEmpty() || password.isEmpty())
             throw new Error("Username or password was missing.");
 
-        return new Patient(UUID.randomUUID(), "first", "last", username, password);
+        User user = userRepository.login(username, password);
+        return userRepository.getPatientByID(user.getId());
     }
 }

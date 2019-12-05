@@ -441,4 +441,29 @@ public class PatientTables extends SQLDatabase
     }
 
 
+    public ArrayList<Patient> getPatientsDependantOn(UUID familyMemberId) {
+        ArrayList<Patient> patientList = new ArrayList<>();
+        try
+        {
+            String query = "SELECT * FROM AppUser, Patient AS p WHERE AppUser.IDNum = Patient.IDNum AND EXISTS(SELECT * FROM ViewsData WHERE PatientID = p.IDNum AND FamilyID = ?)";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, familyMemberId.toString());
+            resultSet = pState.executeQuery(query);
+            while (resultSet.next())
+            {
+                UUID id = UUID.fromString(resultSet.getString("IDNum"));
+                String firstname = resultSet.getString("Fname");
+                String lastname = resultSet.getString("Lname");
+                String username = resultSet.getString("Username");
+                String password = resultSet.getString("Password");
+                patientList.add(new Patient(id, firstname, lastname, username, password));
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        getAllPatientSymptoms(patientList);
+        getAllPatientMeasurement(patientList);
+        return patientList;
+    }
 }

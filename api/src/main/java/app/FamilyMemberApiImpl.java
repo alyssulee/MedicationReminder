@@ -19,9 +19,11 @@ import model.LoginCredentials;
 import model.Medication;
 import model.Patient;
 import model.PatientMeasurement;
+import repository.UserRepository;
 
 public class FamilyMemberApiImpl implements FamilyMemberApi {
 
+    private UserRepository userRepository = new UserRepository();
     private FamilyMember familyMember;
 
     private FamilyMemberApiImpl() {
@@ -43,7 +45,7 @@ public class FamilyMemberApiImpl implements FamilyMemberApi {
     }
 
     @Override
-    public LoginCredentials getPatientCredentias(UUID patientId) {
+    public LoginCredentials getPatientCredentials(UUID patientId) {
         // Todo: Give real implementation
         return new LoginCredentials("myuser", "mypass");
     }
