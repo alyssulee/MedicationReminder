@@ -26,14 +26,14 @@ public class DoseTable extends SQLDatabase
             {
                 String query = "CREATE TABLE Dose " +
                         "(PrescriptionID VARCHAR(255) NOT NULL," +
-                        "DosageTime TIMESTAMP NOT NULL," +
+                        "DosageTime TIME NOT NULL," +
                         "AmountPerDose DOUBLE," +
-                        "MedID VARCHAR(255),"+
+                        //"MedID VARCHAR(255),"+
                         "ConfirmerID VARCHAR(255),"+
                         "PatientID VARCHAR(255),"+
                         "PRIMARY KEY (PrescriptionID, DosageTime)," +
-                        "FOREIGN KEY (MedID) REFERENCES Medication(MedID)" +
-                        "ON DELETE CASCADE ON UPDATE CASCADE," +
+                        //"FOREIGN KEY (MedID) REFERENCES Medication(MedID)" +
+                        //"ON DELETE CASCADE ON UPDATE CASCADE," +
                         "FOREIGN KEY (ConfirmerID) REFERENCES Client (IDNum)" +
                         "ON DELETE SET NULL ON UPDATE CASCADE," +
                         "FOREIGN KEY (PatientID) REFERENCES Patient (IDNum)" +
@@ -47,39 +47,49 @@ public class DoseTable extends SQLDatabase
 
     //TODO: Add, remove, getAll, getDoseByMed...
 
-    /**
-     * Adds a dose to the database and automatically increases streak, and decreases remaining amount.
-     * @param confirmer
-     * @param patient
-     * @param prescription
-     * @return
-     */
-    public boolean addDose(Client confirmer, Patient patient, Prescription prescription)
+    //Adds a dose to the database
+    public boolean addDose(Patient patient, Prescription prescription, Time time)
     {
         try
         {
-            String query = "INSERT INTO Dose (PrescriptionID, DosageTime, AmountPerDose, MedID, ConfirmerID, PatientID)"+
-                    "VALUES ((SELECT PrescriptionID FROM Prescription WHERE PrescriptionID = ?), ?, ?, (SELECT MedID FROM Prescription WHERE MedID = ?),(SELECT Idnum FROM Client WHERE IdNum = ?), (SELECT IdNum FROM Patient WHERE IDNum = ?))";
+            String query = "INSERT INTO Dose (PrescriptionID, DosageTime, AmountPerDose, PatientID)"+
+                    "VALUES ((SELECT PrescriptionID FROM Prescription WHERE PrescriptionID = ?), ?, ?, (SELECT IdNum FROM Patient WHERE IDNum = ?))";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, prescription.getPrescriptionID().toString());
-            pState.setTimestamp(2, Timestamp.from(Instant.now()));
+            pState.setTime(2, time);
             pState.setDouble(3, prescription.getAmountPerDose());
-            pState.setString(4, prescription.getMedication().getMedID());
-            pState.setString(5, confirmer.getId().toString());
-            pState.setString(6, patient.getId().toString());
+            pState.setString(4, patient.getId().toString());
             pState.execute();
-
-            PrescriptionTable pTable = new PrescriptionTable();
-            pTable.decreaseRemainingAmount(prescription);
-
-            PatientTables patientTable = new PatientTables();
-            patientTable.increasePatientStreak(patient);
-            patientTable.increaseSuccessfulDoses(patient);
             return true;
         } catch (SQLException e)
         {
             e.printStackTrace();
             return false;
         }
+    }
+
+    //Confirms dose was taken, automatically increases streaks and decreases remaining amount
+    public boolean confirmDose(Patient patient, Client confirmer, Time dosageTime, Prescription prescription)
+    {
+        try
+        {
+            String query = "UPDATE Dose SET ConfirmerID = ? WHERE PrescriptionID = ? AND DosageTime = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, confirmer.getId().toString());
+            pState.setString(2, prescription.getPrescriptionID().toString());
+            pState.setTime(3, dosageTime);
+            pState.execute();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        PrescriptionTable pTable = new PrescriptionTable();
+        pTable.decreaseRemainingAmount(prescription);
+
+        PatientTables patientTable = new PatientTables();
+        patientTable.increasePatientStreak(patient);
+        patientTable.increaseSuccessfulDoses(patient);
+        return true;
     }
 }

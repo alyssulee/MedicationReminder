@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MedicationTable extends SQLDatabase
 {

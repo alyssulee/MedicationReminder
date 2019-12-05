@@ -1,13 +1,20 @@
 package database.dataTables;
 
 import database.SQLDatabase;
+import model.FamilyMember;
+import model.Medication;
+import model.Patient;
 import model.Pharmacist;
+import model.Prescription;
 import model.RefillOrder;
 
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 public class ReceivesTable extends SQLDatabase
 {
@@ -43,24 +50,76 @@ public class ReceivesTable extends SQLDatabase
     }
 
     //TODO: Add, remove, getAll, getReceivesBy...
-    public boolean addPharmacistReceivesOrder(Pharmacist pharmacist, RefillOrder order)
+    public boolean addPharmacistReceivesOrder(Pharmacist pharmacist, Patient patient, RefillOrder order)
     {
         try
         {
-            String query = "INSERT INTO Fills (PharmacistID, OrderNum)" +
-                    "VALUES ((SELECT IDNum FROM Pharmacist WHERE IDNUm = ?), (SELECT OrderNum FROM RefillOrder WHERE OrderNum = ?));";
+            String query = "INSERT INTO Receives (PharmacistID, PatientID, OrderNum)" +
+                    "VALUES ((SELECT IDNum FROM Pharmacist WHERE IDNUm = ?), (SELECT PatientID FROM RefillOrder WHERE PatientID = ? AND OrderNum = ?), (SELECT OrderNum FROM RefillOrder WHERE PatientID = ? AND OrderNum = ?));";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, pharmacist.getId().toString());
-            pState.setString(2, order.getOrderID().toString());
+            pState.setString(2, patient.getId().toString());
+            pState.setString(3, order.getOrderID().toString());
+            pState.setString(4, patient.getId().toString());
+            pState.setString(5, order.getOrderID().toString());
             pState.execute();
-
-
             return true;
         } catch (SQLException e)
         {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public ArrayList<RefillOrder> getAllPharmacistOrders(Pharmacist pharmacist)
+    {
+            ArrayList<RefillOrder> orderList = new ArrayList<>();
+            try
+            {
+                String query = "SELECT RefillOrder.* FROM RefillOrder, Receives WHERE RefillOrder.OrderNum = Receives.OrderNum AND Receives.PharmacistID = ?";
+                PreparedStatement pState = connection.prepareStatement(query);
+                pState.setString(1, pharmacist.getId().toString());
+                resultSet = pState.executeQuery();
+                while (resultSet.next())
+                {
+                    UUID id = UUID.fromString(resultSet.getString("OrderNum"));
+                    UUID prescID =  UUID.fromString(resultSet.getString("PrescriptionID"));
+                    Date date = resultSet.getDate("Date");
+                    int index = 0;
+                    boolean newOrder = true;
+                    for(RefillOrder order : orderList)
+                    {
+                        if(order.getOrderID().compareTo(id) == 0)
+                        {
+                            orderList.get(0).getPrescriptionsToFill().add(new Prescription(prescID));
+                            newOrder = false;
+                            break;
+                        }
+                        index++;
+                    }
+                    if(newOrder == true)
+                    {
+                        ArrayList<Prescription> prescriptions = new ArrayList<>();
+                        prescriptions.add(new Prescription(prescID));
+                        orderList.add(new RefillOrder(date, id, prescriptions));
+                    }
+                }
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+            PrescriptionTable pTable = new PrescriptionTable();
+            for(RefillOrder order : orderList)
+            {
+                int i = 0;
+                for(Prescription p : order.getPrescriptionsToFill())
+                {
+                    order.getPrescriptionsToFill().set(i, pTable.getPrescriptionByID(p.getPrescriptionID()));
+                    i++;
+                }
+            }
+            return orderList;
     }
 
 }

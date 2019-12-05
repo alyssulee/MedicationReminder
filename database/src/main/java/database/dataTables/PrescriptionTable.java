@@ -65,7 +65,7 @@ public class PrescriptionTable extends SQLDatabase
             pState.setInt(5, prescription.getRemainingAmount());
             pState.setString(6, prescription.getFrequency().toString());
             pState.setDouble(7, prescription.getStrength());
-            pState.setString(8, prescription.getMedication().getMedID());
+            pState.setString(8, prescription.getMedicationId());
             pState.setString(9, patient.getId().toString());
             pState.execute();
             return true;
@@ -108,6 +108,42 @@ public class PrescriptionTable extends SQLDatabase
         }
         return prescriptions;
     }
+
+    public Prescription getPrescriptionByID(UUID pID)
+    {
+        Prescription prescription = null;
+        try
+        {
+            String query = "SELECT Prescription.* FROM Prescription WHERE PrescriptionID = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, pID.toString());
+
+            resultSet = pState.executeQuery();
+            while (resultSet.next())
+            {
+                UUID prescriptionID = UUID.fromString(resultSet.getString("PrescriptionID"));
+                String medID = resultSet.getString("medID");
+                Date prescribedDate = resultSet.getDate("PrescribedDate");
+                int baseAmount = resultSet.getInt("BaseAmount");
+                PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
+                double strength = resultSet.getDouble("Strength");
+                int remainingAmount = resultSet.getInt("MedRemaining");
+                double amountPerDose = resultSet.getDouble("AmountPerDose");
+
+                Medication m = new Medication(medID);
+                MedicationTable medTable = new MedicationTable();
+                medTable.getAllMedicationNames(m);
+
+                prescription = new Prescription(prescriptionID, m, prescribedDate, baseAmount, amountPerDose, strength, frequency, remainingAmount);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return (prescription);
+
+    }
+
 
     public ArrayList<Prescription> getPatientPrescriptionsByMedication(Patient patient, Medication med)
     {

@@ -51,5 +51,5 @@ public class Patient extends Client {
         return str;
     }
 
-    // Todo: Make all of score inferred attributes (successfulDosages, missedDosages, longestStreak, and currentStreak)
+    // Todo: Make all of score inferred attributes (successfulDosages, missedDosages, longestStreak, and currentStreak) and remove those attributes from the database
 }
