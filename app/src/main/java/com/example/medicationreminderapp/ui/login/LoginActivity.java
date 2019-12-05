@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,7 +23,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
+import com.example.medicationreminderapp.UserListActivity;
 import com.example.medicationreminderapp.ui.login.LoginViewModel;
 import com.example.medicationreminderapp.ui.login.LoginViewModelFactory;
 
@@ -73,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 setResult(Activity.RESULT_OK);
 
+
                 //Complete and destroy login activity once successful
                 finish();
             }
@@ -121,7 +125,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        //Intent intent2 = new Intent(this, UserListActivity.class);
+        //startActivity(intent2);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
