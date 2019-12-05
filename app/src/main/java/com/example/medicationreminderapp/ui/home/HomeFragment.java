@@ -57,8 +57,8 @@ public class HomeFragment extends Fragment{
         RecyclerView rvContacts = (RecyclerView) root.findViewById(R.id.rvList);
         // Initialize doseModels
         if(rvContacts != null) {
-            PatientApi test = HackerMan.patientApi = new TestPatientApi();
-            for (Dose dose : HackerMan.doses = test.getTodaysDoses()){
+            HackerMan.doses = HackerMan.patientApi.getTodaysDoses();
+            for (Dose dose : HackerMan.doses ){
                 doses.add(new DoseModel(dose.getAmountPerDose(), dose.getMedId(), true, dose.getPrescriptionId(), dose.getDosageTime()));
             }
 
