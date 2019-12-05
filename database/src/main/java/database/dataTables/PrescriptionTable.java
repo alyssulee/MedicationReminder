@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 public class PrescriptionTable extends SQLDatabase
@@ -66,7 +65,7 @@ public class PrescriptionTable extends SQLDatabase
             pState.setInt(5, prescription.getRemainingAmount());
             pState.setString(6, prescription.getFrequency().toString());
             pState.setDouble(7, prescription.getStrength());
-            pState.setString(8, prescription.getMedication().getMedID());
+            pState.setString(8, prescription.getMedicationId());
             pState.setString(9, patient.getId().toString());
             pState.execute();
             return true;

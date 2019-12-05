@@ -6,7 +6,7 @@ import model.Medication;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class MedRepository
+public class  MedRepository
 {
     private MedicationTable medDatabase;
 

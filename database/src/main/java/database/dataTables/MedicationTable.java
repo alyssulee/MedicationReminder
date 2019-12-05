@@ -70,7 +70,7 @@ public class MedicationTable extends SQLDatabase
             String query = "INSERT INTO Medication (MedID)" +
                     "VALUES (?);";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, id);
+            pState.setString(1, id.toString());
             pState.execute();
 
             for (String n : names)
@@ -93,7 +93,7 @@ public class MedicationTable extends SQLDatabase
             String query = "INSERT INTO MedName (MedID, MedName)" +
                     "VALUES ((SELECT MedID FROM Medication WHERE MedID = ?), ?);";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, id);
+            pState.setString(1, id.toString());
             pState.setString(2, name);
             pState.execute();
             return true;
