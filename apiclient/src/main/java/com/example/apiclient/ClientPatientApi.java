@@ -1,12 +1,17 @@
 package com.example.apiclient;
 
 import com.example.apiabstractions.PatientApi;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +25,7 @@ import model.PatientMeasurement;
 public class ClientPatientApi implements PatientApi {
 
     private static final String errorMessage = "Request failed in PatientApi.";
+    private Gson gson = new Gson();
     private String hostPath;
     private LoginCredentials credentials;
 
@@ -37,11 +43,9 @@ public class ClientPatientApi implements PatientApi {
 
     private void validateCredentialsOrThrow(LoginCredentials credentials) {
         try {
-            HttpURLConnection connection = openGetConnection("patient/api/verifyCredentials");
+            HttpURLConnection connection = openGetConnection("api/patient/verifyCredentials");
             try (AutoCloseable ignored = connection::disconnect) {
-                String response = readToString(connection);
-                // Todo: Check for 500 error
-                int a = 4;
+                connection.getResponseCode();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,52 +55,145 @@ public class ClientPatientApi implements PatientApi {
 
     @Override
     public List<Appointment> getUpcomingAppointments() {
-        return null;
+        try {
+            HttpURLConnection connection = openGetConnection("api/patient/getUpcomingAppointments");
+            try (AutoCloseable ignored = connection::disconnect) {
+                String response = readToString(connection);
+                return Arrays.asList(gson.fromJson(response, Appointment[].class));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
     }
 
     @Override
     public int getCurrentStreak() {
-        return 0;
+        try {
+            HttpURLConnection connection = openGetConnection("api/patient/getCurrentStreak");
+            try (AutoCloseable ignored = connection::disconnect) {
+                String response = readToString(connection);
+                return gson.fromJson(response, int.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
     }
 
     @Override
     public int getLongestStreak() {
-        return 0;
+        try {
+            HttpURLConnection connection = openGetConnection("api/patient/getLongestStreak");
+            try (AutoCloseable ignored = connection::disconnect) {
+                String response = readToString(connection);
+                return gson.fromJson(response, int.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
     }
 
     @Override
     public List<Dose> getTodaysDoses() {
-        return null;
+        try {
+            HttpURLConnection connection = openGetConnection("api/patient/getTodaysDoses");
+            try (AutoCloseable ignored = connection::disconnect) {
+                String response = readToString(connection);
+                return Arrays.asList(gson.fromJson(response, Dose[].class));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
     }
 
     @Override
     public void confirmDoseTaken(Dose dose) {
-
+        try {
+            HttpURLConnection connection = openPostConnection("api/patient/confirmDoseTaken");
+            writeToBody(connection, gson.toJson(dose));
+            try (AutoCloseable ignored = connection::disconnect) {
+                connection.getResponseCode();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
     }
 
     @Override
     public void markDoseUntaken(Dose dose) {
+        try {
+            HttpURLConnection connection = openPostConnection("api/patient/markDoseUntaken");
+            writeToBody(connection, gson.toJson(dose));
+            try (AutoCloseable ignored = connection::disconnect) {
+                connection.getResponseCode();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
 
     }
 
     @Override
     public List<PatientMeasurement> getAllMeasurements() {
-        return null;
+        try {
+            HttpURLConnection connection = openGetConnection("api/patient/getAllMeasurements");
+            try (AutoCloseable ignored = connection::disconnect) {
+                String response = readToString(connection);
+                return Arrays.asList(gson.fromJson(response, PatientMeasurement[].class));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
     }
 
     @Override
     public void addMeasurement(PatientMeasurement measurement) {
+        try {
+            HttpURLConnection connection = openPostConnection("api/patient/addMeasurement");
+            writeToBody(connection, gson.toJson(measurement));
+            try (AutoCloseable ignored = connection::disconnect) {
+                connection.getResponseCode();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
 
     }
 
     @Override
     public Doctor getDoctor(UUID doctorId) {
-        return null;
+        try {
+            HttpURLConnection connection = openGetConnection("api/patient/getDoctor/" + doctorId.toString());
+            try (AutoCloseable ignored = connection::disconnect) {
+                String response = readToString(connection);
+                return gson.fromJson(response, Doctor.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
     }
 
     @Override
     public Medication getMedication(String medId) {
-        return null;
+        try {
+            HttpURLConnection connection = openGetConnection("api/patient/getMedication/" + medId);
+            try (AutoCloseable ignored = connection::disconnect) {
+                String response = readToString(connection);
+                return gson.fromJson(response, Medication.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Error(errorMessage);
+        }
+
     }
 
     private HttpURLConnection openGetConnection(String relativePath) throws IOException {
@@ -104,8 +201,9 @@ public class ClientPatientApi implements PatientApi {
     }
 
     private HttpURLConnection openPostConnection(String relativePath) throws IOException {
-        HttpURLConnection connection = openConnection("GET", relativePath);
+        HttpURLConnection connection = openConnection("POST", relativePath);
         connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
         return connection;
     }
 
@@ -119,13 +217,19 @@ public class ClientPatientApi implements PatientApi {
     }
 
     private String readToString(HttpURLConnection connection) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder content = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine;
+            while ((responseLine = br.readLine()) != null) response.append(responseLine.trim());
+            return response.toString();
         }
-        in.close();
-        return content.toString();
+    }
+
+    private void writeToBody(HttpURLConnection connection, String body) throws IOException {
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = body.getBytes();
+            os.write(input, 0, input.length);
+        }
     }
 }
