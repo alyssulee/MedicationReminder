@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.medicationreminderapp.R;
 
@@ -34,6 +35,7 @@ public class AddAppointmentFragment extends Fragment
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     ListView listView;
+    TextView date;
 
 
     @Override
@@ -44,6 +46,7 @@ public class AddAppointmentFragment extends Fragment
         View root = inflater.inflate(R.layout.fragment_add_appointment, container, false);
 
         listView = (ListView)root.findViewById(R.id.listView);
+        date = (TextView)root.findViewById(R.id.selectedDate2);
 
         ArrayList<Doctor> doctorList = new ArrayList<>();
         doctorList.add(new Doctor(UUID.randomUUID(), "Bill", "Nye", "The", "ScienceGuy"));
@@ -61,7 +64,7 @@ public class AddAppointmentFragment extends Fragment
 
     public void updateDate(String textDate)
     {
-
+        date.setText(textDate);
     }
 
 
