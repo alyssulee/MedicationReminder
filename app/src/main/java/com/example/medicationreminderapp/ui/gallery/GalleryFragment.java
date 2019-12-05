@@ -24,6 +24,8 @@ import java.util.Date;
 
 public class GalleryFragment extends Fragment
 {
+    private static final String DATE = "date";
+
     private GalleryViewModel galleryViewModel;
     CalendarView calendarView;
     TextView dateDisplay;
@@ -76,6 +78,11 @@ public class GalleryFragment extends Fragment
                 String str = "Date: " +year + "/" + (month + 1) + "/" + dayOfMonth;
                 //Todo: if date = appointment -> str += appointment information
                 dateDisplay.setText(str);
+
+                AddAppointmentFragment fragment = new AddAppointmentFragment();
+                Bundle args = new Bundle();
+                args.putString(DATE, "Date: " + selectedDate.toString());
+                fragment.setArguments(args);
                 //Toast.makeText(view.getContext(), "Year=" + year + " Month=" + month + " Day=" + dayOfMonth, Toast.LENGTH_LONG).show();
                 //System.out.println("Year=" + year + " Month=" + (month+1) + " Day=" + dayOfMonth);
             }

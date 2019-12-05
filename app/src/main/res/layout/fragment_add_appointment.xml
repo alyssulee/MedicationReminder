@@ -18,7 +18,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/addAppointmentButton"
+        android:id="@+id/addAppointmentButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -50,10 +50,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.137"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time" />
+        app:layout_constraintTop_toBottomOf="@+id/appointment_time_pick" />
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/appointment_time_pick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/addAppointmentButton"
@@ -117,7 +117,9 @@
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="@+id/scrollView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Doctors" />
+        app:layout_constraintTop_toBottomOf="@+id/Doctors"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/darker_gray"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
