@@ -14,8 +14,8 @@
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.medicationreminderapp.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:label="@string/appointment_header"
+        tools:layout="@layout/fragment_view_appointments" />
 
     <fragment
         android:id="@+id/nav_slideshow"
