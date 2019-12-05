@@ -24,7 +24,7 @@ public class PatientApiController implements Controller {
     @Override
     public void registerRoutes() {
 
-        get(basePath + "/verifyLoginAuthenticity", (req, res) -> {
+        get(basePath + "/verifyCredentials", (req, res) -> {
             createApiOrThrow(req);
             return true;
         }, new JsonTransformer());
