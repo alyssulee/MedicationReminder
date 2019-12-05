@@ -1,12 +1,17 @@
 package com.example.medicationreminderapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.medicationreminderapp.ui.AddAppointmentFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,14 +23,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.widget.CalendarView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddAppointmentFragment.OnFragmentInteractionListener
+{
 
     private AppBarConfiguration mAppBarConfiguration;
     @Override
@@ -74,5 +81,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri)
+    {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+ /*       fragmentTransaction.replace(R.id.nav_host_fragment, new AddAppointmentFragment(), "addAppointmentFrag");
+        fragmentTransaction.addToBackStack("addAppointmentFrag");
+        fragmentTransaction.commit();*/
+
     }
 }
