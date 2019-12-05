@@ -20,4 +20,6 @@ public interface PatientApi {
     void addMeasurement(PatientMeasurement measurement);
     Doctor getDoctor(UUID doctorId);
     Medication getMedication(String medId);
+//    List<Doctor> getALlDoctors();
+//    void addAppointment(Appointment appointment);
 }
