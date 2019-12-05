@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.ui.home.HomeViewModel;
 
@@ -49,16 +50,16 @@ public class SlideshowFragment extends Fragment {
         slideshowViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                //TODO: Add actual streak
-                textView3.setText("Current streak: " + 10 + " Days");
+                int streak = DoseFinder.patientApi.getCurrentStreak();
+                textView3.setText("Current streak: " + streak + " Days");
             }
         });
         final TextView textView4 = root.findViewById(R.id.textView4);
         slideshowViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                //TODO: Add actual streak
-                textView4.setText("Longest streak:  " + 100 + " Days");
+                int streak = DoseFinder.patientApi.getLongestStreak();
+                textView4.setText("Longest streak:  " + streak + " Days");
             }
         });
 

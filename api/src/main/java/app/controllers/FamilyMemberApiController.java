@@ -9,6 +9,7 @@ import java.util.UUID;
 import app.FamilyMemberApiImpl;
 import app.JsonTransformer;
 import app.PatientApiImpl;
+import app.controllers.Controller;
 import model.Doctor;
 import model.Dose;
 import model.FamilyMember;

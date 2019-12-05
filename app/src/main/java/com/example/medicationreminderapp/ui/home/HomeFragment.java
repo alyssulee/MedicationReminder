@@ -28,8 +28,6 @@ import model.Dose;
 
 public class HomeFragment extends Fragment{
 
-
-
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,8 +46,8 @@ public class HomeFragment extends Fragment{
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                //TODO: Add actual streak
-                textView2.setText(10 + " Days");
+                int streak = DoseFinder.patientApi.getCurrentStreak();
+                textView2.setText(streak + " Days");
             }
         });
         //textView2.setText();
