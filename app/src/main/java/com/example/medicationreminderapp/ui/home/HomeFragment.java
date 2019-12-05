@@ -15,9 +15,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apiabstractions.PatientApi;
 import com.example.medicationreminderapp.DoseModel;
 import com.example.medicationreminderapp.DosesAdapter;
-import com.example.medicationreminderapp.OnItemClickListener;
+import com.example.medicationreminderapp.HackerMan;
 import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.TestPatientApi;
 
@@ -56,12 +57,9 @@ public class HomeFragment extends Fragment{
         RecyclerView rvContacts = (RecyclerView) root.findViewById(R.id.rvList);
         // Initialize doseModels
         if(rvContacts != null) {
-            TestPatientApi test = new TestPatientApi();
-            ArrayList<Dose> convertDose = test.getTodaysDoses();
-            for(int i = 0; i < convertDose.size(); i++) {
-                System.out.println(i);
-                //if(convertDose.get(i).getConfirmerId() == null)
-                doses.add(new DoseModel(convertDose.get(i).getAmountPerDose(), convertDose.get(i).getMedId(), true));
+            PatientApi test = HackerMan.patientApi = new TestPatientApi();
+            for (Dose dose : HackerMan.doses = test.getTodaysDoses()){
+                doses.add(new DoseModel(dose.getAmountPerDose(), dose.getMedId(), true, dose.getPrescriptionId(), dose.getDosageTime()));
             }
 
             getActivity().getSupportFragmentManager().popBackStack();

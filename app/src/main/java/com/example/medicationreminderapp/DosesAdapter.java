@@ -5,58 +5,89 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.List;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.UUID;
+
+import model.Dose;
 import model.User;
 
 public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> {
     //private final OnItemClickListener listener;
-        //static int buttons = 0;
-        // Provide a direct reference to each of the views within a data item
-        // Used to cache the views within the item layout for fast access
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            // Your holder should contain a member variable
-            // for any view that will be set as you render a row
-            public TextView nameTextView;
-            public Button messageButton;
-            public Context context;
+    //static int buttons = 0;
+    // Provide a direct reference to each of the views within a data item
+    // Used to cache the views within the item layout for fast access
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        // Your holder should contain a member variable
+        // for any view that will be set as you render a row
+        public TextView nameTextView;
+        public TextView prescriptionIdView;
+        public TextView dosageTimeView;
+        public Switch messageButton;
+        public Context context;
+        private final View.OnClickListener listener;
 
+        // We also create a constructor that accepts the entire item row
+        // and does the view lookups to find each subview
+        public ViewHolder(View itemView, Context context) {
+            // Stores the itemView in a public final member variable that can be used
+            // to access the context from any ViewHolder instance.
+            super(itemView);
+            this.context = context;
+            this.listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UUID prescriptionId = UUID.fromString(prescriptionIdView.getText().toString());
+                    Timestamp dosageTime = Timestamp.valueOf(dosageTimeView.getText().toString());
 
-            // We also create a constructor that accepts the entire item row
-            // and does the view lookups to find each subview
-            public ViewHolder(View itemView, Context context) {
-                // Stores the itemView in a public final member variable that can be used
-                // to access the context from any ViewHolder instance.
-                super(itemView);
-                this.context = context;
-                //this.listener = listener;
-                nameTextView = (TextView) itemView.findViewById(R.id.contact_name);
-                messageButton = (Button) itemView.findViewById(R.id.message_button);
-                //buttons++;
-                //messageButton.setOnClickListener(nameTextView.getText(), this.context);
+                    Dose dose = null;
+                    for (Dose d : HackerMan.doses) {
+                        if (d.getPrescriptionId() == prescriptionId && d.getDosageTime() == dosageTime) {
+                            dose = d;
+                            break;
+                        }
+                    }
 
-
-            }
-
-
-
-            /*@Override
-            public void onClick(String name) {
-                int position = getAdapterPosition(); // gets item position
-                if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                    // We can access the data within the views
-                    Toast.makeText(context, nameTextView.getText(), Toast.LENGTH_SHORT).show();
-
+                    if (messageButton.isChecked()) {
+                        HackerMan.patientApi.confirmDoseTaken(dose);
+                        System.out.println("Dose confirmed");
+                        //messageButton.setChecked(true);
+                    } else {
+                        HackerMan.patientApi.markDoseUntaken(dose);
+                        System.out.println("Undone");
+                        //messageButton.setChecked(false);
+                    }
                 }
-            }*/
+            };
+            nameTextView = itemView.findViewById(R.id.contact_name);
+            prescriptionIdView = itemView.findViewById(R.id.prescriptionId);
+            dosageTimeView = itemView.findViewById(R.id.dosageTime);
+            messageButton = itemView.findViewById(R.id.message_button);
+            //buttons++;
 
+            messageButton.setOnClickListener(listener);
         }
 
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition(); // gets item position
+            if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                // We can access the data within the views
+                Toast.makeText(context, "Gyes + " + v.findViewById(R.id.message_button).getId(), Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+    }
 
 
     // Store a member variable for the doseModels
@@ -90,9 +121,12 @@ public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> 
         // Set item views based on your views and data model
         TextView textView = viewHolder.nameTextView;
         textView.setText(doseModel.getmAmount() + " " + doseModel.getName());
-        Button button = viewHolder.messageButton;
-        button.setText(doseModel.isOnline() ? "Confirm" : "Taken");
-        button.setEnabled(doseModel.isOnline());
+        Switch button = viewHolder.messageButton;
+        //button.setChecked(!doseModel.isOnline());
+        button.setEnabled(true);
+
+        viewHolder.prescriptionIdView.setText(doseModel.getPrescriptionId().toString());
+        viewHolder.dosageTimeView.setText(doseModel.getDosageTime().toString());
     }
 
     // Returns the total count of items in the list
@@ -100,7 +134,6 @@ public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> 
     public int getItemCount() {
         return mDoseModels.size();
     }
-
 
 
 }

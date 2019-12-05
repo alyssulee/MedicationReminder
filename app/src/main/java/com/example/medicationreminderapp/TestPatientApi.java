@@ -40,7 +40,6 @@ public class TestPatientApi implements PatientApi {
 
     @Override
     public void confirmDoseTaken(Dose dose) {
-
     }
 
     @Override
