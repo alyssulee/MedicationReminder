@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.medicationreminderapp.HackerMan;
 import com.example.medicationreminderapp.R;
 
 import java.util.ArrayList;
@@ -106,10 +105,7 @@ public class AddAppointmentFragment extends Fragment
         final ArrayList<Doctor> doctorList = new ArrayList<>();
         doctorList.add(new Doctor(UUID.randomUUID(), "Bill", "Nye", "The", "ScienceGuy"));
         doctorList.add(new Doctor(UUID.randomUUID(), "Real", "Doctor", "greg", "MargaretThatcher"));
-        doctorList.add(new Doctor(UUID.randomUUID(), "Doctor", "Doctor", "doctor", "doctor"));
-
         ArrayList<String> doctorStrings = new ArrayList<>();
-
         for(Doctor d : doctorList)
         {
             doctorStrings.add(d.toString());
@@ -141,6 +137,14 @@ public class AddAppointmentFragment extends Fragment
             @Override
             public void onClick(View view)
             {
+                //Todo add appointment through server
+                String [] split = dateStringReceived.split("/");
+                int year = Integer.parseInt(split[0]);
+                int month = Integer.parseInt(split[1]);
+                int day = Integer.parseInt(split[2]);
+
+                Date sentDate = new Date(year, month, day);
+
                 Toast.makeText(view.getContext(), "Date: " + dateStringReceived+  " at " + hour + " : " + minute + " Appointment set with:" + selectedDoctor.toString(), Toast.LENGTH_LONG).show();
                 getFragmentManager().beginTransaction().remove(AddAppointmentFragment.this).commit();
             }

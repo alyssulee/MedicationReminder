@@ -83,7 +83,6 @@ public class GalleryFragment extends Fragment
                         "findthisFragment").addToBackStack("findthisFragment").commit();
                 getActivity().getSupportFragmentManager().popBackStack();
 
-
                 if (view.getId() == R.id.addAppointmentButton)
                 {
                     mCallBack.passData(saveDate);
@@ -98,8 +97,10 @@ public class GalleryFragment extends Fragment
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
             {
                 selectedDate = new Date(year, month, dayOfMonth);
-                saveDate = "Date: " + year + "/" + (month + 1) + "/" + dayOfMonth;
+                saveDate = year + "/" + (month + 1) + "/" + dayOfMonth;
+                String str = "Date: " + saveDate;
                 //Todo: if date = appointment -> str += appointment information
+
                 dateDisplay.setText(saveDate);
 
                 List<Appointment> appointmentList = HackerMan.patientApi.getUpcomingAppointments();
@@ -111,6 +112,8 @@ public class GalleryFragment extends Fragment
                         break;
                     }
                 }
+                dateDisplay.setText(str);
+
 /*
 
                 AddAppointmentFragment fragment = new AddAppointmentFragment();
