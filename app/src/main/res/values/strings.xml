@@ -20,7 +20,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Appointments</string>
     <string name="menu_slideshow">Progress</string>
-    <string name="menu_tools">Owen Smells</string>
+    <string name="menu_tools">Settings</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_view_appointments">ViewAppointments</string>

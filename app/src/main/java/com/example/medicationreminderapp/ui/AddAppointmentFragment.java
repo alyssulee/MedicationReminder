@@ -50,6 +50,7 @@ public class AddAppointmentFragment extends Fragment
 
         ArrayList<Doctor> doctorList = new ArrayList<>();
         doctorList.add(new Doctor(UUID.randomUUID(), "Bill", "Nye", "The", "ScienceGuy"));
+        doctorList.add(new Doctor(UUID.randomUUID(), "Real", "Doctor", "greg", "MargaretThatcher"));
         ArrayList<String> doctorStrings = new ArrayList<>();
         for(Doctor d : doctorList)
         {

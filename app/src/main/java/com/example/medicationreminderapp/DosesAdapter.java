@@ -21,8 +21,6 @@ import model.Dose;
 import model.User;
 
 public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> {
-    //private final OnItemClickListener listener;
-    //static int buttons = 0;
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
