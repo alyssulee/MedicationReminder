@@ -23,5 +23,13 @@
     <string name="menu_tools">Owen Smells</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="title_activity_view_appointments">ViewAppointments</string>
+    <string name="appointment_header">Appointments</string>
+    <string name="add_appointment">Add Appointment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
     <string name="streak">0 Days</string>
 </resources>
