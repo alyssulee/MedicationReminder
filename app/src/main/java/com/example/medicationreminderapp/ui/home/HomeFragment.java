@@ -43,6 +43,15 @@ public class HomeFragment extends Fragment{
                 textView.setText(s);
             }
         });
+        final TextView textView2 = root.findViewById(R.id.textView2);
+        homeViewModel.getText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                //TODO: Add actual streak
+                textView2.setText(10 + " Days");
+            }
+        });
+        //textView2.setText();
         ArrayList<DoseModel> doses = new ArrayList<>();
         RecyclerView rvContacts = (RecyclerView) root.findViewById(R.id.rvList);
         // Initialize doseModels
