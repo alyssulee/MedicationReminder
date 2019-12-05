@@ -1,10 +1,14 @@
 package app;
 
+import app.controllers.Controller;
+import app.controllers.PatientApiController;
 import model.BloodPressure;
 import model.Patient;
 import model.PatientMeasurement;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static spark.Spark.*;
@@ -28,5 +32,10 @@ public class Application {
 
             return patient;
         }, new JsonTransformer());
+
+        ArrayList<Controller> controllers = new ArrayList<>();
+        controllers.add(new PatientApiController());
+
+        for (Controller controller : controllers) controller.registerRoutes();
     }
 }
