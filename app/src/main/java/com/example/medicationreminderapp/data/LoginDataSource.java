@@ -21,7 +21,7 @@ public class LoginDataSource {
                     new LoggedInUser(
                             java.util.UUID.randomUUID().toString(),
                             "Jane Doe");
-            DoseFinder.patientApi = ClientPatientApi.createOrThrow("http://40.86.216.110:4567/", new LoginCredentials(username, password));
+            DoseFinder.patientApi = ClientPatientApi.createOrThrow("http://104.210.55.244:4567/", new LoginCredentials(username, password));
             return new Result.Success<>(fakeUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
