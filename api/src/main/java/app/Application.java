@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import app.controllers.Controller;
+import app.controllers.FamilyMemberApiController;
 import app.controllers.PatientApiController;
 import model.BloodPressure;
 import model.Patient;
@@ -36,6 +37,7 @@ public class Application {
 
         ArrayList<Controller> controllers = new ArrayList<>();
         controllers.add(new PatientApiController());
+        controllers.add(new FamilyMemberApiController());
 
         for (Controller controller : controllers) controller.registerRoutes();
     }

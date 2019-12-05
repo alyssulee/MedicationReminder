@@ -13,8 +13,6 @@ import java.util.UUID;
 
 public class AppUserTable extends SQLDatabase
 {
-
-
     public AppUserTable()
     {
         super();

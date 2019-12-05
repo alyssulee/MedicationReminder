@@ -31,6 +31,5 @@ public class TestClientPatientApi {
         api.addMeasurement(new PatientMeasurement(new BloodPressure(6, 5), 3, new Timestamp(0)));
         Doctor doctor = api.getDoctor(UUID.randomUUID());
         Medication medication = api.getMedication("medid");
-
     }
 }

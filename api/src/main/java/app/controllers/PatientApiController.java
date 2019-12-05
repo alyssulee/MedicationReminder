@@ -97,10 +97,11 @@ public class PatientApiController implements Controller {
 
     private PatientApi createApiOrThrow(Request request) {
         Patient patient = getPatientOrThrow(request);
-        return PatientApiImpl.createForPatient(patient);
+        return PatientApiImpl.createFor(patient);
     }
 
     private Patient getPatientOrThrow(Request request) {
+        // Todo: Give real implementation
         String username = request.headers("username");
         String password = request.headers("Password");
 
