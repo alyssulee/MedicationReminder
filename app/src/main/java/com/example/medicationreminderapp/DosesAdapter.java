@@ -4,13 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Timestamp;
@@ -18,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 import model.Dose;
-import model.User;
 
 public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> {
     // Provide a direct reference to each of the views within a data item
@@ -47,7 +43,7 @@ public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> 
                     Timestamp dosageTime = Timestamp.valueOf(dosageTimeView.getText().toString());
 
                     Dose dose = null;
-                    for (Dose d : HackerMan.doses) {
+                    for (Dose d : DoseFinder.doses) {
                         if (d.getPrescriptionId() == prescriptionId && d.getDosageTime() == dosageTime) {
                             dose = d;
                             break;
@@ -55,11 +51,11 @@ public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> 
                     }
 
                     if (messageButton.isChecked()) {
-                        HackerMan.patientApi.confirmDoseTaken(dose);
+                        DoseFinder.patientApi.confirmDoseTaken(dose);
                         System.out.println("Dose confirmed");
                         //messageButton.setChecked(true);
                     } else {
-                        HackerMan.patientApi.markDoseUntaken(dose);
+                        DoseFinder.patientApi.markDoseUntaken(dose);
                         System.out.println("Undone");
                         //messageButton.setChecked(false);
                     }

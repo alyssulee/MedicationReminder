@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apiabstractions.PatientApi;
 import com.example.medicationreminderapp.DoseModel;
 import com.example.medicationreminderapp.DosesAdapter;
-import com.example.medicationreminderapp.HackerMan;
+import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.TestPatientApi;
 
@@ -57,8 +57,8 @@ public class HomeFragment extends Fragment{
         RecyclerView rvContacts = (RecyclerView) root.findViewById(R.id.rvList);
         // Initialize doseModels
         if(rvContacts != null) {
-            PatientApi test = HackerMan.patientApi = new TestPatientApi();
-            for (Dose dose : HackerMan.doses = test.getTodaysDoses()){
+            PatientApi test = DoseFinder.patientApi = new TestPatientApi();
+            for (Dose dose : DoseFinder.doses = test.getTodaysDoses()){
                 doses.add(new DoseModel(dose.getAmountPerDose(), dose.getMedId(), true, dose.getPrescriptionId(), dose.getDosageTime()));
             }
 
