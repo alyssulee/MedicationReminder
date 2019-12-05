@@ -258,7 +258,7 @@ public class UserRepository
         System.out.println(database.login(pharmacistList.get(0).getUsername(), pharmacistList.get(0).getPassword()));
         System.out.println(database.login(doctorList.get(0).getUsername(), doctorList.get(0).getPassword()));
 
-        Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 0.5, 0.9 ,PrescriptionFrequency.BID, 15);
+        Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 2, 0.9 ,PrescriptionFrequency.BID, 15);
         database.addPatientPrescription((Patient)user, p);
         System.out.println(database.getAllPrescriptionsByPatient((Patient) user));
         System.out.println(database.getPatientPrescriptionsByMedication((Patient) user, new Medication("DB00005")));

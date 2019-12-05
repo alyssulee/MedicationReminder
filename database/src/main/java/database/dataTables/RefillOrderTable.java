@@ -93,7 +93,7 @@ public class RefillOrderTable extends SQLDatabase
                 PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
                 double strength = resultSet.getDouble("Strength");
                 int remainingAmount = resultSet.getInt("MedRemaining");
-                double amountPerDose = resultSet.getDouble("AmountPerDose");
+                int amountPerDose = resultSet.getInt("AmountPerDose");
 
                 Medication m = new Medication(medID);
                 MedicationTable medTable = new MedicationTable();
