@@ -22,15 +22,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.medicationreminderapp.DoseFinder;
-import com.example.medicationreminderapp.FamilyMemberActivity;
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.PharmacistActivity;
 import com.example.medicationreminderapp.R;
-
-import model.FamilyMember;
-
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
@@ -128,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = "Error";
         System.out.println(model.getDisplayName());
+        //TODO: Replace with login usertype
         if(model.getDisplayName().equals("patienta")) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
