@@ -1,9 +1,12 @@
 package com.example.medicationreminderapp.ui.slideshow;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -13,6 +16,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.medicationreminderapp.R;
+import com.example.medicationreminderapp.ui.home.HomeViewModel;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class SlideshowFragment extends Fragment {
 
@@ -28,8 +37,32 @@ public class SlideshowFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
+
+
+
+
             }
         });
+
+
+        final TextView textView3 = root.findViewById(R.id.textView3);
+        slideshowViewModel.getText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                //TODO: Add actual streak
+                textView3.setText("Current streak: " + 10 + " Days");
+            }
+        });
+        final TextView textView4 = root.findViewById(R.id.textView4);
+        slideshowViewModel.getText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                //TODO: Add actual streak
+                textView4.setText("Longest streak:  " + 100 + " Days");
+            }
+        });
+
+
         return root;
     }
 }

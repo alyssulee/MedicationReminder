@@ -1,12 +1,18 @@
 package com.example.medicationreminderapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.medicationreminderapp.ui.AddAppointmentFragment;
+import com.example.medicationreminderapp.ui.gallery.GalleryFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,15 +24,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.widget.CalendarView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-    ArrayList<Contact> contacts;
+public class MainActivity extends AppCompatActivity implements AddAppointmentFragment.OnFragmentInteractionListener, GalleryFragment.DataPassListener
+{
 
     private AppBarConfiguration mAppBarConfiguration;
     @Override
@@ -35,14 +42,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //FloatingActionButton fab = findViewById(R.id.fab);
+        /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        */
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -57,25 +66,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-        setContentView(R.layout.fragment_home);
-        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvList);
-        // Initialize contacts
-        if(rvContacts != null) {
-            contacts = Contact.createContactsList(20);
-            // Create adapter passing in the sample user data
-            ContactsAdapter adapter = new ContactsAdapter(contacts);
-            // Attach the adapter to the recyclerview to populate items
-            rvContacts.setAdapter(adapter);
-            // Set layout manager to position the items
 
-            // Setup layout manager for items with orientation
-            // Also supports `LinearLayoutManager.HORIZONTAL`
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            // Optionally customize the position you want to default scroll to
-            layoutManager.scrollToPosition(0);
-            // Attach layout manager to the RecyclerView
-            rvContacts.setLayoutManager(layoutManager);
-        }
     }
 
 
@@ -91,5 +82,27 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri)
+    {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+ /*       fragmentTransaction.replace(R.id.nav_host_fragment, new AddAppointmentFragment(), "addAppointmentFrag");
+        fragmentTransaction.addToBackStack("addAppointmentFrag");
+        fragmentTransaction.commit();*/
+
+    }
+
+    public void passData(String data) {
+        AddAppointmentFragment addAptFrag = new AddAppointmentFragment ();
+        Bundle args = new Bundle();
+        args.putString(AddAppointmentFragment.DATA_RECEIVE, data);
+        addAptFrag.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, addAptFrag )
+                .commit();
     }
 }

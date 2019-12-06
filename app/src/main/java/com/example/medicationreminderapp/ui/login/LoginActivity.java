@@ -23,11 +23,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.medicationreminderapp.FamilyMemberActivity;
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
-import com.example.medicationreminderapp.UserListActivity;
-import com.example.medicationreminderapp.ui.login.LoginViewModel;
-import com.example.medicationreminderapp.ui.login.LoginViewModelFactory;
+
+import model.FamilyMember;
 
 public class LoginActivity extends AppCompatActivity {
 
