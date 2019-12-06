@@ -17,10 +17,14 @@ import java.util.UUID;
 
 public class RefillOrderTable extends SQLDatabase
 {
+    RefillPrescriptionsTable refillPrescriptionsTable;
+
     public RefillOrderTable()
     {
         super();
         createRefillOrderTable();
+        refillPrescriptionsTable = new RefillPrescriptionsTable();
+
     }
 
     private void createRefillOrderTable()
@@ -35,11 +39,8 @@ public class RefillOrderTable extends SQLDatabase
                 String query = "CREATE TABLE RefillOrder " +
                         "(PatientID VARCHAR(255) NOT NULL," +
                         "OrderNum VARCHAR(255) NOT NULL," +
-                        "PrescriptionID VARCHAR(255) NOT NULL," +
                         "Date DATE," +
                         "PRIMARY KEY (PatientID, OrderNum)," +
-                        "FOREIGN KEY (PrescriptionID) REFERENCES Prescription(PrescriptionID)" +
-                        "ON DELETE CASCADE ON UPDATE CASCADE,"+
                         "FOREIGN KEY (PatientID) REFERENCES Patient(IDNum)" +
                         "ON DELETE CASCADE ON UPDATE CASCADE);";
                 statement.executeUpdate(query);
@@ -52,24 +53,24 @@ public class RefillOrderTable extends SQLDatabase
     //TODO: Add, remove, getAll, getRefillOrderByPatient...
     public boolean addRefillOrder(Patient patient, RefillOrder order)
     {
-        ArrayList<Prescription> prescriptions = order.getPrescriptionsToFill();
-        for(Prescription prescription : prescriptions)
-        {
-            try
+        try
             {
-                String query = "INSERT INTO RefillOrder (PatientID, OrderNum, PrescriptionID, Date)" +
-                        "VALUES ((SELECT IDNum FROM Patient WHERE IDNUm = ?), ?, (SELECT PrescriptionID FROM Prescription WHERE PrescriptionID = ?), ?);";
+                String query = "INSERT INTO RefillOrder (PatientID, OrderNum, Date)" +
+                        "VALUES ((SELECT IDNum FROM Patient WHERE IDNUm = ?), ?, ?);";
                 PreparedStatement pState = connection.prepareStatement(query);
                 pState.setString(1, patient.getId().toString());
                 pState.setString(2, order.getOrderID().toString());
-                pState.setString(3, prescription.getPrescriptionID().toString());
-                pState.setDate(4, new java.sql.Date(new Date().getTime()));
+                pState.setDate(3, new java.sql.Date(new Date().getTime()));
                 pState.execute();
             } catch (SQLException e)
             {
                 e.printStackTrace();
                 return false;
             }
+        ArrayList<Prescription> prescriptions = order.getPrescriptionsToFill();
+        for(Prescription prescription : prescriptions)
+        {
+            refillPrescriptionsTable.addPrescriptionOrder(patient, prescription, order);
         }
         return true;
     }
@@ -80,7 +81,7 @@ public class RefillOrderTable extends SQLDatabase
 
         try
         {
-            String query = "SELECT Prescription.* FROM Prescription, RefillOrder WHERE RefillOrder.OrderNum = ? AND Prescription.PrescriptionID = RefillOrder.PrescriptionID";
+            String query = "SELECT Prescription.* FROM Prescription, RefillPrescription, RefillOrder WHERE RefillOrder.OrderNum = ? AND Prescription.PrescriptionID = RefillPrescription.PrescriptionID";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, order.getOrderID().toString());
             resultSet = pState.executeQuery();
