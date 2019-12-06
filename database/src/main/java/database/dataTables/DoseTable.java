@@ -79,15 +79,16 @@ public class DoseTable extends SQLDatabase
     }
 
     //Confirms dose was taken, automatically increases streaks and decreases remaining amount
-    public boolean confirmDose(Patient patient, Client confirmer, Time dosageTime, Prescription prescription)
+    public boolean confirmDose(Dose dose, Client confirmer, Time confirmationTime)
     {
         try
         {
-            String query = "UPDATE Dose SET ConfirmerID = ? WHERE PrescriptionID = ? AND DosageDate = ?";
+            String query = "UPDATE Dose SET ConfirmerID = ?, TimeTaken = ? WHERE PrescriptionID = ? AND DosageTime = ?";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, confirmer.getId().toString());
-            pState.setString(2, prescription.getPrescriptionID().toString());
-            pState.setDate(3, new java.sql.Date(new Date().getTime()));
+            pState.setTime(2, confirmationTime);
+            pState.setString(3, dose.getPrescriptionId().toString());
+            pState.setTime(4, new Time(dose.getDosageTime().getTime()));
             pState.execute();
         } catch (SQLException e)
         {
@@ -95,18 +96,18 @@ public class DoseTable extends SQLDatabase
             return false;
         }
         PrescriptionTable pTable = new PrescriptionTable();
-        pTable.decreaseRemainingAmount(prescription);
+        pTable.decreaseRemainingAmount(dose.getPrescriptionId());
 
         PatientTables patientTable = new PatientTables();
-        patientTable.increasePatientStreak(patient);
-        patientTable.increaseSuccessfulDoses(patient);
+        patientTable.increasePatientStreak(dose.getPatientId());
+        patientTable.increaseSuccessfulDoses(dose.getPatientId());
         return true;
     }
 
     public ArrayList<Dose> getPatientsDosesOn(UUID patientId, Date date){
         ArrayList<Dose> doses = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Dose WHERE PatientID = ? AND DosageDate = ?";
+            String query = "SELECT * FROM Dose, Prescription WHERE Dose.PatientID = ? AND DosageDate = ? AND Prescription.PatientID = Dose.PatientID  AND Prescription.PrescriptionID = Dose.PrescriptionID";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.setDate(2, new java.sql.Date(date.getTime()));
@@ -115,12 +116,11 @@ public class DoseTable extends SQLDatabase
                 UUID prescriptionId = UUID.fromString(resultSet.getString("PrescriptionID"));
                 Timestamp dosageTime = resultSet.getTimestamp("DosageTime");
                 int amountPerDose = resultSet.getInt("AmountPerDose");
-                //UUID confirmerId = UUID.fromString(resultSet.getString("ConfirmerID"));
-
-                Prescription prescription = new PrescriptionTable().getPrescriptionByID(prescriptionId);
-                String medId = prescription.getMedicationId();
+                String medId = resultSet.getString("MedID");
 
                 Dose dose = new Dose(prescriptionId, dosageTime, amountPerDose, medId, patientId);
+                String confirmedId = resultSet.getString("ConfirmerID");
+                if (confirmedId != null) dose.setConfirmerId(UUID.fromString(confirmedId));
                 doses.add(dose);
             }
         } catch (SQLException e) {
