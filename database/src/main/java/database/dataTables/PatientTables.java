@@ -266,6 +266,21 @@ public class PatientTables extends SQLDatabase
         }
     }
 
+    public void decreasePatientStreak(UUID patientId)
+    {
+        try
+        {
+            String query = "UPDATE PATIENT SET CurrentStreak = CurrentStreak - 1 WHERE IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, patientId.toString());
+            pState.execute();
+            updateLongestStreak(patientId);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void resetPatientStreak(UUID patientId)
     {
         try
@@ -296,6 +311,21 @@ public class PatientTables extends SQLDatabase
         }
     }
 
+    public void decreasedMissedDosesCount(UUID patientId)
+    {
+        try
+        {
+            String query = "UPDATE PATIENT SET MissedDoses = MissedDoses - 1 WHERE IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, patientId.toString());
+            pState.execute();
+            resetPatientStreak(patientId);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void increaseSuccessfulDoses(UUID patientId)
     {
         try
@@ -304,6 +334,21 @@ public class PatientTables extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.executeUpdate();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void decreaseSuccessfulDoses(UUID patientId)
+    {
+        try
+        {
+            String query = "UPDATE PATIENT SET SuccessfulDoses = SuccessfulDoses - 1 WHERE IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, patientId.toString());
+            pState.execute();
+            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();

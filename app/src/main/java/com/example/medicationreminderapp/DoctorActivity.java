@@ -3,6 +3,10 @@ package com.example.medicationreminderapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.apiclient.ClientPatientApi;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -13,17 +17,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.apiclient.ClientPatientApi;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import model.Dose;
 import model.LoginCredentials;
 import model.Patient;
+import model.RefillOrder;
 
-public class FamilyMemberActivity extends AppCompatActivity
+public class DoctorActivity extends AppCompatActivity
 {
     ListView patientListView;
     Button selectButton;
@@ -35,19 +36,18 @@ public class FamilyMemberActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_familymember);
+        setContentView(R.layout.activity_doctor);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        patientListView = (ListView) findViewById(R.id.FamilyMemberListView);
-        selectButton = (Button) findViewById(R.id.SelectPatientButton);
+        patientListView = (ListView) findViewById(R.id.DoctorListView);
+        selectButton = (Button) findViewById(R.id.AddPatientButtonDoctor);
 
-        //Todo: read in from db
-        patientArrayList = DoseFinder.clientFamilyMemberApi.getDependantPatients();
-        patientArrayList.add(new Patient(UUID.randomUUID(), "Patient", "patient", "p", "p"));
+        //patientArrayList = DoseFinder.
+        patientArrayList = new ArrayList<>();
 
-        ArrayList<String> patientStringList =new ArrayList<>();
-        for(Patient p : patientArrayList)
+        ArrayList<String> patientStringList = new ArrayList<>();
+        for (Patient p : patientArrayList)
         {
             patientStringList.add(p.toString());
         }
@@ -55,7 +55,8 @@ public class FamilyMemberActivity extends AppCompatActivity
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, patientStringList);
         patientListView.setAdapter(arrayAdapter);
 
-        patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
             {
@@ -70,13 +71,12 @@ public class FamilyMemberActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                String str = "";
                 DoseFinder.patientApi = ClientPatientApi.createOrThrow("http://104.210.55.244:4567/", new LoginCredentials(selectedPatient.getUsername(), selectedPatient.getPassword()));
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
-
-
     }
-
 }
+

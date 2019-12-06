@@ -109,14 +109,6 @@ public class AddAppointmentFragment extends Fragment
             doctorStrings.add(d.toString());
         }
 
-   /*     Bundle bundle = this.getArguments();
-        if(bundle != null)
-        {
-            selectedDate = bundle.getString(DATE);
-            date.setText(selectedDate);
-            Toast.makeText(root.getContext(), selectedDate, Toast.LENGTH_LONG).show();
-        }*/
-
         ArrayAdapter arrayAdapter = new ArrayAdapter(root.getContext(), android.R.layout.simple_list_item_1, doctorStrings);
         listView.setAdapter(arrayAdapter);
 

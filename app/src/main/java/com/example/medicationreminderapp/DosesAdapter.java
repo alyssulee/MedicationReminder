@@ -44,7 +44,7 @@ public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> 
 
                     Dose dose = null;
                     for (Dose d : DoseFinder.doses) {
-                        if (d.getPrescriptionId() == prescriptionId && d.getDosageTime() == dosageTime) {
+                        if (d.getPrescriptionId().equals(prescriptionId) && d.getDosageTime().equals(dosageTime)) {
                             dose = d;
                             break;
                         }
@@ -116,7 +116,7 @@ public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> 
         TextView textView = viewHolder.nameTextView;
         textView.setText(doseModel.getmAmount() + " " + doseModel.getName());
         Switch button = viewHolder.messageButton;
-        //button.setChecked(!doseModel.isOnline());
+        button.setChecked(!doseModel.isOnline());
         button.setEnabled(true);
 
         viewHolder.prescriptionIdView.setText(doseModel.getPrescriptionId().toString());

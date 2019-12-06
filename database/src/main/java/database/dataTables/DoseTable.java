@@ -104,6 +104,29 @@ public class DoseTable extends SQLDatabase
         return true;
     }
 
+    public boolean unconfirmDose(Dose dose)
+    {
+        try
+        {
+            String query = "UPDATE Dose SET ConfirmerID = NULL, TimeTaken = NULL WHERE PrescriptionID = ? AND DosageTime = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, dose.getPrescriptionId().toString());
+            pState.setTime(2, new Time(dose.getDosageTime().getTime()));
+            pState.execute();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        PrescriptionTable pTable = new PrescriptionTable();
+        pTable.decreaseRemainingAmount(dose.getPrescriptionId());
+
+        PatientTables patientTable = new PatientTables();
+        patientTable.decreasePatientStreak(dose.getPatientId());
+        patientTable.decreaseSuccessfulDoses(dose.getPatientId());
+        return true;
+    }
+
     public ArrayList<Dose> getPatientsDosesOn(UUID patientId, Date date){
         ArrayList<Dose> doses = new ArrayList<>();
         try {

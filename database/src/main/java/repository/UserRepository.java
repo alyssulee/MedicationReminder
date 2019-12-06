@@ -137,6 +137,11 @@ public class UserRepository {
         return doseDatabase.confirmDose(dose, confirmer, confirmationTime);
     }
 
+    public boolean unconfirmDose(Dose dose)
+    {
+        return doseDatabase.unconfirmDose(dose);
+    }
+
     public int getCurrentStreak(Patient patient) {
         return patientDatabase.getCurrentStreak(patient);
     }
@@ -256,8 +261,6 @@ public class UserRepository {
         database.addDose(user, database.getAllPrescriptionsByPatient(user).get(1), new Time(5, 10, 15), new Date());
 
         System.out.println(database.getPatientsDosesOn(user.getId(), new Date()));
-
-//        database.confirmDose(new Dose(p.getPrescriptionID(),), user, new Time(5, 10, 15), p);
 
         System.out.println("MissedDoses: " + database.getMissedDoses(user));
         System.out.println("SuccessfulDoses: " + database.getSuccessfulDoses(user));

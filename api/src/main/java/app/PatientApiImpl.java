@@ -63,6 +63,7 @@ public class PatientApiImpl implements PatientApi {
     public void markDoseUntaken(Dose dose) {
         // Todo: Give real implementation
         dose.setConfirmerId(null);
+        userRepository.unconfirmDose(dose);
     }
 
     @Override

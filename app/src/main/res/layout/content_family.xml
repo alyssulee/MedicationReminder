@@ -10,7 +10,7 @@
 
 
     <ListView
-        android:id="@+id/OrderListView"
+        android:id="@+id/FamilyMemberListView"
         android:layout_width="408dp"
         android:layout_height="470dp"
         android:layout_marginBottom="120dp"
@@ -26,12 +26,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Patients"
-        app:layout_constraintBottom_toTopOf="@+id/OrderListView"
+        app:layout_constraintBottom_toTopOf="@+id/FamilyMemberListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/RefillButton"
+        android:id="@+id/SelectPatientButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
@@ -40,4 +40,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
