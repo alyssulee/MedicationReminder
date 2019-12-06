@@ -36,8 +36,8 @@ public class FamilyMemberActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        patientListView = (ListView) findViewById(R.id.OrderListView);
-        selectButton = (Button) findViewById(R.id.RefillButton);
+        patientListView = (ListView) findViewById(R.id.FamilyMemberListView);
+        selectButton = (Button) findViewById(R.id.SelectPatientButton);
 
         //Todo: read in from db
         patientArrayList = DoseFinder.clientFamilyMemberApi.getDependantPatients();

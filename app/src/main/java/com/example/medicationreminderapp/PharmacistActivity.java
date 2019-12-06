@@ -1,5 +1,6 @@
 package com.example.medicationreminderapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,19 +10,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Patient;
+import model.RefillOrder;
 
 public class PharmacistActivity extends AppCompatActivity
 {
-
-    ListView patientListView;
+    ListView orderListView;
     Button selectButton;
 
+    List<RefillOrder> orderArrayList;
+    RefillOrder selectedOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,6 +50,33 @@ public class PharmacistActivity extends AppCompatActivity
         });
 
 
-    }
+        selectButton = (Button) findViewById(R.id.RefillButton2);
+        ArrayList<String> orderStringList = new ArrayList<>();
+        for (RefillOrder o : orderArrayList)
+        {
+            orderStringList.add(o.toString());
+        }
 
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, orderStringList);
+        orderListView.setAdapter(arrayAdapter);
+
+        orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                selectedOrder = orderArrayList.get(i);
+                Toast.makeText(view.getContext(), "Selected: " + selectedOrder.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        selectButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                //TODO refill order
+            }
+        });
+    }
 }

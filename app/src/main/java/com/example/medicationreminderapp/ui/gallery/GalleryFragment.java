@@ -1,10 +1,13 @@
 
 package com.example.medicationreminderapp.ui.gallery;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,21 +27,33 @@ import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.ui.AddAppointmentFragment;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.roomorama.caldroid.CaldroidFragment;
+
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 import model.Appointment;
 
 public class GalleryFragment extends Fragment
 {
     private static final String DATE = "date";
-
     private GalleryViewModel galleryViewModel;
     CalendarView calendarView;
-    java.lang.reflect.Field field = null;
+    List<Appointment> appointmentsList;
+    //CompactCalendarView compactCalendarView;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM-yyyy", Locale.getDefault());
+    //private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
+
 
     TextView dateDisplay;
+    TextView displayMonth;
     Long date;
     Date selectedDate;
     Button addAppointmentButton;
@@ -67,27 +82,13 @@ public class GalleryFragment extends Fragment
             }
         });
 
+
         calendarView = (CalendarView) root.findViewById(R.id.AppointmentCalendar);
+        //compactCalendarView = (CompactCalendarView) root.findViewById(R.id.AppointmentCalendar);
+        //compactCalendarView.setUseThreeLetterAbbreviation(true);
         dateDisplay = (TextView) root.findViewById(R.id.SelectedDate);
         addAppointmentButton = (Button) root.findViewById(R.id.addAppointmentButton);
         dateDisplay.setText("Date: ");
-
-       /* Class<?> cvClass = calendarView.getClass();
-        try {
-            field = cvClass.getDeclaredField("mDayNamesHeader");
-            field.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-        }
-
-        ViewGroup tv = null;
-        try {
-            tv = (ViewGroup) field.get(calendarView);
-        } catch (IllegalAccessException e) {}
-
-        TextView k =  (TextView) tv.getChildAt(1);
-        k.setTextColor(Color.RED);*/
-
-        //Toast.makeText(calendarView.getContext(), "HEEEELP :" + date, Toast.LENGTH_LONG).show();
 
         addAppointmentButton.setOnClickListener(new View.OnClickListener()
         {
@@ -104,9 +105,11 @@ public class GalleryFragment extends Fragment
                 {
                     mCallBack.passData(saveDate);
                 }
-
             }
         });
+
+        appointmentsList = new ArrayList<Appointment>();
+        appointmentsList.add(new Appointment(UUID.randomUUID(), UUID.randomUUID(), new Date(2019, 12, 10), new Time(10, 20, 0)));
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener()
         {
@@ -120,8 +123,7 @@ public class GalleryFragment extends Fragment
 
                 dateDisplay.setText(saveDate);
 
-                List<Appointment> appointmentList = DoseFinder.patientApi.getUpcomingAppointments();
-                for(Appointment a : appointmentList)
+                for(Appointment a : appointmentsList)
                 {
                     if(selectedDate.compareTo(a.getDate()) == 0);
                     {
@@ -131,14 +133,10 @@ public class GalleryFragment extends Fragment
                 }
                 dateDisplay.setText(str);
 
-/*
-
                 AddAppointmentFragment fragment = new AddAppointmentFragment();
                 Bundle args = new Bundle();
                 args.putString(DATE, "Date: " + selectedDate.toString());
                 fragment.setArguments(args);
-*/
-
 
                 //Toast.makeText(view.getContext(), "Year=" + year + " Month=" + month + " Day=" + dayOfMonth, Toast.LENGTH_LONG).show();
                 //System.out.println("Year=" + year + " Month=" + (month+1) + " Day=" + dayOfMonth);
