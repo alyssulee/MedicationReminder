@@ -34,19 +34,19 @@ public class CreateEntities {
         {
             Prescription prescription = new Prescription(UUID.randomUUID(), "DB00316", new Date(), 10, 1, 3, PrescriptionFrequency.Daily, 10);
             userRepository.addPatientPrescription(patientList.get(0), prescription);
-            userRepository.addDose(patientList.get(0), prescription, Timestamp.from(Instant.now()));
+            userRepository.addDose(patientList.get(0), prescription, new Time(0), Date.from(Instant.now()));
         }
 
         {
             Prescription prescription = new Prescription(UUID.randomUUID(), "DB00945", new Date(), 10, 2, 3, PrescriptionFrequency.Daily, 10);
             userRepository.addPatientPrescription(patientList.get(0), prescription);
-            userRepository.addDose(patientList.get(0), prescription, Timestamp.from(Instant.now()));
+            userRepository.addDose(patientList.get(0), prescription, new Time(0), Date.from(Instant.now()));
         }
 
         {
             Prescription prescription = new Prescription(UUID.randomUUID(), "DB01001", new Date(), 10, 1, 3, PrescriptionFrequency.Daily, 10);
             userRepository.addPatientPrescription(patientList.get(0), prescription);
-            userRepository.addDose(patientList.get(0), prescription, Timestamp.from(Instant.now()));
+            userRepository.addDose(patientList.get(0), prescription, new Time(0), Date.from(Instant.now()));
         }
     }
 }

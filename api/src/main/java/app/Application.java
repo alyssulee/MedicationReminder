@@ -10,6 +10,7 @@ import app.controllers.PatientApiController;
 import model.BloodPressure;
 import model.Patient;
 import model.PatientMeasurement;
+import spark.Spark;
 
 import static spark.Spark.before;
 import static spark.Spark.get;
@@ -19,6 +20,10 @@ public class Application {
     public static void main(String[] args) {
 
         port(4567);
+
+        Spark.exception(Exception.class, (exception, request, response) -> {
+            exception.printStackTrace();
+        });
 
         // Make response Content-Type "application/json" by default
         before((req, res) -> res.type("application/json"));
