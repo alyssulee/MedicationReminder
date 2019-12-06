@@ -22,6 +22,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.medicationreminderapp.DoctorActivity;
+import com.example.medicationreminderapp.FamilyMemberActivity;
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.PharmacistActivity;
 import com.example.medicationreminderapp.R;
@@ -125,6 +128,9 @@ public class LoginActivity extends AppCompatActivity {
         //TODO: Replace with login usertype
         if(model.getDisplayName().equals("patienta")) {
             Intent intent = new Intent(this, MainActivity.class);
+            //Intent intent = new Intent(this, PharmacistActivity.class);
+            //Intent intent = new Intent(this, DoctorActivity.class);
+            //Intent intent = new Intent(this, FamilyMemberActivity.class);
             startActivity(intent);
             welcome = getString(R.string.welcome) + "Patient " + model.getDisplayName();
         }
@@ -133,6 +139,18 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PharmacistActivity.class);
             startActivity(intent);
             welcome = getString(R.string.welcome) + "Pharmacist " + model.getDisplayName();
+        }
+        else if(model.getDisplayName().equals("rickybooker"))
+        {
+            Intent intent = new Intent(this, DoctorActivity.class);
+            startActivity(intent);
+            welcome = getString(R.string.welcome) + "Doctor " + model.getDisplayName();
+        }
+        else if(model.getDisplayName().equals("family"))
+        {
+            Intent intent = new Intent(this, FamilyMemberActivity.class);
+            startActivity(intent);
+            welcome = getString(R.string.welcome) + "Relative " + model.getDisplayName();
         }
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
