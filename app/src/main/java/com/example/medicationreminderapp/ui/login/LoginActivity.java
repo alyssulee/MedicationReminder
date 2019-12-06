@@ -126,21 +126,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-        //if(DoseFinder.patientApi.)
         String welcome = "Error";
-        if(model.getDisplayName() == "patienta") {
+        System.out.println(model.getDisplayName());
+        if(model.getDisplayName().equals("patienta")) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             welcome = getString(R.string.welcome) + "Patient " + model.getDisplayName();
         }
-        else if(model.getDisplayName() == "keenanpeterson")
+        else if(model.getDisplayName().equals("keenanpeterson"))
         {
             Intent intent = new Intent(this, PharmacistActivity.class);
             startActivity(intent);
             welcome = getString(R.string.welcome) + "Pharmacist " + model.getDisplayName();
         }
-        //Intent intent2 = new Intent(this, UserListActivity.class);
-        //startActivity(intent2);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
