@@ -2,6 +2,8 @@ package app;
 
 import com.example.apiabstractions.PatientApi;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +14,7 @@ import model.Dose;
 import model.Medication;
 import model.Patient;
 import model.PatientMeasurement;
+import model.Prescription;
 import repository.MedRepository;
 import repository.UserRepository;
 
@@ -54,8 +57,8 @@ public class PatientApiImpl implements PatientApi {
 
     @Override
     public void confirmDoseTaken(Dose dose) {
-        // Todo: Give real implementation
-        dose.setConfirmerId(UUID.randomUUID());
+        dose.setConfirmerId(patient.getId());
+        userRepository.confirmDose(dose, patient, Time.valueOf(LocalTime.now()));
     }
 
     @Override
