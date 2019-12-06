@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".FamilyMemberActivity"
-    tools:showIn="@layout/activity_familymember">
-
+    tools:context=".DoctorActivity"
+    tools:showIn="@layout/activity_doctor">
 
     <ListView
-        android:id="@+id/FamilyMemberListView"
+        android:id="@+id/DoctorListView"
         android:layout_width="408dp"
         android:layout_height="470dp"
         android:layout_marginBottom="120dp"
@@ -22,7 +21,7 @@
         android:listSelector="@android:color/darker_gray"/>
 
     <TextView
-        android:id="@+id/OrderTextView"
+        android:id="@+id/PatientTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Patients"
@@ -31,14 +30,25 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/SelectPatientButton"
+        android:id="@+id/SelectPatientButtonDoctor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
         android:text="Select Patient"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.771"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/AddPatientButtonDoctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
+        android:text="Add Patient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.159"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
