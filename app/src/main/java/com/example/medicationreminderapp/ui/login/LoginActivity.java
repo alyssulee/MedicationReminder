@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.FamilyMemberActivity;
 import com.example.medicationreminderapp.MainActivity;
+import com.example.medicationreminderapp.PharmacistActivity;
 import com.example.medicationreminderapp.R;
 
 import model.FamilyMember;
@@ -125,11 +126,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
         //if(DoseFinder.patientApi.)
-        Intent intent = new Intent(this, MainActivity.class);
-
-        startActivity(intent);
+        String welcome = "Error";
+        if(model.getDisplayName() == "patienta") {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            welcome = getString(R.string.welcome) + "Patient " + model.getDisplayName();
+        }
+        else if(model.getDisplayName() == "keenanpeterson")
+        {
+            Intent intent = new Intent(this, PharmacistActivity.class);
+            startActivity(intent);
+            welcome = getString(R.string.welcome) + "Pharmacist " + model.getDisplayName();
+        }
         //Intent intent2 = new Intent(this, UserListActivity.class);
         //startActivity(intent2);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
