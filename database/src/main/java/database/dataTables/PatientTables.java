@@ -251,73 +251,118 @@ public class PatientTables extends SQLDatabase
         }
     }
 
-    public void increasePatientStreak(Patient patient)
+    public void increasePatientStreak(UUID patientId)
     {
         try
         {
             String query = "UPDATE PATIENT SET CurrentStreak = CurrentStreak + 1 WHERE IDNum = ?";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, patient.getId().toString());
+            pState.setString(1, patientId.toString());
             pState.execute();
-            updateLongestStreak(patient);
+            updateLongestStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
     }
 
-    public void resetPatientStreak(Patient patient)
+    public void decreasePatientStreak(UUID patientId)
+    {
+        try
+        {
+            String query = "UPDATE PATIENT SET CurrentStreak = CurrentStreak - 1 WHERE IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, patientId.toString());
+            pState.execute();
+            updateLongestStreak(patientId);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetPatientStreak(UUID patientId)
     {
         try
         {
             String query = "UPDATE PATIENT SET CurrentStreak = 0 WHERE IDNum = ?";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, patient.getId().toString());
+            pState.setString(1, patientId.toString());
             pState.execute();
-            updateLongestStreak(patient);
+            updateLongestStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
     }
 
-    public void increaseMissedDosesCount(Patient patient)
+    public void increaseMissedDosesCount(UUID patientId)
     {
         try
         {
             String query = "UPDATE PATIENT SET MissedDoses = MissedDoses + 1 WHERE IDNum = ?";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, patient.getId().toString());
+            pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patient);
+            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
     }
 
-    public void increaseSuccessfulDoses(Patient patient)
+    public void decreasedMissedDosesCount(UUID patientId)
+    {
+        try
+        {
+            String query = "UPDATE PATIENT SET MissedDoses = MissedDoses - 1 WHERE IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, patientId.toString());
+            pState.execute();
+            resetPatientStreak(patientId);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void increaseSuccessfulDoses(UUID patientId)
     {
         try
         {
             String query = "UPDATE PATIENT SET SuccessfulDoses = SuccessfulDoses + 1 WHERE IDNum = ?";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, patient.getId().toString());
+            pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patient);
+            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
     }
 
-    private void updateLongestStreak(Patient patient)
+    public void decreaseSuccessfulDoses(UUID patientId)
+    {
+        try
+        {
+            String query = "UPDATE PATIENT SET SuccessfulDoses = SuccessfulDoses - 1 WHERE IDNum = ?";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, patientId.toString());
+            pState.execute();
+            resetPatientStreak(patientId);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateLongestStreak(UUID patientId)
     {
         try
         {
             String query = "SELECT CurrentStreak, LongestStreak FROM Patient WHERE IDNum = ?";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, patient.getId().toString());
+            pState.setString(1, patientId.toString());
             resultSet = pState.executeQuery();
             while (resultSet.next())
             {
@@ -327,7 +372,7 @@ public class PatientTables extends SQLDatabase
                 {
                     query = "UPDATE PATIENT SET LongestStreak = CurrentStreak WHERE IDNum = ?";
                     pState = connection.prepareStatement(query);
-                    pState.setString(1, patient.getId().toString());
+                    pState.setString(1, patientId.toString());
                     pState.execute();
                 }
             }
@@ -441,4 +486,29 @@ public class PatientTables extends SQLDatabase
     }
 
 
+    public ArrayList<Patient> getPatientsDependantOn(UUID familyMemberId) {
+        ArrayList<Patient> patientList = new ArrayList<>();
+        try
+        {
+            String query = "SELECT * FROM AppUser, Patient AS p WHERE AppUser.IDNum = Patient.IDNum AND EXISTS(SELECT * FROM ViewsData WHERE PatientID = p.IDNum AND FamilyID = ?)";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, familyMemberId.toString());
+            resultSet = pState.executeQuery(query);
+            while (resultSet.next())
+            {
+                UUID id = UUID.fromString(resultSet.getString("IDNum"));
+                String firstname = resultSet.getString("Fname");
+                String lastname = resultSet.getString("Lname");
+                String username = resultSet.getString("Username");
+                String password = resultSet.getString("Password");
+                patientList.add(new Patient(id, firstname, lastname, username, password));
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        getAllPatientSymptoms(patientList);
+        getAllPatientMeasurement(patientList);
+        return patientList;
+    }
 }

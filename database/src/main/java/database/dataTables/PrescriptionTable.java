@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 public class PrescriptionTable extends SQLDatabase
@@ -33,7 +32,7 @@ public class PrescriptionTable extends SQLDatabase
                         "(PrescriptionID VARCHAR(255) NOT NULL," +
                         "PrescribedDate DATE," +
                         "BaseAmount INT," +
-                        "AmountPerDose DOUBLE," +
+                        "AmountPerDose INT," +
                         "MedRemaining INT," +
                         "Frequency VARCHAR(255)," +
                         "Strength DOUBLE,"+
@@ -57,16 +56,16 @@ public class PrescriptionTable extends SQLDatabase
         try
         {
             String query = "INSERT INTO Prescription (PrescriptionID, PrescribedDate, BaseAmount, AmountPerDose, MedRemaining, Frequency, Strength, MedID, PatientID)"+
-                            "VALUEs (?,?,?,?,?,?,?,(SELECT MedID FROM Medication WHERE MedID = ?), (SELECT IDNum FROM Patient WHERE IDNum = ?))";
+                            "VALUES (?,?,?,?,?,?,?,(SELECT MedID FROM Medication WHERE MedID = ?), (SELECT IDNum FROM Patient WHERE IDNum = ?))";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, prescription.getPrescriptionID().toString());
             pState.setDate(2, new java.sql.Date(prescription.getPrescribedDate().getTime()));
             pState.setInt(3, prescription.getBaseAmount());
-            pState.setDouble(4, prescription.getAmountPerDose());
+            pState.setInt(4, prescription.getAmountPerDose());
             pState.setInt(5, prescription.getRemainingAmount());
             pState.setString(6, prescription.getFrequency().toString());
             pState.setDouble(7, prescription.getStrength());
-            pState.setString(8, prescription.getMedication().getMedID());
+            pState.setString(8, prescription.getMedicationId());
             pState.setString(9, patient.getId().toString());
             pState.execute();
             return true;
@@ -95,7 +94,7 @@ public class PrescriptionTable extends SQLDatabase
                 PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
                 double strength = resultSet.getDouble("Strength");
                 int remainingAmount = resultSet.getInt("MedRemaining");
-                double amountPerDose = resultSet.getDouble("AmountPerDose");
+                int amountPerDose = resultSet.getInt("AmountPerDose");
 
                 Medication m = new Medication(medID);
                 MedicationTable medTable = new MedicationTable();
@@ -129,7 +128,7 @@ public class PrescriptionTable extends SQLDatabase
                 PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
                 double strength = resultSet.getDouble("Strength");
                 int remainingAmount = resultSet.getInt("MedRemaining");
-                double amountPerDose = resultSet.getDouble("AmountPerDose");
+                int amountPerDose = resultSet.getInt("AmountPerDose");
 
                 Medication m = new Medication(medID);
                 MedicationTable medTable = new MedicationTable();
@@ -166,7 +165,7 @@ public class PrescriptionTable extends SQLDatabase
                 PrescriptionFrequency frequency = PrescriptionFrequency.valueOf(resultSet.getString("Frequency"));
                 double strength = resultSet.getDouble("Strength");
                 int remainingAmount = resultSet.getInt("MedRemaining");
-                double amountPerDose = resultSet.getDouble("AmountPerDose");
+                int amountPerDose = resultSet.getInt("AmountPerDose");
 
                 Medication m = new Medication(medID);
                 MedicationTable medTable = new MedicationTable();
@@ -181,13 +180,13 @@ public class PrescriptionTable extends SQLDatabase
         return prescriptions;
     }
 
-    public boolean decreaseRemainingAmount(Prescription prescription)
+    public boolean decreaseRemainingAmount(UUID prescriptionId)
     {
         try
         {
             String query = "UPDATE Prescription SET MedRemaining = MedRemaining - 1 WHERE PrescriptionID = ?";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, prescription.getPrescriptionID().toString());
+            pState.setString(1, prescriptionId.toString());
             pState.execute();
             return true;
         } catch (SQLException e)

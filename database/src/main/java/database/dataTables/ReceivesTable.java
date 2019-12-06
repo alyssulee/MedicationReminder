@@ -76,7 +76,7 @@ public class ReceivesTable extends SQLDatabase
             ArrayList<RefillOrder> orderList = new ArrayList<>();
             try
             {
-                String query = "SELECT RefillOrder.* FROM RefillOrder, Receives WHERE RefillOrder.OrderNum = Receives.OrderNum AND Receives.PharmacistID = ?";
+                String query = "SELECT *  FROM RefillOrder, RefillPrescription, Receives WHERE RefillPrescription.OrderNum = Receives.OrderNum AND RefillOrder.OrderNum = Receives.OrderNum AND Receives.PharmacistID = ?";
                 PreparedStatement pState = connection.prepareStatement(query);
                 pState.setString(1, pharmacist.getId().toString());
                 resultSet = pState.executeQuery();

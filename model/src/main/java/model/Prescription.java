@@ -5,25 +5,31 @@ import java.util.UUID;
 
 public class Prescription
 {
-    UUID prescriptionID;
-    Medication medication;
-    Date prescribedDate;
-    int baseAmount;
-    double amountPerDose;
-    double strength;
-    PrescriptionFrequency frequency;
-    int remainingAmount;
+    private UUID prescriptionID;
+    private String medicationId;
+    private Date prescribedDate;
+    private int baseAmount;
+    private int amountPerDose;
+    private double strength;
+    private PrescriptionFrequency frequency;
+    private int remainingAmount;
 
     public Prescription(UUID prescriptionID)
     {
         this.prescriptionID = prescriptionID;
     }
 
-    public Prescription(UUID pID, Medication medication, Date prescribedDate, int baseAmount, double amountPerDose, double strength,
+    public Prescription(UUID pID, Medication medication, Date prescribedDate, int baseAmount, int amountPerDose, double strength,
+                        PrescriptionFrequency frequency, int remainingAmount)
+    {
+        this(pID, medication.getMedID(), prescribedDate, baseAmount, amountPerDose, strength, frequency, remainingAmount);
+    }
+
+    public Prescription(UUID pID, String medicationId, Date prescribedDate, int baseAmount, int amountPerDose, double strength,
                         PrescriptionFrequency frequency, int remainingAmount)
     {
         prescriptionID = pID;
-        this.medication = medication;
+        this.medicationId = medicationId;
         this.prescribedDate = prescribedDate;
         this.baseAmount = baseAmount;
         this.amountPerDose = amountPerDose;
@@ -35,11 +41,6 @@ public class Prescription
     public UUID getPrescriptionID()
     {
         return prescriptionID;
-    }
-
-    public Medication getMedication()
-    {
-        return medication;
     }
 
     public Date getPrescribedDate()
@@ -67,7 +68,7 @@ public class Prescription
         return remainingAmount;
     }
 
-    public double getAmountPerDose()
+    public int getAmountPerDose()
     {
         return amountPerDose;
     }
@@ -75,11 +76,6 @@ public class Prescription
     public void setPrescriptionID(UUID prescriptionID)
     {
         this.prescriptionID = prescriptionID;
-    }
-
-    public void setMedication(Medication medication)
-    {
-        this.medication = medication;
     }
 
     public void setPrescribedDate(Date prescribedDate)
@@ -92,7 +88,7 @@ public class Prescription
         this.baseAmount = baseAmount;
     }
 
-    public void setAmountPerDose(double amountPerDose)
+    public void setAmountPerDose(int amountPerDose)
     {
         this.amountPerDose = amountPerDose;
     }
@@ -114,8 +110,16 @@ public class Prescription
 
     public String toString()
     {
-        String str = prescriptionID + " " + prescribedDate + "\t" + medication + ": " + " Strength: " + strength + " ";
+        String str = prescriptionID + " " + prescribedDate + "\t" + medicationId + ": " + " Strength: " + strength + " ";
         str += frequency.toString() + " " + " Base Amount: " + baseAmount + " Amount per Dose : " + amountPerDose + " Remaining: " + remainingAmount;
         return str;
+    }
+
+    public String getMedicationId() {
+        return medicationId;
+    }
+
+    public void setMedicationId(String medicationId) {
+        this.medicationId = medicationId;
     }
 }

@@ -1,1 +1,1 @@
-include ':app', ':appfromotherone', ':model', ':api', ':database'
+include ':app', ':appfromotherone', ':model', ':api', ':database', ':apiabstractions', ':apiclient'

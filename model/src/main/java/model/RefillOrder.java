@@ -6,9 +6,9 @@ import java.util.UUID;
 
 public class RefillOrder
 {
-    Date date;
-    UUID OrderID;
-    ArrayList<Prescription> prescriptionsToFill;
+    private Date date;
+    private UUID OrderID;
+    private ArrayList<Prescription> prescriptionsToFill;
 
     public RefillOrder(Date date, UUID orderID, ArrayList<Prescription> prescriptionsToFill)
     {

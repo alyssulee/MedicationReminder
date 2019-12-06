@@ -1,5 +1,7 @@
 package com.example.medicationreminderapp.data.model;
 
+import model.User;
+
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
