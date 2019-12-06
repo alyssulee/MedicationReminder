@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import model.PatientMeasurement;
+
 public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
@@ -60,6 +62,9 @@ public class SlideshowFragment extends Fragment {
         streak = DoseFinder.patientApi.getLongestStreak();
         textView4.setText("Longest streak:  " + streak + " Days");
 
+        //final TextView textView5 = root.findViewById(R.id.textView4);
+        //List<PatientMeasurement> info = DoseFinder.patientApi.getAllMeasurements();
+        //textView5.setText("");
         slideshowViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

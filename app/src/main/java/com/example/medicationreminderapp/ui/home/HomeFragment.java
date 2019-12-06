@@ -20,11 +20,7 @@ import com.example.medicationreminderapp.DoseModel;
 import com.example.medicationreminderapp.DosesAdapter;
 import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.R;
-import com.example.medicationreminderapp.TestPatientApi;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import model.Dose;
 
 public class HomeFragment extends Fragment{
@@ -45,19 +41,23 @@ public class HomeFragment extends Fragment{
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
+                int streak = DoseFinder.patientApi.getCurrentStreak();
+                final TextView textView2 = root.findViewById(R.id.textView2);
+                textView2.setText(streak + " Days");
             }
         });
 
 
         int streak = DoseFinder.patientApi.getCurrentStreak();
-
         final TextView textView2 = root.findViewById(R.id.textView2);
         textView2.setText(streak + " Days");
 
        homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-
+                int streak = DoseFinder.patientApi.getCurrentStreak();
+                final TextView textView2 = root.findViewById(R.id.textView2);
+                textView2.setText(streak + " Days");
             }
         });
         //textView2.setText();

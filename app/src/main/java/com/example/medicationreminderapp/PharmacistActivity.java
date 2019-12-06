@@ -17,9 +17,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import model.Patient;
+import model.Prescription;
+import model.PrescriptionFrequency;
 import model.RefillOrder;
 
 public class PharmacistActivity extends AppCompatActivity
@@ -51,6 +55,12 @@ public class PharmacistActivity extends AppCompatActivity
 
 
         selectButton = (Button) findViewById(R.id.RefillButton2);
+        ArrayList<Prescription> prescriptions = new ArrayList<Prescription>();
+
+        prescriptions.add(new Prescription(UUID.randomUUID(), "DB00005", new Date(), 5, 5, 5, PrescriptionFrequency.BID, 5));
+
+        RefillOrder order = new RefillOrder(new Date(), UUID.randomUUID(), prescriptions);
+        orderArrayList.add(order);
         ArrayList<String> orderStringList = new ArrayList<>();
         for (RefillOrder o : orderArrayList)
         {
