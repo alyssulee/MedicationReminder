@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment{
             PatientApi test = DoseFinder.patientApi;
             for (Dose dose : DoseFinder.doses = DoseFinder.patientApi.getTodaysDoses())
             {
-                doses.add(new DoseModel(dose.getAmountPerDose(), dose.getMedId(), true, dose.getPrescriptionId(), dose.getDosageTime()));
+                doses.add(new DoseModel(dose.getAmountPerDose(), dose.getMedId(), !dose.isTaken(), dose.getPrescriptionId(), dose.getDosageTime()));
             }
 
             getActivity().getSupportFragmentManager().popBackStack();

@@ -86,4 +86,8 @@ public class Dose {
         return "Dose: " + dosageTime + "Prescription: " + prescriptionId;
     }
 
+    public boolean isTaken(){
+        return confirmerId != null;
+    }
+
 }
