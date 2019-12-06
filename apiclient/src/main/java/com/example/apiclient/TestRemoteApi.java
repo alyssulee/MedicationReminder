@@ -9,7 +9,7 @@ import model.LoginCredentials;
 
 public class TestRemoteApi {
     public static void main(String[] args) {
-        LoginCredentials patientCredentials = new LoginCredentials("PatientA", "patient");
+        LoginCredentials patientCredentials = new LoginCredentials("PatientA", "password");
         PatientApi patientApi = ClientPatientApi.createOrThrow("http://104.210.55.244:4567/", patientCredentials);
 
         List<Dose> todaysDoses = patientApi.getTodaysDoses();

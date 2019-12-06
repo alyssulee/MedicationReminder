@@ -46,7 +46,7 @@ public class ClientPatientApi implements PatientApi {
 
             HttpURLConnection connection = openGetConnection("api/patient/verifyCredentials");
             try (AutoCloseable ignored = connection::disconnect) {
-                connection.getResponseCode();
+                readToString(connection);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,7 +116,7 @@ public class ClientPatientApi implements PatientApi {
             HttpURLConnection connection = openPostConnection("api/patient/confirmDoseTaken");
             writeToBody(connection, gson.toJson(dose));
             try (AutoCloseable ignored = connection::disconnect) {
-                connection.getResponseCode();
+                readToString(connection);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +130,7 @@ public class ClientPatientApi implements PatientApi {
             HttpURLConnection connection = openPostConnection("api/patient/markDoseUntaken");
             writeToBody(connection, gson.toJson(dose));
             try (AutoCloseable ignored = connection::disconnect) {
-                connection.getResponseCode();
+                readToString(connection);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,7 +159,7 @@ public class ClientPatientApi implements PatientApi {
             HttpURLConnection connection = openPostConnection("api/patient/addMeasurement");
             writeToBody(connection, gson.toJson(measurement));
             try (AutoCloseable ignored = connection::disconnect) {
-                connection.getResponseCode();
+                readToString(connection);
             }
         } catch (Exception e) {
             e.printStackTrace();
