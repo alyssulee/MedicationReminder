@@ -94,8 +94,6 @@ public class AddAppointmentFragment extends Fragment
                         }
                         else
                             displayTime.setText(hour + " : " + minute );
-
-
                     }
                 }, hour, minute, true);
                 timePickerDialog.show();

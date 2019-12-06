@@ -3,10 +3,6 @@ package com.example.medicationreminderapp;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.medicationreminderapp.ui.AddAppointmentFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,26 +14,25 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import model.Dose;
 import model.Patient;
-import model.Prescription;
-import model.RefillOrder;
 
 public class FamilyMemberActivity extends AppCompatActivity
 {
     ListView patientListView;
     Button selectButton;
 
-    ArrayList<Patient> patientArrayList;
+    List<Patient> patientArrayList;
     Patient selectedPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pharmacist);
+        setContentView(R.layout.activity_familymember);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -45,8 +40,7 @@ public class FamilyMemberActivity extends AppCompatActivity
         selectButton = (Button) findViewById(R.id.RefillButton);
 
         //Todo: read in from db
-        patientArrayList = new ArrayList<Patient>();
-
+        patientArrayList = DoseFinder.clientFamilyMemberApi.getDependantPatients();
         patientArrayList.add(new Patient(UUID.randomUUID(), "Patient", "patient", "p", "p"));
 
         ArrayList<String> patientStringList =new ArrayList<>();
@@ -67,7 +61,7 @@ public class FamilyMemberActivity extends AppCompatActivity
             }
         });
 
-        //Create appointment
+        //get patient login.
         selectButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

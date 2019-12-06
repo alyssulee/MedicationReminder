@@ -3,6 +3,7 @@ package com.example.medicationreminderapp.ui.gallery;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,8 @@ public class GalleryFragment extends Fragment
 
     private GalleryViewModel galleryViewModel;
     CalendarView calendarView;
+    java.lang.reflect.Field field = null;
+
     TextView dateDisplay;
     Long date;
     Date selectedDate;
@@ -68,6 +71,21 @@ public class GalleryFragment extends Fragment
         dateDisplay = (TextView) root.findViewById(R.id.SelectedDate);
         addAppointmentButton = (Button) root.findViewById(R.id.addAppointmentButton);
         dateDisplay.setText("Date: ");
+
+       /* Class<?> cvClass = calendarView.getClass();
+        try {
+            field = cvClass.getDeclaredField("mDayNamesHeader");
+            field.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+        }
+
+        ViewGroup tv = null;
+        try {
+            tv = (ViewGroup) field.get(calendarView);
+        } catch (IllegalAccessException e) {}
+
+        TextView k =  (TextView) tv.getChildAt(1);
+        k.setTextColor(Color.RED);*/
 
         //Toast.makeText(calendarView.getContext(), "HEEEELP :" + date, Toast.LENGTH_LONG).show();
 
