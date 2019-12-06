@@ -33,7 +33,7 @@ public class CreateEntities {
         userRepository.addUser(new FamilyMember(UUID.randomUUID(), "Mother", "patient", "family", "password", "Mother"));
 
         userRepository.addUser(new Doctor(UUID.randomUUID(), "DoctorA", "doctor", "doctora", "password"));
-        userRepository.addUser(new Doctor(UUID.randomUUID(), "DoctorB", "doctor", "doctorb", "pbssword"));
+        userRepository.addUser(new Doctor(UUID.randomUUID(), "DoctorB", "doctor", "doctorb", "password"));
 
         ArrayList<Doctor> doctorList = userRepository.getAllDoctors();
         ArrayList<Patient> patientList = userRepository.getAllPatients();

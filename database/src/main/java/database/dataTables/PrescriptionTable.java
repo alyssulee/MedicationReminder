@@ -180,13 +180,13 @@ public class PrescriptionTable extends SQLDatabase
         return prescriptions;
     }
 
-    public boolean decreaseRemainingAmount(Prescription prescription)
+    public boolean decreaseRemainingAmount(UUID prescriptionId)
     {
         try
         {
             String query = "UPDATE Prescription SET MedRemaining = MedRemaining - 1 WHERE PrescriptionID = ?";
             PreparedStatement pState = connection.prepareStatement(query);
-            pState.setString(1, prescription.getPrescriptionID().toString());
+            pState.setString(1, prescriptionId.toString());
             pState.execute();
             return true;
         } catch (SQLException e)

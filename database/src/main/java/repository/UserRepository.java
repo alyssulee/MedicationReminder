@@ -133,8 +133,8 @@ public class UserRepository {
     }
 
     //Note: confirmDose automatically increases currentStreak, successfulDoses and updates longest streak in db
-    public boolean confirmDose(Patient patient, Client confirmer, Time dosageTime, Prescription prescription) {
-        return doseDatabase.confirmDose(patient, confirmer, dosageTime, prescription);
+    public boolean confirmDose(Dose dose, Client confirmer, Time confirmationTime) {
+        return doseDatabase.confirmDose(dose, confirmer, confirmationTime);
     }
 
     public int getCurrentStreak(Patient patient) {
@@ -155,7 +155,7 @@ public class UserRepository {
 
     //Note: Automatically resets currentStreak back to zero
     public void increaseMissedDosesCount(Patient patient) {
-        patientDatabase.increaseMissedDosesCount(patient);
+        patientDatabase.increaseMissedDosesCount(patient.getId());
     }
 
     public boolean addViewer(Patient patient, FamilyMember familyMember) {
@@ -257,7 +257,7 @@ public class UserRepository {
 
         System.out.println(database.getPatientsDosesOn(user.getId(), new Date()));
 
-        database.confirmDose(user, user, new Time(5, 10, 15), p);
+//        database.confirmDose(new Dose(p.getPrescriptionID(),), user, new Time(5, 10, 15), p);
 
         System.out.println("MissedDoses: " + database.getMissedDoses(user));
         System.out.println("SuccessfulDoses: " + database.getSuccessfulDoses(user));
