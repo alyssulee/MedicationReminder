@@ -13,11 +13,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.apiclient.ClientPatientApi;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import model.Dose;
+import model.LoginCredentials;
 import model.Patient;
 
 public class FamilyMemberActivity extends AppCompatActivity
@@ -67,7 +70,7 @@ public class FamilyMemberActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                String str = "";
+                DoseFinder.patientApi = ClientPatientApi.createOrThrow("http://104.210.55.244:4567/", new LoginCredentials(selectedPatient.getUsername(), selectedPatient.getPassword()));
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(intent);
             }
