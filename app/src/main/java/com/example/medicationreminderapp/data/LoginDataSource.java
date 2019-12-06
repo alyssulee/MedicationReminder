@@ -1,5 +1,7 @@
 package com.example.medicationreminderapp.data;
 
+import android.os.StrictMode;
+
 import com.example.apiclient.ClientPatientApi;
 import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.data.model.LoggedInUser;
@@ -15,6 +17,9 @@ public class LoginDataSource {
 
     public Result<LoggedInUser> login(String username, String password) {
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        
         try {
             // TODO: handle loggedInUser authentication
             LoggedInUser fakeUser =

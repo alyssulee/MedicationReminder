@@ -47,19 +47,22 @@ public class SlideshowFragment extends Fragment {
 
 
         final TextView textView3 = root.findViewById(R.id.textView3);
+        int streak = DoseFinder.patientApi.getCurrentStreak();
+        textView3.setText("Current streak: " + streak + " Days");
         slideshowViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                int streak = DoseFinder.patientApi.getCurrentStreak();
-                textView3.setText("Current streak: " + streak + " Days");
+
             }
         });
+
         final TextView textView4 = root.findViewById(R.id.textView4);
+        streak = DoseFinder.patientApi.getLongestStreak();
+        textView4.setText("Longest streak:  " + streak + " Days");
+
         slideshowViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                int streak = DoseFinder.patientApi.getLongestStreak();
-                textView4.setText("Longest streak:  " + streak + " Days");
             }
         });
 

@@ -23,6 +23,7 @@ import com.example.medicationreminderapp.R;
 import com.example.medicationreminderapp.TestPatientApi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Dose;
 
@@ -31,23 +32,32 @@ public class HomeFragment extends Fragment{
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState)
+    {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
+
+
+
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
+
+
+        int streak = DoseFinder.patientApi.getCurrentStreak();
+
         final TextView textView2 = root.findViewById(R.id.textView2);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        textView2.setText(streak + " Days");
+
+       homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                int streak = DoseFinder.patientApi.getCurrentStreak();
-                textView2.setText(streak + " Days");
+
             }
         });
         //textView2.setText();
@@ -55,8 +65,9 @@ public class HomeFragment extends Fragment{
         RecyclerView rvContacts = (RecyclerView) root.findViewById(R.id.rvList);
         // Initialize doseModels
         if(rvContacts != null) {
-            PatientApi test = DoseFinder.patientApi = new TestPatientApi();
-            for (Dose dose : DoseFinder.doses = test.getTodaysDoses()){
+            PatientApi test = DoseFinder.patientApi;
+            for (Dose dose : DoseFinder.doses = DoseFinder.patientApi.getTodaysDoses())
+            {
                 doses.add(new DoseModel(dose.getAmountPerDose(), dose.getMedId(), true, dose.getPrescriptionId(), dose.getDosageTime()));
             }
 

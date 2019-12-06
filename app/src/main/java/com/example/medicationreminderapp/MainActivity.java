@@ -9,6 +9,7 @@ import com.example.medicationreminderapp.ui.gallery.GalleryFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.os.StrictMode;
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
@@ -37,8 +38,10 @@ public class MainActivity extends AppCompatActivity implements AddAppointmentFra
 
     private AppBarConfiguration mAppBarConfiguration;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
