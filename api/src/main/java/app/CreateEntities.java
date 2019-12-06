@@ -18,12 +18,15 @@ public class CreateEntities {
     public static void main(String[] args) throws SQLException {
 
         DbAccessible dbAccessible = new DbAccessible();
+        UserRepository userRepository = new UserRepository();
         dbAccessible.dropContents();
 
-        UserRepository userRepository = new UserRepository();
-        userRepository.addUser(new Patient(UUID.randomUUID(), "PatientA", "patient", "patienta", "password"), UserType.Patient);
-        userRepository.addUser(new Patient(UUID.randomUUID(), "PatientB", "patient", "patientb", "password"), UserType.Patient);
-        userRepository.addUser(new FamilyMember(UUID.randomUUID(), "Mother", "patient", "family", "password", "Mother"), UserType.FamilyMember);
+        userRepository.addUser(new Patient(UUID.randomUUID(), "PatientA", "patient", "patienta", "password"));
+        userRepository.addUser(new Patient(UUID.randomUUID(), "PatientB", "patient", "patientb", "password"));
+        userRepository.addUser(new FamilyMember(UUID.randomUUID(), "Mother", "patient", "family", "password", "Mother"));
+
+        userRepository.addUser(new Doctor(UUID.randomUUID(), "DoctorA", "doctor", "doctora", "password"));
+        userRepository.addUser(new Doctor(UUID.randomUUID(), "DoctorB", "doctor", "doctorb", "pbssword"));
 
         ArrayList<Doctor> doctorList = userRepository.getAllDoctors();
         ArrayList<Patient> patientList = userRepository.getAllPatients();

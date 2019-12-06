@@ -5,9 +5,9 @@ import java.util.Properties;
 
 public abstract class SQLDatabase implements DatabaseCredentials
 {
-    protected Connection connection;
+    protected static Connection connection;
     protected ResultSet resultSet;
-    protected Statement statement;
+    protected static Statement statement;
 
     public SQLDatabase()
     {
@@ -16,6 +16,8 @@ public abstract class SQLDatabase implements DatabaseCredentials
 
     private void connect()
     {
+        if (connection != null) return;
+
         try
         {
             Class.forName(JDBC_Driver);

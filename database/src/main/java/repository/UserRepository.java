@@ -49,6 +49,18 @@ public class UserRepository {
         return userDatabase.login(username, password);
     }
 
+    public boolean addUser(Patient patient){
+        return addUser(patient, UserType.Patient);
+    }
+
+    public boolean addUser(Doctor doctor){
+        return addUser(doctor, UserType.Doctor);
+    }
+
+    public boolean addUser(FamilyMember familyMember){
+        return addUser(familyMember, UserType.FamilyMember);
+    }
+
     public boolean addUser(User user, UserType userType) {
         boolean returnVal = userDatabase.addUser(user, userType);
 
