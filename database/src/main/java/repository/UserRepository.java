@@ -116,15 +116,14 @@ public class UserRepository {
         return prescriptionDatabase.getPatientPrescriptionsByMedication(patient, med);
     }
 
-    //Note: addDose automatically increases currentStreak, successfulDoses and updates longest streak in db
-    public boolean addDose(Patient patient, Prescription prescription, Timestamp dosageTime) {
-        return doseDatabase.addDose(patient, prescription, dosageTime);
+    public boolean addDose(Patient patient, Prescription prescription, Time dosageTime, Date date) {
+        return doseDatabase.addDose(patient, prescription, dosageTime, date);
     }
 
+    //Note: confirmDose automatically increases currentStreak, successfulDoses and updates longest streak in db
     public boolean confirmDose(Patient patient, Client confirmer, Time dosageTime, Prescription prescription) {
         return doseDatabase.confirmDose(patient, confirmer, dosageTime, prescription);
     }
-
 
     public int getCurrentStreak(Patient patient) {
         return patientDatabase.getCurrentStreak(patient);
@@ -235,20 +234,19 @@ public class UserRepository {
         ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
         ArrayList<Doctor> doctorList = database.getAllDoctors();
 
-        System.out.println(database.login(user.getUsername(), user.getPassword()));
-        System.out.println(database.login(family.getUsername(), family.getPassword()));
-        System.out.println(database.login(pharmacistList.get(0).getUsername(), pharmacistList.get(0).getPassword()));
-        System.out.println(database.login(doctorList.get(0).getUsername(), doctorList.get(0).getPassword()));
-
         Prescription p = new Prescription(UUID.randomUUID(), new Medication("DB00005"), new Date(), 15, 2, 0.9, PrescriptionFrequency.BID, 15);
-        database.addPatientPrescription((Patient) user, p);
-        System.out.println(database.getAllPrescriptionsByPatient((Patient) user));
-        System.out.println(database.getPatientPrescriptionsByMedication((Patient) user, new Medication("DB00005")));
+        Prescription p2 = new Prescription(UUID.randomUUID(), new Medication("DB01255"), new Date(), 10, 1, 1, PrescriptionFrequency.Daily,  15);
 
-        database.addDose(user, database.getAllPrescriptionsByPatient(user).get(0), new Timestamp(0));
+        database.addPatientPrescription((Patient) user, p);
+        database.addPatientPrescription((Patient) user, p2);
+
+        database.addDose(user, database.getAllPrescriptionsByPatient(user).get(0), new Time(5, 10, 15), new Date());
+        database.addDose(user, database.getAllPrescriptionsByPatient(user).get(1), new Time(5, 10, 15), new Date());
+
+        System.out.println(database.getPatientsDosesOn(user.getId(), new Date()));
+
         database.confirmDose(user, user, new Time(5, 10, 15), p);
 
-        database.increaseMissedDosesCount(user);
         System.out.println("MissedDoses: " + database.getMissedDoses(user));
         System.out.println("SuccessfulDoses: " + database.getSuccessfulDoses(user));
         System.out.println("Longest Streak: " + database.getLongestStreak(user));
@@ -270,12 +268,6 @@ public class UserRepository {
         System.out.println(database.getMonitoredPatientsByDoctor(doctorList.get(0)));
 
 
-/*        ArrayList<Patient> patientList = database.getAllPatients();
-        for(Patient p : patientList)
-            System.out.println(p.toString());*/
-
-//        System.out.println(database.removeUser(user));
-//        System.out.println(database.login("c", "d"));
 
 
     }

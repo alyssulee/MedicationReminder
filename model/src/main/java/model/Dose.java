@@ -15,6 +15,15 @@ public class Dose {
         this(prescription.getPrescriptionID(), dosageTime, amountPerDose, medication.getMedID(), confirmer.getId(), patient.getId());
     }
 
+    public Dose(UUID prescriptionId, Timestamp dosageTime, int amountPerDose, String medId, UUID patientId)
+    {
+        this.prescriptionId = prescriptionId;
+        this.dosageTime = dosageTime;
+        this.amountPerDose = amountPerDose;
+        this.medId = medId;
+        this.patientId = patientId;
+    }
+
     public Dose(UUID prescriptionId, Timestamp dosageTime, int amountPerDose, String medId, UUID confirmerId, UUID patientId) {
         this.prescriptionId = prescriptionId;
         this.dosageTime = dosageTime;
@@ -71,4 +80,10 @@ public class Dose {
     public void setPatientId(UUID patientId) {
         this.patientId = patientId;
     }
+
+    public String toString()
+    {
+        return "Dose: " + dosageTime + "Prescription: " + prescriptionId;
+    }
+
 }
