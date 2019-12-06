@@ -103,10 +103,10 @@ public class DoseTable extends SQLDatabase
     public ArrayList<Dose> getPatientsDosesOn(UUID patientId, Date date){
         ArrayList<Dose> doses = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Dose WHERE PatientID = ? AND date(DosageTime) = ?";
+            String query = "SELECT * FROM Dose WHERE PatientID = ? AND DosageTime = ?";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
-            pState.setDate(1, new java.sql.Date(date.getTime()));
+            pState.setTimestamp(2, new java.sql.Timestamp(date.getTime()));
             ResultSet resultSet = pState.executeQuery();
             while (resultSet.next()) {
                 UUID prescriptionId = UUID.fromString(resultSet.getString("PrescriptionID"));
