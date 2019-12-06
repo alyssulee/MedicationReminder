@@ -28,6 +28,7 @@ public class UserRepository {
 
 
     public UserRepository() {
+        medicationDatabase = new MedicationTable();
         userDatabase = new AppUserTable();
         clientDatabase = new ClientTable();
         patientDatabase = new PatientTables();
@@ -42,7 +43,6 @@ public class UserRepository {
         viewsDatabase = new ViewsDataTable();
         fillsDatabase = new FillsTable();
         receivesDatabase = new ReceivesTable();
-        medicationDatabase = new MedicationTable();
     }
 
     public User login(String username, String password) {
