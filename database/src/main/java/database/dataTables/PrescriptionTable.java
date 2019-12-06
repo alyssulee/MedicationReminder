@@ -56,7 +56,7 @@ public class PrescriptionTable extends SQLDatabase
         try
         {
             String query = "INSERT INTO Prescription (PrescriptionID, PrescribedDate, BaseAmount, AmountPerDose, MedRemaining, Frequency, Strength, MedID, PatientID)"+
-                            "VALUEs (?,?,?,?,?,?,?,(SELECT MedID FROM Medication WHERE MedID = ?), (SELECT IDNum FROM Patient WHERE IDNum = ?))";
+                            "VALUES (?,?,?,?,?,?,?,(SELECT MedID FROM Medication WHERE MedID = ?), (SELECT IDNum FROM Patient WHERE IDNum = ?))";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, prescription.getPrescriptionID().toString());
             pState.setDate(2, new java.sql.Date(prescription.getPrescribedDate().getTime()));

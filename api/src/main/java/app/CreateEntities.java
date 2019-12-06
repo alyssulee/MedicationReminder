@@ -10,16 +10,23 @@ import java.util.UUID;
 
 import database.SQLDatabase;
 import model.*;
+import repository.MedRepository;
 import repository.UserRepository;
 
 public class CreateEntities {
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 
-        DbAccessible dbAccessible = new DbAccessible();
+        try {
+            DbAccessible dbAccessible = new DbAccessible();
+            dbAccessible.dropContents();
+        } catch (SQLException ignored) {
+
+        }
+
+        MedRepository medRepository = new MedRepository();
         UserRepository userRepository = new UserRepository();
-        dbAccessible.dropContents();
 
         userRepository.addUser(new Patient(UUID.randomUUID(), "PatientA", "patient", "patienta", "password"));
         userRepository.addUser(new Patient(UUID.randomUUID(), "PatientB", "patient", "patientb", "password"));
@@ -32,24 +39,27 @@ public class CreateEntities {
         ArrayList<Patient> patientList = userRepository.getAllPatients();
 
         userRepository.addAppointment(doctorList.get(0), patientList.get(0), new Date(2020, 3, 4), new Time(4, 4, 4));
-        userRepository.addAppointment(doctorList.get(0), patientList.get(0), new Date(2020, 5, 6), new Time(5, 5, 5));
+        userRepository.addAppointment(doctorList.get(1), patientList.get(0), new Date(2020, 5, 6), new Time(5, 5, 5));
 
-        {
-            Prescription prescription = new Prescription(UUID.randomUUID(), "DB00316", new Date(), 10, 1, 3, PrescriptionFrequency.Daily, 10);
-            userRepository.addPatientPrescription(patientList.get(0), prescription);
-            userRepository.addDose(patientList.get(0), prescription, new Time(0), Date.from(Instant.now()));
-        }
+        for (Patient patient : patientList) {
+            {
+                Medication medication = new Medication("DB00316");
+                Prescription prescription = new Prescription(UUID.randomUUID(), medication, new Date(), 10, 1, 3, PrescriptionFrequency.Daily, 10);
+                userRepository.addPatientPrescription(patient, prescription);
+                userRepository.addDose(patient, prescription, new Time(0), Date.from(Instant.now()));
+            }
 
-        {
-            Prescription prescription = new Prescription(UUID.randomUUID(), "DB00945", new Date(), 10, 2, 3, PrescriptionFrequency.Daily, 10);
-            userRepository.addPatientPrescription(patientList.get(0), prescription);
-            userRepository.addDose(patientList.get(0), prescription, new Time(0), Date.from(Instant.now()));
-        }
+            {
+                Prescription prescription = new Prescription(UUID.randomUUID(), "DB00945", new Date(), 10, 2, 3, PrescriptionFrequency.Daily, 10);
+                userRepository.addPatientPrescription(patient, prescription);
+                userRepository.addDose(patient, prescription, new Time(0), Date.from(Instant.now()));
+            }
 
-        {
-            Prescription prescription = new Prescription(UUID.randomUUID(), "DB01001", new Date(), 10, 1, 3, PrescriptionFrequency.Daily, 10);
-            userRepository.addPatientPrescription(patientList.get(0), prescription);
-            userRepository.addDose(patientList.get(0), prescription, new Time(0), Date.from(Instant.now()));
+            {
+                Prescription prescription = new Prescription(UUID.randomUUID(), "DB01001", new Date(), 10, 1, 3, PrescriptionFrequency.Daily, 10);
+                userRepository.addPatientPrescription(patient, prescription);
+                userRepository.addDose(patient, prescription, new Time(0), Date.from(Instant.now()));
+            }
         }
     }
 }

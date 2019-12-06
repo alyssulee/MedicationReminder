@@ -106,7 +106,7 @@ public class DoseTable extends SQLDatabase
     public ArrayList<Dose> getPatientsDosesOn(UUID patientId, Date date){
         ArrayList<Dose> doses = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Dose WHERE PatientID = ? AND DosageDate = ?";
+            String query = "SELECT * FROM Dose, Prescription WHERE Dose.PatientID = ? AND DosageDate = ? AND Prescription.PatientID = Dose.PatientID  AND Prescription.PrescriptionID = Dose.PrescriptionID";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.setDate(2, new java.sql.Date(date.getTime()));
@@ -115,12 +115,11 @@ public class DoseTable extends SQLDatabase
                 UUID prescriptionId = UUID.fromString(resultSet.getString("PrescriptionID"));
                 Timestamp dosageTime = resultSet.getTimestamp("DosageTime");
                 int amountPerDose = resultSet.getInt("AmountPerDose");
-                //UUID confirmerId = UUID.fromString(resultSet.getString("ConfirmerID"));
-
-                Prescription prescription = new PrescriptionTable().getPrescriptionByID(prescriptionId);
-                String medId = prescription.getMedicationId();
+                String medId = resultSet.getString("MedID");
 
                 Dose dose = new Dose(prescriptionId, dosageTime, amountPerDose, medId, patientId);
+                String confirmedId = resultSet.getString("ConfirmerID");
+                if (confirmedId != null) dose.setConfirmerId(UUID.fromString(confirmedId));
                 doses.add(dose);
             }
         } catch (SQLException e) {
