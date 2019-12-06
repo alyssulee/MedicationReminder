@@ -53,4 +53,9 @@ public class Appointment {
     public void setTime(Time time) {
         this.time = time;
     }
+
+    public String toString()
+    {
+        return "Appointment: " + date.toString() + " " + time.toString() + " with " + DoctorId;
+    }
 }

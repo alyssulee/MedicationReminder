@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class UserListActivity extends AppCompatActivity {
 
-    ArrayList<Contact> contacts;
+    ArrayList<DoseModel> doseModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +22,12 @@ public class UserListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_users);
 
         RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
-        // Initialize contacts
+        // Initialize doseModels
         if(rvContacts != null)
         {
-            contacts = Contact.createContactsList(20);
+            //doseModels = DoseModel.createDosessList(20);
         // Create adapter passing in the sample user data
-        ContactsAdapter adapter = new ContactsAdapter(contacts);
+        DosesAdapter adapter = new DosesAdapter(doseModels);
         // Attach the adapter to the recyclerview to populate items
         rvContacts.setAdapter(adapter);
         // Set layout manager to position the items

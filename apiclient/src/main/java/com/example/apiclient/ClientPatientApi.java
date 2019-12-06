@@ -43,6 +43,7 @@ public class ClientPatientApi implements PatientApi {
 
     private void validateCredentialsOrThrow(LoginCredentials credentials) {
         try {
+
             HttpURLConnection connection = openGetConnection("api/patient/verifyCredentials");
             try (AutoCloseable ignored = connection::disconnect) {
                 connection.getResponseCode();
