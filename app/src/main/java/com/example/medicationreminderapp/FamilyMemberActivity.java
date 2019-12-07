@@ -28,7 +28,7 @@ public class FamilyMemberActivity extends AppCompatActivity
     ListView patientListView;
     Button selectButton;
 
-    List<Patient> patientArrayList;
+    List<Patient> patientArrayList = new ArrayList<>();
     Patient selectedPatient;
 
     @Override
@@ -43,9 +43,9 @@ public class FamilyMemberActivity extends AppCompatActivity
         selectButton = (Button) findViewById(R.id.SelectPatientButton);
 
         //Todo: read in from db
-        patientArrayList = DoseFinder.clientFamilyMemberApi.getDependantPatients();
-        patientArrayList.add(new Patient(UUID.randomUUID(), "Patient", "patient", "p", "p"));
-
+        //patientArrayList = DoseFinder.clientFamilyMemberApi.getDependantPatients();
+        patientArrayList.add(new Patient(UUID.randomUUID(), "Patient", "A", "patienta", "password"));
+        patientArrayList.add(new Patient(UUID.randomUUID(), "Patient", "B", "patientb", "password"));
         ArrayList<String> patientStringList =new ArrayList<>();
         for(Patient p : patientArrayList)
         {

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Appointment;
 import model.LoginCredentials;
 import model.Patient;
 import model.RefillOrder;
@@ -29,8 +30,8 @@ public class DoctorActivity extends AppCompatActivity
     ListView patientListView;
     Button selectButton;
 
-    List<Patient> patientArrayList;
-    Patient selectedPatient;
+    List<Appointment> appointmentArrayList;
+    Appointment selectedAppointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,13 +42,12 @@ public class DoctorActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         patientListView = (ListView) findViewById(R.id.DoctorListView);
-        selectButton = (Button) findViewById(R.id.AddPatientButtonDoctor);
 
         //patientArrayList = DoseFinder.
-        patientArrayList = new ArrayList<>();
+        appointmentArrayList = new ArrayList<>();
 
         ArrayList<String> patientStringList = new ArrayList<>();
-        for (Patient p : patientArrayList)
+        for (Appointment p : appointmentArrayList)
         {
             patientStringList.add(p.toString());
         }
@@ -55,28 +55,7 @@ public class DoctorActivity extends AppCompatActivity
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, patientStringList);
         patientListView.setAdapter(arrayAdapter);
 
-        patientListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-            {
-                selectedPatient = patientArrayList.get(i);
-                Toast.makeText(view.getContext(), "Selected: " + selectedPatient.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
 
-        //get patient login.
-        selectButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                String str = "";
-                DoseFinder.patientApi = ClientPatientApi.createOrThrow("http://104.210.55.244:4567/", new LoginCredentials(selectedPatient.getUsername(), selectedPatient.getPassword()));
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }
 

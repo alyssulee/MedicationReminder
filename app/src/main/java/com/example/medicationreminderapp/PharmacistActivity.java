@@ -31,7 +31,7 @@ public class PharmacistActivity extends AppCompatActivity
     ListView orderListView;
     Button selectButton;
 
-    List<RefillOrder> orderArrayList;
+    List<RefillOrder> orderArrayList = new ArrayList<>();
     RefillOrder selectedOrder;
 
     @Override
