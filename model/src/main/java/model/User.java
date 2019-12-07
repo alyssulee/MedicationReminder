@@ -19,7 +19,7 @@ public abstract class User {
 
     public String toString()
     {
-        return id + " " + firstName + " " + lastName + " " + username + " " + password;
+        return id + "\t" + firstName + " " + lastName;
     }
 
     public UUID getId() {

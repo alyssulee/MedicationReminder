@@ -32,6 +32,7 @@
 
 
     <string name="streak">0 Days</string>
-    <string name="title_activity_pharmacist">PharmacistActivity</string>
-    <string name="title_activity_doctor">DoctorActivity</string>
+    <string name="title_activity_pharmacist">MediReminder</string>
+    <string name="title_activity_family">MediReminder</string>
+    <string name="title_activity_doctor">MediReminder</string>
 </resources>

@@ -41,13 +41,7 @@ public class Patient extends Client {
 
     public String toString()
     {
-        String str =  super.toString() + "\nSymptoms:\t ";
-        str += symptoms;
-        str += "\nMeasurements:\t";
-        for(PatientMeasurement m : measurements)
-        {
-            str += m.toString() + "\n";
-        }
+        String str =  super.toString();
         return str;
     }
 
