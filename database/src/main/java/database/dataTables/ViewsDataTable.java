@@ -66,11 +66,11 @@ public class ViewsDataTable extends SQLDatabase
         ArrayList<Patient> patientList = new ArrayList<>();
         try
         {
-            String query = "SELECT AppUser.* FROM ViewsData, Patient, AppUser WHERE ViewsData.PatientID = Patient.IDNum AND AppUser.IDNum = Patient.IDNum AND ViewsData.FamilyID = ?;";
+            String query = "SELECT AppUser.* FROM ViewsData, Patient, AppUser WHERE ViewsData.PatientID = Patient.IDNum AND AppUser.IDNum = Patient.IDNum AND ViewsData.FamilyID = ?";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, familymemberID.toString());
             pState.executeQuery();
-            resultSet = statement.executeQuery(query);
+            resultSet = pState.executeQuery();
             while (resultSet.next())
             {
                 UUID id = UUID.fromString(resultSet.getString("IDNum"));
