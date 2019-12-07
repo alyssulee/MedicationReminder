@@ -247,6 +247,7 @@ public class UserRepository {
         FamilyMember family = new FamilyMember(UUID.randomUUID(), "a", "b", "x", "x", "Fam");
         database.addUser(family, UserType.FamilyMember);
         database.addViewer(user, family);
+        System.out.println("HEEEEELP" + database.getPatientsByFamilyMember(family.getId()));
 
         ArrayList<Pharmacist> pharmacistList = database.getAllPharmacists();
         ArrayList<Doctor> doctorList = database.getAllDoctors();
