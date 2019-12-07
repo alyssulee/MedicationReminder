@@ -304,7 +304,7 @@ public class PatientTables extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patientId);
+//            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -319,7 +319,7 @@ public class PatientTables extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patientId);
+//            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -348,7 +348,7 @@ public class PatientTables extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patientId);
+//            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
