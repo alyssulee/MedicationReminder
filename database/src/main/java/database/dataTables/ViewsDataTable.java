@@ -3,6 +3,7 @@ package database.dataTables;
 import database.SQLDatabase;
 import model.FamilyMember;
 import model.Patient;
+import model.ViewsData;
 
 import java.sql.*;
 import java.time.Instant;
@@ -60,12 +61,15 @@ public class ViewsDataTable extends SQLDatabase
         }
     }
 
-    public ArrayList<Patient> getPatientsByFamilyMember(FamilyMember familyMember)
+    public ArrayList<Patient> getPatientsByFamilyMember(UUID familymemberID)
     {
         ArrayList<Patient> patientList = new ArrayList<>();
         try
         {
-            String query = "SELECT AppUser.* FROM ViewsData, Patient, AppUser WHERE ViewsData.PatientID = Patient.IDNum AND AppUser.IDNum = Patient.IDNum";
+            String query = "SELECT AppUser.* FROM ViewsData, Patient, AppUser WHERE ViewsData.PatientID = Patient.IDNum AND AppUser.IDNum = Patient.IDNum AND ViewsData.FamilyID = ?;";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, familymemberID.toString());
+            pState.executeQuery();
             resultSet = statement.executeQuery(query);
             while (resultSet.next())
             {
