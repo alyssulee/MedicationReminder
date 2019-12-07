@@ -17,8 +17,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import model.Appointment;
 import model.LoginCredentials;
@@ -43,8 +46,9 @@ public class DoctorActivity extends AppCompatActivity
 
         patientListView = (ListView) findViewById(R.id.DoctorListView);
 
-        //patientArrayList = DoseFinder.
+        //Appointment appt = new Appointment(this, new Patient(), new Date(), new Time());
         appointmentArrayList = new ArrayList<>();
+        appointmentArrayList.add(new Appointment(UUID.randomUUID(), UUID.randomUUID(), new Date(2019, 12, 10), new Time(10, 20, 0)));
 
         ArrayList<String> patientStringList = new ArrayList<>();
         for (Appointment p : appointmentArrayList)

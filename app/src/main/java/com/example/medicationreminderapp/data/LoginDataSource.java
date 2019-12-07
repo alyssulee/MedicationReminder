@@ -3,6 +3,7 @@ package com.example.medicationreminderapp.data;
 import android.os.StrictMode;
 
 import com.example.apiabstractions.GeneralApi;
+import com.example.apiclient.ClientFamilyMemberApi;
 import com.example.apiclient.ClientGeneralApi;
 import com.example.apiclient.ClientPatientApi;
 import com.example.medicationreminderapp.DoseFinder;
@@ -36,6 +37,8 @@ public class LoginDataSource {
             if (userTypeOrNull == UserType.Patient){
                 DoseFinder.patientApi = ClientPatientApi.createOrThrow("http://104.210.55.244:4567/", credentials);
             }
+            else
+                DoseFinder.clientFamilyMemberApi = ClientFamilyMemberApi.createOrThrow("http://104.210.55.244:4567/", credentials);
             //else
                 //DoseFinder.clientFamilyMemberApi
 
