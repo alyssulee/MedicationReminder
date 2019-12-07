@@ -40,14 +40,12 @@ public class PatientApiImpl implements PatientApi {
 
     @Override
     public int getCurrentStreak() {
-        // Todo: Give real implementation
-        return 5;
+        return userRepository.getCurrentStreak(patient);
     }
 
     @Override
     public int getLongestStreak() {
-        // Todo: Give real implementation
-        return 30;
+        return userRepository.getLongestStreak(patient);
     }
 
     @Override
