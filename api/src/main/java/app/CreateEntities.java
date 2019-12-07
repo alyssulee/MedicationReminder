@@ -30,7 +30,9 @@ public class CreateEntities {
 
         userRepository.addUser(new Patient(UUID.randomUUID(), "PatientA", "patient", "patienta", "password"));
         userRepository.addUser(new Patient(UUID.randomUUID(), "PatientB", "patient", "patientb", "password"));
-        userRepository.addUser(new FamilyMember(UUID.randomUUID(), "Mother", "patient", "family", "password", "Mother"));
+
+        FamilyMember mother = new FamilyMember(UUID.randomUUID(), "Mother", "patient", "family", "password", "Mother");
+        userRepository.addUser(mother);
 
         userRepository.addUser(new Doctor(UUID.randomUUID(), "DoctorA", "doctor", "doctora", "password"));
         userRepository.addUser(new Doctor(UUID.randomUUID(), "DoctorB", "doctor", "doctorb", "password"));
@@ -40,6 +42,10 @@ public class CreateEntities {
 
         userRepository.addAppointment(doctorList.get(0), patientList.get(0), new Date(2020, 3, 4), new Time(4, 4, 4));
         userRepository.addAppointment(doctorList.get(1), patientList.get(0), new Date(2020, 5, 6), new Time(5, 5, 5));
+
+        for (Patient patient : patientList) {
+            userRepository.addViewer(patient, mother);
+        }
 
         for (Patient patient : patientList) {
             {

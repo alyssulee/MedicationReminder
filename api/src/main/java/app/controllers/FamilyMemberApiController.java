@@ -8,6 +8,8 @@ import java.util.UUID;
 import app.FamilyMemberApiImpl;
 import app.JsonTransformer;
 import model.FamilyMember;
+import model.User;
+import repository.UserRepository;
 import spark.Request;
 
 import static spark.Spark.get;
@@ -15,8 +17,8 @@ import static spark.Spark.post;
 
 public class FamilyMemberApiController implements Controller {
 
+    private UserRepository userRepository = new UserRepository();
     private static final String basePath = "/api/familyMember/";
-    private Gson gson = new Gson();
 
     @Override
     public void registerRoutes() {
@@ -44,13 +46,13 @@ public class FamilyMemberApiController implements Controller {
     }
 
     private FamilyMember getFamilyMemberOrThrow(Request request) {
-        // Todo: Give real implementation
         String username = request.headers("username");
         String password = request.headers("Password");
 
         if (username.isEmpty() || password.isEmpty())
             throw new Error("Username or password was missing.");
 
-        return new FamilyMember(UUID.randomUUID(), "first", "last", username, password, "Guardian");
+        User user = userRepository.login(username, password);
+        return userRepository.getFamilyMemberByID(user.getId());
     }
 }

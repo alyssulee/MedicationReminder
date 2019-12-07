@@ -3,6 +3,7 @@ package database.dataTables;
 import database.SQLDatabase;
 import model.BloodPressure;
 import model.Client;
+import model.FamilyMember;
 import model.Patient;
 import model.PatientMeasurement;
 
@@ -258,7 +259,7 @@ public class PatientTables extends SQLDatabase
             String query = "UPDATE PATIENT SET CurrentStreak = CurrentStreak + 1 WHERE IDNum = ?";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
-            pState.execute();
+            pState.executeUpdate();
             updateLongestStreak(patientId);
         } catch (SQLException e)
         {
@@ -304,7 +305,7 @@ public class PatientTables extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patientId);
+//            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -319,7 +320,7 @@ public class PatientTables extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patientId);
+//            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -333,8 +334,7 @@ public class PatientTables extends SQLDatabase
             String query = "UPDATE PATIENT SET SuccessfulDoses = SuccessfulDoses + 1 WHERE IDNum = ?";
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
-            pState.execute();
-            resetPatientStreak(patientId);
+            pState.executeUpdate();
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -349,7 +349,7 @@ public class PatientTables extends SQLDatabase
             PreparedStatement pState = connection.prepareStatement(query);
             pState.setString(1, patientId.toString());
             pState.execute();
-            resetPatientStreak(patientId);
+//            resetPatientStreak(patientId);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -373,7 +373,7 @@ public class PatientTables extends SQLDatabase
                     query = "UPDATE PATIENT SET LongestStreak = CurrentStreak WHERE IDNum = ?";
                     pState = connection.prepareStatement(query);
                     pState.setString(1, patientId.toString());
-                    pState.execute();
+                    pState.executeUpdate();
                 }
             }
         } catch (SQLException e)
@@ -483,6 +483,32 @@ public class PatientTables extends SQLDatabase
             e.printStackTrace();
         }
         return Optional.ofNullable(patient);
+    }
+
+    public Optional<FamilyMember> getFamilyMemberByID(UUID idNum)
+    {
+        FamilyMember familyMember = null;
+        try
+        {
+            String query = "SELECT * FROM FamilyMember, AppUser WHERE FamilyMember.IDNum = ? AND AppUser.IDNum = FamilyMember.IDNum";
+            PreparedStatement pState = connection.prepareStatement(query);
+            pState.setString(1, idNum.toString());
+            resultSet = pState.executeQuery();
+            while (resultSet.next())
+            {
+                UUID id = UUID.fromString(resultSet.getString("IDNum"));
+                String firstname = resultSet.getString("Fname");
+                String lastname = resultSet.getString("Lname");
+                String username = resultSet.getString("Username");
+                String password = resultSet.getString("Password");
+                String relation = resultSet.getString("FamilyRelation");
+                familyMember = new FamilyMember(id, firstname, lastname, username, password, relation);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(familyMember);
     }
 
 

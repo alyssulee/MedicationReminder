@@ -24,10 +24,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medicationreminderapp.DoctorActivity;
+import com.example.medicationreminderapp.DoseFinder;
 import com.example.medicationreminderapp.FamilyMemberActivity;
 import com.example.medicationreminderapp.MainActivity;
 import com.example.medicationreminderapp.PharmacistActivity;
 import com.example.medicationreminderapp.R;
+
+import model.Patient;
+import model.UserType;
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
@@ -126,27 +131,27 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = "Error";
         System.out.println(model.getDisplayName());
         //TODO: Replace with login usertype
-        if(true) {
-            //Intent intent = new Intent(this, MainActivity.class);
-            Intent intent = new Intent(this, PharmacistActivity.class);
+        if(DoseFinder.userType.equals(UserType.Patient)) {
+            Intent intent = new Intent(this, MainActivity.class);
+            //Intent intent = new Intent(this, PharmacistActivity.class);
             //Intent intent = new Intent(this, DoctorActivity.class);
             //Intent intent = new Intent(this, FamilyMemberActivity.class);
             startActivity(intent);
             welcome = getString(R.string.welcome) + "Patient " + model.getDisplayName();
         }
-        else if(model.getDisplayName().equals("keenanpeterson"))
+        else if(DoseFinder.userType.equals(UserType.Pharmacist))
         {
             Intent intent = new Intent(this, PharmacistActivity.class);
             startActivity(intent);
             welcome = getString(R.string.welcome) + "Pharmacist " + model.getDisplayName();
         }
-        else if(model.getDisplayName().equals("rickybooker"))
+        else if(DoseFinder.userType.equals(UserType.Doctor))
         {
             Intent intent = new Intent(this, DoctorActivity.class);
             startActivity(intent);
             welcome = getString(R.string.welcome) + "Doctor " + model.getDisplayName();
         }
-        else if(model.getDisplayName().equals("family"))
+        else if(DoseFinder.userType.equals(UserType.FamilyMember))
         {
             Intent intent = new Intent(this, FamilyMemberActivity.class);
             startActivity(intent);

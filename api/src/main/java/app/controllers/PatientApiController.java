@@ -20,7 +20,7 @@ import static spark.Spark.post;
 
 public class PatientApiController implements Controller {
 
-    UserRepository userRepository = new UserRepository();
+    private UserRepository userRepository = new UserRepository();
     private static final String basePath = "/api/patient/";
     private Gson gson = new Gson();
 

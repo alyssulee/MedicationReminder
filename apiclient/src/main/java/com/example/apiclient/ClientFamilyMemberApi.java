@@ -31,11 +31,11 @@ public class ClientFamilyMemberApi implements FamilyMemberApi {
         ClientFamilyMemberApi api = new ClientFamilyMemberApi();
         api.hostPath = hostPath;
         api.credentials = credentials;
-        api.validateCredentialsOrThrow(credentials);
+        api.validateCredentialsOrThrow();
         return api;
     }
 
-    private void validateCredentialsOrThrow(LoginCredentials credentials) {
+    private void validateCredentialsOrThrow() {
         try {
             HttpURLConnection connection = openGetConnection("api/familyMember/verifyCredentials");
             try (AutoCloseable ignored = connection::disconnect) {
