@@ -167,8 +167,8 @@ public class UserRepository {
         return viewsDatabase.addViewer(patient, familyMember);
     }
 
-    public ArrayList<Patient> getPatientsByFamilyMember(FamilyMember familyMember) {
-        return viewsDatabase.getPatientsByFamilyMember(familyMember);
+    public ArrayList<Patient> getPatientsByFamilyMember(UUID familyMemberID) {
+        return viewsDatabase.getPatientsByFamilyMember(familyMemberID);
     }
 
     public boolean addAppointment(Doctor doctor, Patient patient, Date date, Time time) {

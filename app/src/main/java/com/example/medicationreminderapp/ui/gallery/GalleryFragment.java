@@ -137,9 +137,6 @@ public class GalleryFragment extends Fragment
                 Bundle args = new Bundle();
                 args.putString(DATE, "Date: " + selectedDate.toString());
                 fragment.setArguments(args);
-
-                //Toast.makeText(view.getContext(), "Year=" + year + " Month=" + month + " Day=" + dayOfMonth, Toast.LENGTH_LONG).show();
-                //System.out.println("Year=" + year + " Month=" + (month+1) + " Day=" + dayOfMonth);
             }
         });
 
