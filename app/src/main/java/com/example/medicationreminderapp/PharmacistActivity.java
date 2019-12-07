@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class PharmacistActivity extends AppCompatActivity
         });
 
 
+        orderListView = (ListView)findViewById(R.id.OrderListView2);
         selectButton = (Button) findViewById(R.id.RefillButton2);
         ArrayList<Prescription> prescriptions = new ArrayList<Prescription>();
 
@@ -69,6 +71,7 @@ public class PharmacistActivity extends AppCompatActivity
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, orderStringList);
         orderListView.setAdapter(arrayAdapter);
+
 
         orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
