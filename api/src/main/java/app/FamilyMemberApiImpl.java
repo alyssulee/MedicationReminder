@@ -37,7 +37,7 @@ public class FamilyMemberApiImpl implements FamilyMemberApi {
 
     @Override
     public List<Patient> getDependantPatients() {
-        return userRepository.getPatientsDependantOn(familyMember.getId());
+        return userRepository.getPatientsByFamilyMember(familyMember.getId());
     }
 
     @Override

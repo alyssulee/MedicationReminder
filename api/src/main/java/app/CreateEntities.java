@@ -30,6 +30,7 @@ public class CreateEntities {
 
         userRepository.addUser(new Patient(UUID.randomUUID(), "PatientA", "patient", "patienta", "password"));
         userRepository.addUser(new Patient(UUID.randomUUID(), "PatientB", "patient", "patientb", "password"));
+        userRepository.addUser(new Patient(UUID.randomUUID(), "PatientC", "patient", "patientc", "password"));
 
         FamilyMember mother = new FamilyMember(UUID.randomUUID(), "Mother", "patient", "family", "password", "Mother");
         userRepository.addUser(mother);
