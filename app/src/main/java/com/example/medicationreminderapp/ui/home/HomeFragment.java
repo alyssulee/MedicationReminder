@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment{
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        DoseFinder.root = root;
         final TextView textView = root.findViewById(R.id.text_home);
 
 
@@ -43,21 +44,22 @@ public class HomeFragment extends Fragment{
                 textView.setText(s);
                 int streak = DoseFinder.patientApi.getCurrentStreak();
                 final TextView textView2 = root.findViewById(R.id.textView2);
-                textView2.setText(streak + " Days");
+                textView2.setText(streak + " Doses");
             }
         });
 
 
         int streak = DoseFinder.patientApi.getCurrentStreak();
         final TextView textView2 = root.findViewById(R.id.textView2);
-        textView2.setText(streak + " Days");
+        textView2.setText(streak + " Doses");
 
        homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 int streak = DoseFinder.patientApi.getCurrentStreak();
+                int num = DoseFinder.patientApi.getTodaysDoses().size();
                 final TextView textView2 = root.findViewById(R.id.textView2);
-                textView2.setText(streak + " Days");
+                textView2.setText(streak + "/" + num + " Doses");
             }
         });
         //textView2.setText();

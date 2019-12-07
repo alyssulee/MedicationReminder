@@ -53,10 +53,19 @@ public class DosesAdapter extends RecyclerView.Adapter<DosesAdapter.ViewHolder> 
                     if (messageButton.isChecked()) {
                         DoseFinder.patientApi.confirmDoseTaken(dose);
                         System.out.println("Dose confirmed");
+                        int num = DoseFinder.patientApi.getTodaysDoses().size();
+                        int streak = DoseFinder.patientApi.getCurrentStreak();
+                        final TextView textView2 = DoseFinder.root.findViewById(R.id.textView2);
+                        textView2.setText(streak + "/" + num + " Doses");
+
                         //messageButton.setChecked(true);
                     } else {
                         DoseFinder.patientApi.markDoseUntaken(dose);
                         System.out.println("Undone");
+                        int num = DoseFinder.patientApi.getTodaysDoses().size();
+                        int streak = DoseFinder.patientApi.getCurrentStreak();
+                        final TextView textView2 = DoseFinder.root.findViewById(R.id.textView2);
+                        textView2.setText(streak + "/" + num + " Doses");
                         //messageButton.setChecked(false);
                     }
                 }

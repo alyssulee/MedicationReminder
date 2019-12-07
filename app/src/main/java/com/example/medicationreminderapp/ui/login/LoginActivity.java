@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = "Error";
         System.out.println(model.getDisplayName());
         //TODO: Replace with login usertype
-        if(model.getDisplayName().equals("patienta")) {
+        if(true) {
             Intent intent = new Intent(this, MainActivity.class);
             //Intent intent = new Intent(this, PharmacistActivity.class);
             //Intent intent = new Intent(this, DoctorActivity.class);
