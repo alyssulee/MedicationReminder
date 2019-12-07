@@ -225,6 +225,10 @@ public class UserRepository {
         return patientDatabase.getPatientByID(idNum).get();
     }
 
+    public FamilyMember getFamilyMemberByID(UUID idNum) {
+        return patientDatabase.getFamilyMemberByID(idNum).get();
+    }
+
     public Doctor getDoctorByID(UUID idNum) {
         return doctorDatabase.getDoctorByID(idNum).get();
     }

@@ -37,16 +37,12 @@ public class FamilyMemberApiImpl implements FamilyMemberApi {
 
     @Override
     public List<Patient> getDependantPatients() {
-        // Todo: Give real implementation
-        ArrayList<Patient> patients = new ArrayList<>();
-        patients.add(new Patient(UUID.randomUUID(), "lefirst", "lelast", "leuser", "lepass"));
-        patients.add(new Patient(UUID.randomUUID(), "lafirst", "lalast", "lauser", "lapass"));
-        return patients;
+        return userRepository.getPatientsDependantOn(familyMember.getId());
     }
 
     @Override
     public LoginCredentials getPatientCredentials(UUID patientId) {
-        // Todo: Give real implementation
-        return new LoginCredentials("myuser", "mypass");
+        Patient patient = userRepository.getPatientByID(patientId);
+        return new LoginCredentials(patient.getUsername(), patient.getPassword());
     }
 }
